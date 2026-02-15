@@ -156,6 +156,15 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .act-field input,.act-field select{padding:.3rem .5rem;border:1px solid var(--border);border-radius:6px;font-family:'Inter',sans-serif;font-size:.75rem;color:var(--text);background:#fff;outline:none;transition:border-color .2s}
 .act-field input:focus,.act-field select:focus{border-color:var(--lake)}
 .act-field input{width:90px}
+.act-who-toggles{display:flex;gap:.3rem}
+.act-who-btn{padding:.25rem .6rem;border-radius:6px;font-size:.65rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:inherit}
+.act-who-btn:hover{border-color:var(--dim)}
+.act-who-btn.active-sl{background:rgba(191,54,12,.1);border-color:var(--sl);color:var(--sl)}
+.act-who-btn.active-ja{background:rgba(106,27,154,.1);border-color:var(--jared);color:var(--jared)}
+.act-who-btn.active-all{background:rgba(0,105,92,.1);border-color:var(--lake);color:var(--lake)}
+.act-badge.who-sl{background:rgba(191,54,12,.1);color:var(--sl)}
+.act-badge.who-ja{background:rgba(106,27,154,.1);color:var(--jared)}
+.act-badge.who-all{background:rgba(0,105,92,.08);color:var(--lake-deep)}
 .act-save{padding:.25rem .7rem;background:var(--lake);color:#fff;border:none;border-radius:6px;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .2s;align-self:flex-end;margin-top:.15rem}
 .act-save:hover{background:var(--lake-light)}
 
@@ -823,12 +832,18 @@ function renderDetail(di,li){
       const meta=actMeta[ak]||{};
       const stLabel=meta.status==='booked'?'<span class="act-badge booked">Booked</span>':meta.status==='needs-booking'?'<span class="act-badge needs-booking">Book!</span>':meta.status==='na'?'<span class="act-badge na">N/A</span>':'';
       const costLabel=meta.cost?'<span class="act-badge cost-badge">'+meta.cost+(meta.per==='person'?'/pp':meta.per==='couple'?'/couple':'')+'</span>':'';
+      const whoLabel=meta.who==='sl'?'<span class="act-badge who-sl">S&L</span>':meta.who==='ja'?'<span class="act-badge who-ja">J&A</span>':meta.who==='all'?'<span class="act-badge who-all">Both</span>':'';
       // Check highlights
       let hlBadge='';
       Object.keys(HIGHLIGHTS).forEach(k=>{if(a.indexOf(k)>=0){const t=HIGHLIGHTS[k];hlBadge='<span class="act-hl '+t+'">'+(t==='bucket'?'Bucket List':'Don\'t Miss')+'</span>'}});
       html+='<div class="act-item" data-ak="'+ak+'">'
-        +'<div class="act-top"><span class="act-icon">&#9654;</span><span class="act-name">'+a+hlBadge+'</span>'+costLabel+stLabel+'</div>'
+        +'<div class="act-top"><span class="act-icon">&#9654;</span><span class="act-name">'+a+hlBadge+'</span>'+whoLabel+costLabel+stLabel+'</div>'
         +'<div class="act-detail"><div class="act-fields">'
+        +'<div class="act-field"><label>Who</label><div class="act-who-toggles">'
+        +'<button type="button" class="act-who-btn'+(meta.who==='sl'?' active-sl':'')+'" data-who="sl" onclick="toggleWho(this,event)">S&L</button>'
+        +'<button type="button" class="act-who-btn'+(meta.who==='all'?' active-all':'')+'" data-who="all" onclick="toggleWho(this,event)">Both</button>'
+        +'<button type="button" class="act-who-btn'+(meta.who==='ja'?' active-ja':'')+'" data-who="ja" onclick="toggleWho(this,event)">J&A</button>'
+        +'</div></div>'
         +'<div class="act-field"><label>Cost</label><input type="text" class="act-cost-inp" placeholder="e.g. $50" value="'+(meta.cost||'')+'"></div>'
         +'<div class="act-field"><label>Per</label><select class="act-per-sel"><option value=""'+((!meta.per)?' selected':'')+'>\u2014</option><option value="person"'+(meta.per==='person'?' selected':'')+'>Per person</option><option value="couple"'+(meta.per==='couple'?' selected':'')+'>Per couple</option><option value="total"'+(meta.per==='total'?' selected':'')+'>Total</option></select></div>'
         +'<div class="act-field"><label>Status</label><select class="act-st-sel"><option value=""'+((!meta.status)?' selected':'')+'>\u2014</option><option value="booked"'+(meta.status==='booked'?' selected':'')+'>Booked</option><option value="needs-booking"'+(meta.status==='needs-booking'?' selected':'')+'>Needs booking</option><option value="na"'+(meta.status==='na'?' selected':'')+'>N/A</option></select></div>'
@@ -961,6 +976,14 @@ function loadActMeta(){
     actMeta=JSON.parse(localStorage.getItem('nz-actmeta')||'{}');
   }
 }
+function toggleWho(btn,e){
+  e.stopPropagation();
+  const toggles=btn.parentElement;
+  const who=btn.dataset.who;
+  const wasActive=btn.classList.contains('active-sl')||btn.classList.contains('active-ja')||btn.classList.contains('active-all');
+  toggles.querySelectorAll('.act-who-btn').forEach(b=>b.className='act-who-btn');
+  if(!wasActive)btn.classList.add(who==='sl'?'active-sl':who==='ja'?'active-ja':'active-all');
+}
 function saveAct(ak,e){
   e.stopPropagation();
   const item=document.querySelector('.act-item[data-ak="'+ak+'"]');
@@ -968,7 +991,10 @@ function saveAct(ak,e){
   const cost=item.querySelector('.act-cost-inp').value.trim();
   const per=item.querySelector('.act-per-sel').value;
   const status=item.querySelector('.act-st-sel').value;
+  const activeWho=item.querySelector('.act-who-btn.active-sl,.act-who-btn.active-ja,.act-who-btn.active-all');
+  const who=activeWho?activeWho.dataset.who:'';
   const meta={};
+  if(who)meta.who=who;
   if(cost)meta.cost=cost;
   if(per)meta.per=per;
   if(status)meta.status=status;
