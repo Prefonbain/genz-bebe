@@ -230,8 +230,20 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .cost-title{font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:.8rem}
 .cost-total{font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;margin-bottom:1rem}
 .cost-total.sl{color:var(--sl)}.cost-total.ja{color:var(--ja)}
-.cost-line{display:flex;justify-content:space-between;font-size:.8rem;padding:.35rem 0;border-bottom:1px solid rgba(42,58,74,.4)}
+.cost-line{display:flex;justify-content:space-between;font-size:.8rem;padding:.35rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
+.cost-line:hover{background:rgba(0,105,92,.03)}
 .cost-line-l{color:var(--muted)}.cost-line-v{font-family:'JetBrains Mono',monospace;font-weight:500}
+.cost-line .cost-chev{font-size:.55rem;color:var(--dim);margin-left:.3rem;transition:transform .2s}
+.cost-line.open .cost-chev{transform:rotate(180deg)}
+.cost-sub{display:none;padding:0 0 .3rem}
+.cost-sub.open{display:block}
+.cost-sub-item{display:flex;justify-content:space-between;font-size:.72rem;padding:.25rem .8rem;color:var(--dim)}
+.cost-sub-item .csi-name{flex:1}
+.cost-sub-item .csi-detail{font-size:.65rem;color:var(--dim);margin-left:.3rem}
+.cost-sub-item .csi-val{font-family:'JetBrains Mono',monospace;color:var(--muted);flex-shrink:0}
+.cost-section-total{display:flex;justify-content:space-between;font-size:.75rem;padding:.3rem .8rem;font-weight:600;border-top:1px dashed var(--border);margin-top:.1rem}
+.cost-section-total .cst-lbl{color:var(--muted)}
+.cost-section-total .cst-val{font-family:'JetBrains Mono',monospace}
 .curr-note{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.8rem 1.2rem;margin-bottom:1.2rem;font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.6rem}
 .curr-note strong{font-family:'JetBrains Mono',monospace;color:var(--gold)}
 .flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem}
@@ -547,17 +559,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="conv-field"><label>NZD $</label><input type="number" id="conv-nzd" placeholder="0.00" oninput="convNZD()"></div>
     <span class="conv-rate">Rate: 1 USD = 1.754 NZD</span>
   </div>
-  <div class="cost-grid">
-    <div class="cost-card"><div class="cost-title">Stephen &amp; Lindsay</div><div class="cost-total sl">$4,500.18</div><div><div class="cost-line"><span class="cost-line-l">Hotels</span><span class="cost-line-v">$1,903.45</span></div><div class="cost-line"><span class="cost-line-l">Activities</span><span class="cost-line-v">$348.00</span></div><div class="cost-line"><span class="cost-line-l">Flights (post-reimburse)</span><span class="cost-line-v">$2,248.73</span></div></div></div>
-    <div class="cost-card"><div class="cost-title">Jared &amp; Ariel</div><div class="cost-total ja">$4,056.90</div><div><div class="cost-line"><span class="cost-line-l">Hotels</span><span class="cost-line-v">$1,564.40</span></div><div class="cost-line"><span class="cost-line-l">Activities</span><span class="cost-line-v">$348.00</span></div><div class="cost-line"><span class="cost-line-l">Flights (post-reimburse)</span><span class="cost-line-v">$2,144.50</span></div></div></div>
-  </div>
-  <div class="flight-grid" style="margin-top:1.2rem">
-    <div class="flight-item"><div class="fl-route">S&amp;L: MSN&rarr;LAX</div><div class="fl-cost">$1,293.20</div><div class="fl-reimb">Reimburse: $828.68</div></div>
-    <div class="flight-item"><div class="fl-route">Stephen: LAX&rarr;NZ</div><div class="fl-cost">$1,108.03</div><div class="fl-reimb">Reimburse: $710.03</div></div>
-    <div class="flight-item"><div class="fl-route">Lindsay: LAX&rarr;NZ</div><div class="fl-cost">$1,108.03</div><div class="fl-reimb">Reimburse: $710.03</div></div>
-    <div class="flight-item"><div class="fl-route">J&amp;A: Domestic&rarr;LAX</div><div class="fl-cost">$1,156.94</div><div class="fl-reimb">Reimburse: $741.37</div></div>
-    <div class="flight-item"><div class="fl-route">J&amp;A: International NZ</div><div class="fl-code">2KB6JH</div><div class="fl-cost">$2,189.66</div><div class="fl-reimb">Reimburse: $1,403.13</div></div>
-  </div>
+  <div class="cost-grid" id="cost-grid"></div>
 </div>
 
 <!-- PACKING -->
@@ -1018,7 +1020,7 @@ function saveDayNote(){
 // ACTIVITY TRACKING
 function loadActMeta(){
   if(fbOn){
-    db.ref('actMeta').on('value',s=>{actMeta=s.val()||{};renderDetail(selectedDayIdx)});
+    db.ref('actMeta').on('value',s=>{actMeta=s.val()||{};renderDetail(selectedDayIdx);if(typeof renderCosts==='function')renderCosts()});
   }else{
     actMeta=JSON.parse(localStorage.getItem('nz-actmeta')||'{}');
   }
@@ -1066,7 +1068,7 @@ loadActMeta();
 // ACCOMMODATION TRACKING
 function loadAccomMeta(){
   if(fbOn){
-    db.ref('accomMeta').on('value',s=>{accomMeta=s.val()||{};renderDetail(selectedDayIdx)});
+    db.ref('accomMeta').on('value',s=>{accomMeta=s.val()||{};renderDetail(selectedDayIdx);if(typeof renderCosts==='function')renderCosts()});
   }else{
     accomMeta=JSON.parse(localStorage.getItem('nz-accommeta')||'{}');
   }
@@ -1126,6 +1128,205 @@ setInterval(updateStats,30000);
 const NZD_RATE=1.754;
 function convUSD(){const v=parseFloat(document.getElementById('conv-usd').value)||0;document.getElementById('conv-nzd').value=v?(v*NZD_RATE).toFixed(2):''}
 function convNZD(){const v=parseFloat(document.getElementById('conv-nzd').value)||0;document.getElementById('conv-usd').value=v?(v/NZD_RATE).toFixed(2):''}
+
+// COST BREAKDOWN
+function parseCostNum(str){if(!str)return 0;const m=String(str).match(/[\d,.]+/);return m?parseFloat(m[0].replace(/,/g,'')):0}
+
+function renderCosts(){
+  const grid=document.getElementById('cost-grid');
+  if(!grid)return;
+
+  // Collect accommodation stays grouped by name+city+who
+  const stayMap={};
+  DAYS.forEach((d,di)=>{
+    d.locs.forEach((l,li)=>{
+      if(!l.accom||l.accom.st==='empty')return;
+      const accKey=d.date+'-'+li+'-accom';
+      const meta=accomMeta[accKey]||{};
+      const who=meta.who||l.who;
+
+      // "Same as May XX" — find the reference day's opts and add this date to them
+      if(l.accom.name&&l.accom.name.indexOf('Same as')>=0&&!l.accom.opts){
+        const refMatch=l.accom.name.match(/Same as May (\d+)/);
+        if(refMatch){
+          const refDay=DAYS.find(rd=>rd.date.endsWith('-'+refMatch[1].padStart(2,'0')));
+          if(refDay){
+            const refLoc=refDay.locs.find(rl=>rl.city===l.city)||refDay.locs[0];
+            if(refLoc&&refLoc.accom.opts){
+              refLoc.accom.opts.forEach((o,oi)=>{
+                const gk=o.name+'|'+l.city+'|'+who;
+                if(stayMap[gk]&&!stayMap[gk].dates.includes(d.date))stayMap[gk].dates.push(d.date);
+              });
+              return;
+            }
+          }
+        }
+        return; // skip if can't resolve
+      }
+
+      if(l.accom.opts){
+        // "Choose" accommodations — show each option
+        l.accom.opts.forEach((o,oi)=>{
+          const optKey=d.date+'-'+li+'-accom-'+oi;
+          const optMeta=accomMeta[optKey]||{};
+          const oWho=optMeta.who||who;
+          const gk=o.name+'|'+l.city+'|'+oWho;
+          if(!stayMap[gk])stayMap[gk]={name:o.name,city:l.city,who:oWho,dates:[],costStr:optMeta.costPerNight||o.cost||'',split:optMeta.split||'',conf:'',isOption:true};
+          if(!stayMap[gk].dates.includes(d.date))stayMap[gk].dates.push(d.date);
+        });
+      }else{
+        const gk=l.accom.name+'|'+l.city+'|'+who;
+        if(!stayMap[gk])stayMap[gk]={name:l.accom.name,city:l.city,who:who,dates:[],costStr:meta.costPerNight||l.accom.cost||'',split:meta.split||'',conf:l.accom.conf||'',isOption:false};
+        if(!stayMap[gk].dates.includes(d.date))stayMap[gk].dates.push(d.date);
+      }
+    });
+  });
+
+  const stays=Object.values(stayMap);
+  stays.forEach(s=>{s.dates.sort();s.nights=s.dates.length;s.costPerNight=parseCostNum(s.costStr);s.total=s.costPerNight*s.nights});
+
+  // Collect activities with tracked costs
+  const actItems=[];
+  DAYS.forEach((d,di)=>{
+    d.locs.forEach((l,li)=>{
+      l.acts.forEach((a,ai)=>{
+        const ak=d.date+'-'+li+'-'+ai;
+        const meta=actMeta[ak]||{};
+        if(meta.cost){
+          actItems.push({name:a,date:d.date,cost:meta.cost,per:meta.per||'',who:meta.who||l.who,costNum:parseCostNum(meta.cost)});
+        }
+      });
+    });
+  });
+
+  // Flight data
+  const flights={
+    sl:[
+      {route:'MSN \u2192 LAX',cost:1293.20,reimb:828.68},
+      {route:'Stephen: LAX \u2192 NZ',cost:1108.03,reimb:710.03},
+      {route:'Lindsay: LAX \u2192 NZ',cost:1108.03,reimb:710.03}
+    ],
+    ja:[
+      {route:'Domestic \u2192 LAX',cost:1156.94,reimb:741.37},
+      {route:'International NZ',cost:2189.66,reimb:1403.13}
+    ]
+  };
+
+  // Helper: format date range
+  function fmtRange(dates){
+    if(!dates.length)return'';
+    const first=new Date(dates[0]+'T12:00:00');
+    const last=new Date(dates[dates.length-1]+'T12:00:00');
+    const mo=first.toLocaleDateString('en-US',{month:'short'});
+    return mo+' '+first.getDate()+(dates.length>1?'\u2013'+last.getDate():'');
+  }
+
+  // Build card for each couple
+  function buildCard(label,colorClass,coupleKey,flightKey){
+    // Filter stays
+    const myStays=stays.filter(s=>s.who===coupleKey||s.who==='all');
+    const myActs=actItems.filter(a=>a.who===coupleKey||a.who==='all');
+    const myFlights=flights[flightKey];
+
+    // Calculate hotel total for this couple
+    let hotelTotal=0;
+    myStays.forEach(s=>{
+      if(s.who==='all'){
+        // Shared — check split
+        if(s.split===coupleKey.toUpperCase().replace('SL','S&L').replace('JA','J&A')+' pays') hotelTotal+=s.total;
+        else if(s.split&&s.split.indexOf('pays')>-1) {/* other couple pays */}
+        else hotelTotal+=s.total/2; // default 50/50
+      }else{
+        hotelTotal+=s.total;
+      }
+    });
+
+    // Calculate activity total
+    let actTotal=0;
+    myActs.forEach(a=>{
+      let amt=a.costNum;
+      if(a.per==='person')amt*=2; // per person × 2 for the couple
+      if(a.who==='all'){
+        if(a.per==='total')amt/=2;
+        // per person already covers just this couple's 2 people
+        // per couple already covers just this couple
+      }
+      actTotal+=amt;
+    });
+
+    // Calculate flight total & reimbursement
+    let flightTotal=0,flightReimb=0;
+    myFlights.forEach(f=>{flightTotal+=f.cost;flightReimb+=f.reimb});
+
+    const grandTotal=hotelTotal+actTotal+flightTotal;
+    const netAfterReimb=grandTotal-flightReimb;
+
+    // Build HTML
+    let h='<div class="cost-card"><div class="cost-title">'+label+'</div>';
+    h+='<div class="cost-total '+colorClass+'">$'+grandTotal.toFixed(2)+'</div>';
+
+    // Hotels section
+    h+='<div class="cost-line" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\')"><span class="cost-line-l">\uD83C\uDFE8 Hotels <span class="cost-chev">\u25BC</span></span><span class="cost-line-v">$'+hotelTotal.toFixed(2)+'</span></div>';
+    h+='<div class="cost-sub">';
+    myStays.forEach(s=>{
+      let myCost=0;
+      if(s.who==='all'){
+        if(s.split===(coupleKey==='sl'?'S&L pays':'J&A pays'))myCost=s.total;
+        else if(s.split&&s.split.indexOf('pays')>-1)myCost=0;
+        else myCost=s.total/2;
+      }else myCost=s.total;
+      if(myCost<=0&&s.costPerNight<=0){
+        h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+s.city+' \u00B7 '+fmtRange(s.dates)+' \u00B7 '+s.nights+'n</span><span class="csi-val">TBD</span></div>';
+      }else{
+        const splitNote=s.who==='all'?(s.split||'50/50'):'';
+        h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+s.city+' \u00B7 '+fmtRange(s.dates)+' \u00B7 '+s.nights+'n \u00D7 '+s.costStr+(splitNote?' \u00B7 '+splitNote:'')+'</span><span class="csi-val">$'+myCost.toFixed(2)+'</span></div>';
+      }
+    });
+    h+='<div class="cost-section-total"><span class="cst-lbl">Hotel Subtotal</span><span class="cst-val">$'+hotelTotal.toFixed(2)+'</span></div>';
+    h+='</div>';
+
+    // Activities section
+    h+='<div class="cost-line" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\')"><span class="cost-line-l">\uD83C\uDFAF Activities <span class="cost-chev">\u25BC</span></span><span class="cost-line-v">$'+actTotal.toFixed(2)+'</span></div>';
+    h+='<div class="cost-sub">';
+    if(myActs.length===0){
+      h+='<div class="cost-sub-item"><span class="csi-name" style="font-style:italic">No costs tracked yet</span><span class="csi-val">\u2014</span></div>';
+    }else{
+      myActs.forEach(a=>{
+        let amt=a.costNum;
+        if(a.per==='person')amt*=2;
+        if(a.who==='all'&&a.per==='total')amt/=2;
+        const dt=new Date(a.date+'T12:00:00');
+        const dateStr=dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        const perLabel=a.per==='person'?'/pp':a.per==='couple'?'/couple':a.per==='total'?'/total':'';
+        h+='<div class="cost-sub-item"><span class="csi-name">'+a.name+'</span><span class="csi-detail">'+dateStr+' \u00B7 '+a.cost+perLabel+(a.who==='all'?' \u00B7 split':'')+'</span><span class="csi-val">$'+amt.toFixed(2)+'</span></div>';
+      });
+    }
+    h+='<div class="cost-section-total"><span class="cst-lbl">Activity Subtotal</span><span class="cst-val">$'+actTotal.toFixed(2)+'</span></div>';
+    h+='</div>';
+
+    // Flights section
+    h+='<div class="cost-line" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\')"><span class="cost-line-l">\u2708\uFE0F Flights <span class="cost-chev">\u25BC</span></span><span class="cost-line-v">$'+flightTotal.toFixed(2)+'</span></div>';
+    h+='<div class="cost-sub">';
+    myFlights.forEach(f=>{
+      h+='<div class="cost-sub-item"><span class="csi-name">'+f.route+'</span><span class="csi-detail">Reimb: $'+f.reimb.toFixed(2)+'</span><span class="csi-val">$'+f.cost.toFixed(2)+'</span></div>';
+    });
+    h+='<div class="cost-section-total"><span class="cst-lbl">Flight Subtotal</span><span class="cst-val">$'+flightTotal.toFixed(2)+'</span></div>';
+    h+='</div>';
+
+    // Net summary
+    h+='<div style="margin-top:.8rem;padding-top:.6rem;border-top:2px solid var(--border)">';
+    h+='<div class="cost-line" style="border:none;font-weight:700;cursor:default"><span class="cost-line-l">Gross Total</span><span class="cost-line-v">$'+grandTotal.toFixed(2)+'</span></div>';
+    h+='<div class="cost-line" style="border:none;cursor:default"><span class="cost-line-l" style="color:var(--success)">\u2713 Flight Reimbursement</span><span class="cost-line-v" style="color:var(--success)">-$'+flightReimb.toFixed(2)+'</span></div>';
+    h+='<div class="cost-line" style="border:none;font-weight:700;font-size:.9rem;cursor:default"><span class="cost-line-l">Net Cost</span><span class="cost-line-v '+colorClass+'">$'+netAfterReimb.toFixed(2)+'</span></div>';
+    h+='</div>';
+
+    h+='</div>';
+    return h;
+  }
+
+  grid.innerHTML=buildCard('Stephen & Lindsay','sl','sl','sl')+buildCard('Jared & Ariel','ja','ja','ja');
+}
+renderCosts();
 
 // PRE-TRIP CHECKLIST
 let preTripData={};
