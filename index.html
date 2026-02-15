@@ -124,14 +124,22 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .detail-section{margin-bottom:1.2rem}
 .detail-label{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--dim);margin-bottom:.5rem}
 
-.detail-accom{background:rgba(0,105,92,.05);border:1px solid rgba(0,105,92,.15);border-radius:10px;padding:.8rem 1rem;margin-bottom:.3rem}
+.detail-accom{background:rgba(0,105,92,.05);border:1px solid rgba(0,105,92,.15);border-radius:10px;padding:.8rem 1rem;margin-bottom:.3rem;cursor:pointer;transition:all .2s}
+.detail-accom:hover{background:rgba(0,105,92,.08)}
+.detail-accom .accom-top{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
 .detail-accom .name{font-weight:600;font-size:.9rem}
 .detail-accom .conf{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--lake);margin-top:.15rem}
 .detail-accom .cost{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--gold);margin-top:.15rem}
 .detail-accom .note{font-size:.75rem;color:var(--warning);margin-top:.2rem}
+.accom-badges{display:flex;gap:.3rem;margin-left:auto}
+.accom-tracker{display:none;margin-top:.6rem;padding:.6rem .7rem;background:var(--card-hover);border-radius:8px;border:1px solid var(--border)}
+.detail-accom.expanded .accom-tracker{display:block}
+.accom-fields{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.accom-fields .act-field input{width:100px}
 
 .accom-options{display:flex;flex-direction:column;gap:.4rem}
-.opt-card{background:rgba(230,126,34,.04);border:1px solid rgba(230,126,34,.2);border-radius:10px;padding:.7rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem}
+.opt-card{background:rgba(230,126,34,.04);border:1px solid rgba(230,126,34,.2);border-radius:10px;padding:.7rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem;cursor:pointer;transition:all .2s}
+.opt-card:hover{background:rgba(230,126,34,.08)}
 .opt-card .name{font-weight:600;font-size:.85rem}
 .opt-card .note{font-size:.75rem;color:var(--muted)}
 .opt-card .cost{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--gold)}
@@ -626,7 +634,7 @@ const FIREBASE_CONFIG = {
   appId: "1:1074085423986:web:2f921e8e03032293298beb"
 };
 
-let db=null,currentUser=localStorage.getItem('nz-trip-user')||null,allPacking={Stephen:{},Lindsay:{},Jared:{},Ariel:{}},viewUser=null,selectedDayIdx=0,actMeta={};
+let db=null,currentUser=localStorage.getItem('nz-trip-user')||null,allPacking={Stephen:{},Lindsay:{},Jared:{},Ariel:{}},viewUser=null,selectedDayIdx=0,actMeta={},accomMeta={};
 const PEOPLE=['Stephen','Lindsay','Jared','Ariel'];
 const PCOL={Stephen:'#e67e22',Lindsay:'#e6a55e',Jared:'#9b59b6',Ariel:'#c39bd3'};
 const PINIT={Stephen:'S',Lindsay:'L',Jared:'J',Ariel:'A'};
@@ -816,11 +824,46 @@ function renderDetail(di,li){
   }
 
   // Accommodation
+  const accKey=d.date+'-'+li+'-accom';
+  const accMeta=accomMeta[accKey]||{};
+  const accWhoBadge=accMeta.who==='sl'?'<span class="act-badge who-sl">S&L</span>':accMeta.who==='ja'?'<span class="act-badge who-ja">J&A</span>':accMeta.who==='all'?'<span class="act-badge who-all">Both</span>':'';
+  const accSplitBadge=accMeta.split?'<span class="act-badge cost-badge">Split: '+accMeta.split+'</span>':'';
+  const accCostBadge=accMeta.costPerNight?'<span class="act-badge cost-badge">'+accMeta.costPerNight+'/night</span>':'';
+  const accStBadge=accMeta.status==='booked'?'<span class="act-badge booked">Booked</span>':accMeta.status==='needs-booking'?'<span class="act-badge needs-booking">Book!</span>':'';
+
   html+='<div class="detail-section"><div class="detail-label">Accommodation</div>';
   if(l.accom.opts){
-    html+='<div class="accom-options">'+l.accom.opts.map(o=>'<div class="opt-card"><div><div class="name">'+o.name+'</div><div class="note">'+o.note+'</div></div><div class="cost">'+o.cost+'</div></div>').join('')+'</div>';
+    html+='<div class="accom-options">'+l.accom.opts.map((o,oi)=>{
+      const optKey=d.date+'-'+li+'-accom-'+oi;
+      const optMeta=accomMeta[optKey]||{};
+      const optWho=optMeta.who==='sl'?'<span class="act-badge who-sl">S&L</span>':optMeta.who==='ja'?'<span class="act-badge who-ja">J&A</span>':optMeta.who==='all'?'<span class="act-badge who-all">Both</span>':'';
+      return'<div class="opt-card" onclick="this.classList.toggle(\'expanded\')"><div><div class="name">'+o.name+' '+optWho+'</div><div class="note">'+o.note+'</div></div><div class="cost">'+o.cost+'</div>'
+        +'<div class="accom-tracker" style="width:100%"><div class="accom-fields">'
+        +'<div class="act-field"><label>Who Stays</label><div class="act-who-toggles">'
+        +'<button type="button" class="act-who-btn'+(optMeta.who==='sl'?' active-sl':'')+'" data-who="sl" onclick="toggleWho(this,event)">S&L</button>'
+        +'<button type="button" class="act-who-btn'+(optMeta.who==='all'?' active-all':'')+'" data-who="all" onclick="toggleWho(this,event)">Both</button>'
+        +'<button type="button" class="act-who-btn'+(optMeta.who==='ja'?' active-ja':'')+'" data-who="ja" onclick="toggleWho(this,event)">J&A</button>'
+        +'</div></div>'
+        +'<div class="act-field"><label>Cost/Night</label><input type="text" class="acc-cost-inp" placeholder="e.g. $250" value="'+(optMeta.costPerNight||o.cost||'')+'"></div>'
+        +'<div class="act-field"><label>Split</label><select class="acc-split-sel"><option value=""'+((!optMeta.split)?' selected':'')+'>\u2014</option><option value="50/50"'+(optMeta.split==='50/50'?' selected':'')+'>50/50</option><option value="S&L pays"'+(optMeta.split==='S&L pays'?' selected':'')+'>S&L pays</option><option value="J&A pays"'+(optMeta.split==='J&A pays'?' selected':'')+'>J&A pays</option></select></div>'
+        +'<div class="act-field"><label>Status</label><select class="acc-st-sel"><option value=""'+((!optMeta.status)?' selected':'')+'>\u2014</option><option value="booked"'+(optMeta.status==='booked'?' selected':'')+'>Booked</option><option value="needs-booking"'+(optMeta.status==='needs-booking'?' selected':'')+'>Needs booking</option></select></div>'
+        +'<button class="act-save" onclick="saveAccom(\''+optKey+'\',event)">Save</button>'
+        +'</div></div></div>'}).join('')+'</div>';
   }else{
-    html+='<div class="detail-accom"><div class="name">'+l.accom.name+'</div>'+(l.accom.conf?'<div class="conf">Conf: '+l.accom.conf+'</div>':'')+(l.accom.cost?'<div class="cost">'+l.accom.cost+'</div>':'')+(l.accom.note?'<div class="note">'+l.accom.note+'</div>':'')+'</div>';
+    html+='<div class="detail-accom" data-acckey="'+accKey+'">'
+      +'<div class="accom-top"><div><div class="name">'+l.accom.name+'</div>'+(l.accom.conf?'<div class="conf">Conf: '+l.accom.conf+'</div>':'')+(l.accom.cost?'<div class="cost">'+l.accom.cost+'</div>':'')+(l.accom.note?'<div class="note">'+l.accom.note+'</div>':'')+'</div>'
+      +'<div class="accom-badges">'+accWhoBadge+accCostBadge+accSplitBadge+accStBadge+'</div></div>'
+      +'<div class="accom-tracker"><div class="accom-fields">'
+      +'<div class="act-field"><label>Who Stays</label><div class="act-who-toggles">'
+      +'<button type="button" class="act-who-btn'+(accMeta.who==='sl'?' active-sl':'')+'" data-who="sl" onclick="toggleWho(this,event)">S&L</button>'
+      +'<button type="button" class="act-who-btn'+(accMeta.who==='all'?' active-all':'')+'" data-who="all" onclick="toggleWho(this,event)">Both</button>'
+      +'<button type="button" class="act-who-btn'+(accMeta.who==='ja'?' active-ja':'')+'" data-who="ja" onclick="toggleWho(this,event)">J&A</button>'
+      +'</div></div>'
+      +'<div class="act-field"><label>Cost/Night</label><input type="text" class="acc-cost-inp" placeholder="e.g. $250" value="'+(accMeta.costPerNight||l.accom.cost||'')+'"></div>'
+      +'<div class="act-field"><label>Split</label><select class="acc-split-sel"><option value=""'+((!accMeta.split)?' selected':'')+'>\u2014</option><option value="50/50"'+(accMeta.split==='50/50'?' selected':'')+'>50/50</option><option value="S&L pays"'+(accMeta.split==='S&L pays'?' selected':'')+'>S&L pays</option><option value="J&A pays"'+(accMeta.split==='J&A pays'?' selected':'')+'>J&A pays</option></select></div>'
+      +'<div class="act-field"><label>Status</label><select class="acc-st-sel"><option value=""'+((!accMeta.status)?' selected':'')+'>\u2014</option><option value="booked"'+(accMeta.status==='booked'?' selected':'')+'>Booked</option><option value="needs-booking"'+(accMeta.status==='needs-booking'?' selected':'')+'>Needs booking</option></select></div>'
+      +'<button class="act-save" onclick="saveAccom(\''+accKey+'\',event)">Save</button>'
+      +'</div></div></div>';
   }
   html+='</div>';
 
@@ -862,6 +905,10 @@ function renderDetail(di,li){
 
   el.innerHTML=html;
   loadDayNote(nk);
+  // Accommodation expand toggle
+  el.querySelectorAll('.detail-accom').forEach(it=>{
+    it.querySelector('.accom-top').addEventListener('click',()=>it.classList.toggle('expanded'));
+  });
   // Activity expand toggle
   el.querySelectorAll('.act-item').forEach(it=>{
     it.querySelector('.act-top').addEventListener('click',()=>it.classList.toggle('expanded'));
@@ -1015,6 +1062,42 @@ function saveAct(ak,e){
   setTimeout(()=>{btn.textContent='Save'},1500);
 }
 loadActMeta();
+
+// ACCOMMODATION TRACKING
+function loadAccomMeta(){
+  if(fbOn){
+    db.ref('accomMeta').on('value',s=>{accomMeta=s.val()||{};renderDetail(selectedDayIdx)});
+  }else{
+    accomMeta=JSON.parse(localStorage.getItem('nz-accommeta')||'{}');
+  }
+}
+function saveAccom(key,e){
+  e.stopPropagation();
+  // Find the closest container with the tracker fields
+  const btn=e.target;
+  const tracker=btn.closest('.accom-tracker');
+  if(!tracker)return;
+  const activeWho=tracker.querySelector('.act-who-btn.active-sl,.act-who-btn.active-ja,.act-who-btn.active-all');
+  const who=activeWho?activeWho.dataset.who:'';
+  const costPerNight=tracker.querySelector('.acc-cost-inp').value.trim();
+  const split=tracker.querySelector('.acc-split-sel').value;
+  const status=tracker.querySelector('.acc-st-sel').value;
+  const meta={};
+  if(who)meta.who=who;
+  if(costPerNight)meta.costPerNight=costPerNight;
+  if(split)meta.split=split;
+  if(status)meta.status=status;
+  accomMeta[key]=Object.keys(meta).length?meta:null;
+  if(fbOn){
+    db.ref('accomMeta/'+key).set(accomMeta[key]);
+  }else{
+    localStorage.setItem('nz-accommeta',JSON.stringify(accomMeta));
+    renderDetail(selectedDayIdx);
+  }
+  btn.textContent='Saved!';
+  setTimeout(()=>{btn.textContent='Save'},1500);
+}
+loadAccomMeta();
 
 // STATS BAR
 function updateStats(){
