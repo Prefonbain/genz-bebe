@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>geNZ bebe | South Island 2026</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{--lake:#1a6b8a;--lake-deep:#0d4f6b;--lake-light:#2d9dc4;--glacier:#a8d8ea;--forest:#1e6f50;--forest-light:#27ae60;--gold:#d4a847;--sunset:#e67e22;--sky:#3498db;--danger:#e74c3c;--warning:#f39c12;--success:#27ae60;--bg:#0f1923;--bg2:#141f2b;--card:#1a2a3a;--card-hover:#22354a;--text:#e8edf2;--muted:#8899aa;--dim:#5a6a7a;--border:#2a3a4a;--sl:#e67e22;--ja:#9b59b6;--all:#3498db;--stephen:#e67e22;--lindsay:#e6a55e;--jared:#9b59b6;--ariel:#c39bd3}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(10px)}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;max-width:480px;width:100%;text-align:center}
+.modal h2{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.5rem}
+.modal p{color:var(--muted);font-size:.9rem;margin-bottom:2rem}
+.person-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.person-btn{background:rgba(26,107,138,.1);border:2px solid var(--border);border-radius:14px;padding:1.2rem;cursor:pointer;transition:all .3s;color:var(--text);font-family:inherit;font-size:1rem;font-weight:600}
+.person-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.3)}
+.person-btn .person-emoji{font-size:2rem;display:block;margin-bottom:.4rem}
+.person-btn[data-person="Stephen"]{border-color:var(--stephen)}.person-btn[data-person="Stephen"]:hover{background:rgba(230,126,34,.15)}
+.person-btn[data-person="Lindsay"]{border-color:var(--lindsay)}.person-btn[data-person="Lindsay"]:hover{background:rgba(230,165,94,.15)}
+.person-btn[data-person="Jared"]{border-color:var(--jared)}.person-btn[data-person="Jared"]:hover{background:rgba(155,89,182,.15)}
+.person-btn[data-person="Ariel"]{border-color:var(--ariel)}.person-btn[data-person="Ariel"]:hover{background:rgba(195,155,211,.15)}
+
+/* USER PILL */
+.user-pill{position:fixed;top:.6rem;right:1rem;z-index:200;display:flex;align-items:center;gap:.5rem;background:rgba(15,25,35,.9);backdrop-filter:blur(15px);border:1px solid var(--border);border-radius:50px;padding:.35rem .8rem .35rem .5rem;font-size:.8rem;cursor:pointer;transition:all .3s}
+.user-pill.hidden{display:none}
+.user-pill:hover{border-color:var(--dim)}
+.user-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;flex-shrink:0}
+
+/* HERO - COMPACT */
+.hero{position:relative;padding:3rem 2rem 2rem;text-align:center;background:linear-gradient(180deg,#0a1520 0%,#132840 40%,#1a5070 70%,var(--bg) 100%);overflow:hidden}
+.hero-stars{position:absolute;inset:0;overflow:hidden}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite alternate}
+@keyframes twinkle{0%{opacity:.3;transform:scale(1)}100%{opacity:1;transform:scale(1.3)}}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto}
+.hero-brand{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,7vw,4.5rem);font-weight:700;line-height:1.1;background:linear-gradient(135deg,#fff 0%,var(--glacier) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.5vw,1.4rem);font-style:italic;color:var(--glacier);margin:.3rem 0 1.5rem}
+.countdown{display:flex;gap:1.5rem;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap}
+.cd-unit{text-align:center}
+.cd-val{font-family:'JetBrains Mono',monospace;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;color:var(--gold);display:block;line-height:1}
+.cd-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:3px;color:var(--muted);margin-top:.3rem}
+.hero-couples{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
+.couple-badge{display:flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border-radius:50px;font-size:.8rem;font-weight:500}
+.couple-badge.sl{background:rgba(230,126,34,.12);border:1px solid rgba(230,126,34,.25);color:var(--sl)}
+.couple-badge.ja{background:rgba(155,89,182,.12);border:1px solid rgba(155,89,182,.25);color:var(--ja)}
+.couple-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.couple-dot.sl{background:var(--sl)}.couple-dot.ja{background:var(--ja)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(15,25,35,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-tab{padding:.8rem 1.2rem;font-size:.75rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .3s;position:relative}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.nav-tab .badge{position:absolute;top:.3rem;right:.1rem;background:var(--danger);color:#fff;font-size:.55rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* SECTIONS */
+.section{display:none;max-width:1400px;margin:0 auto;padding:1.5rem}
+.section.active{display:block}
+
+/* SETUP BANNER */
+.setup-banner{max-width:1400px;margin:.5rem auto;padding:0 1.5rem}
+.setup-card{background:linear-gradient(135deg,rgba(212,168,71,.06),rgba(26,107,138,.06));border:1px solid rgba(212,168,71,.2);border-radius:12px;padding:1rem 1.5rem;font-size:.8rem;color:var(--muted);line-height:1.7}
+.setup-card.hidden{display:none}
+.setup-card h3{color:var(--gold);font-size:.9rem;margin-bottom:.3rem}
+.setup-card ol{padding-left:1.1rem;margin:.5rem 0}
+.setup-card code{background:rgba(0,0,0,.3);padding:.1rem .4rem;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--lake-light)}
+.setup-mode{display:inline-block;padding:.15rem .5rem;border-radius:50px;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.3rem}
+.setup-mode.off{background:rgba(243,156,18,.15);color:var(--warning)}
+.setup-mode.on{background:rgba(39,174,96,.15);color:var(--success)}
+
+/* ===== DESTINATION CARDS (Route Overview) ===== */
+.dest-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;margin-bottom:1.5rem}
+.dest-card{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:4/3;cursor:pointer;transition:all .3s;border:2px solid transparent}
+.dest-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.dest-card.active-dest{border-color:var(--gold)}
+.dest-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s}
+.dest-card:hover .dest-img{transform:scale(1.05)}
+.dest-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.1) 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:.8rem}
+.dest-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700}
+.dest-dates{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);margin-top:.1rem}
+.dest-weather{display:flex;align-items:center;gap:.3rem;font-size:.7rem;color:var(--glacier);margin-top:.3rem}
+
+/* ===== DASHBOARD LAYOUT ===== */
+.dash{display:grid;grid-template-columns:340px 1fr;gap:1.2rem;min-height:60vh}
+.dash-sidebar{display:flex;flex-direction:column;gap:.5rem;max-height:70vh;overflow-y:auto;padding-right:.5rem;scrollbar-width:thin}
+.dash-main{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;overflow-y:auto;max-height:70vh}
+
+/* DAY LIST (sidebar) */
+.day-pill{display:flex;align-items:center;gap:.8rem;padding:.7rem 1rem;border-radius:10px;cursor:pointer;transition:all .2s;border:1px solid transparent;background:var(--card)}
+.day-pill:hover{background:var(--card-hover);border-color:rgba(168,216,234,.15)}
+.day-pill.active-day{background:var(--card-hover);border-color:var(--gold)}
+.day-pill.needs-action{border-left:3px solid var(--danger)}
+.day-pill.all-good{border-left:3px solid var(--success)}
+.day-pill.choose{border-left:3px solid var(--warning)}
+.dp-date{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);min-width:55px;line-height:1.2}
+.dp-weekday{font-size:.55rem;color:var(--dim);display:block;text-transform:uppercase;letter-spacing:1px}
+.dp-city{font-weight:600;font-size:.85rem;flex:1}
+.dp-tags{display:flex;gap:.3rem}
+.tag{padding:.15rem .5rem;border-radius:50px;font-size:.55rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.tag-sl{background:rgba(230,126,34,.15);color:var(--sl);border:1px solid rgba(230,126,34,.2)}
+.tag-ja{background:rgba(155,89,182,.15);color:var(--ja);border:1px solid rgba(155,89,182,.2)}
+.tag-all{background:rgba(52,152,219,.15);color:var(--all);border:1px solid rgba(52,152,219,.2)}
+
+/* DETAIL PANEL */
+.detail-empty{text-align:center;color:var(--dim);padding:3rem;font-size:.9rem}
+.detail-header{display:flex;align-items:flex-end;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.detail-city{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700}
+.detail-date{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--gold)}
+
+.detail-weather{display:flex;gap:1rem;padding:.8rem 1rem;background:rgba(168,216,234,.08);border:1px solid rgba(168,216,234,.15);border-radius:10px;margin-bottom:1.2rem;flex-wrap:wrap}
+.dw-item{display:flex;align-items:center;gap:.3rem;font-size:.8rem;color:var(--glacier)}
+.dw-item span{font-weight:600}
+
+.detail-section{margin-bottom:1.2rem}
+.detail-label{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--dim);margin-bottom:.5rem}
+
+.detail-accom{background:rgba(26,107,138,.08);border:1px solid rgba(26,107,138,.15);border-radius:10px;padding:.8rem 1rem;margin-bottom:.3rem}
+.detail-accom .name{font-weight:600;font-size:.9rem}
+.detail-accom .conf{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--lake-light);margin-top:.15rem}
+.detail-accom .cost{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--gold);margin-top:.15rem}
+.detail-accom .note{font-size:.75rem;color:var(--warning);margin-top:.2rem}
+
+.accom-options{display:flex;flex-direction:column;gap:.4rem}
+.opt-card{background:rgba(243,156,18,.06);border:1px solid rgba(243,156,18,.15);border-radius:10px;padding:.7rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem}
+.opt-card .name{font-weight:600;font-size:.85rem}
+.opt-card .note{font-size:.75rem;color:var(--muted)}
+.opt-card .cost{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--gold)}
+
+.activity-list{display:flex;flex-direction:column;gap:.3rem}
+.act-item{display:flex;align-items:flex-start;gap:.5rem;font-size:.85rem;padding:.3rem 0}
+.act-icon{color:var(--lake-light);flex-shrink:0;margin-top:2px}
+
+.food-recs{display:flex;flex-wrap:wrap;gap:.3rem}
+.food-chip{background:rgba(212,168,71,.08);border:1px solid rgba(212,168,71,.15);color:var(--gold);padding:.15rem .6rem;border-radius:50px;font-size:.7rem;white-space:nowrap}
+
+/* DAY NOTES */
+.day-notes{margin-top:.3rem}
+.day-notes textarea{width:100%;min-height:80px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:.85rem;padding:.7rem .9rem;resize:vertical;transition:border-color .3s;line-height:1.5}
+.day-notes textarea:focus{outline:none;border-color:var(--lake-light)}
+.day-notes textarea::placeholder{color:var(--dim)}
+.notes-actions{display:flex;align-items:center;gap:.6rem;margin-top:.5rem}
+.notes-save{padding:.35rem 1rem;background:var(--lake);color:#fff;border:none;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.notes-save:hover{background:var(--lake-light)}
+.notes-save:disabled{opacity:.5;cursor:default}
+.notes-saved{font-size:.7rem;color:var(--success);opacity:0;transition:opacity .3s}
+.notes-saved.show{opacity:1}
+.notes-author{font-size:.65rem;color:var(--dim);margin-left:auto}
+
+/* ===== BOOKINGS (2-col grid) ===== */
+.book-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.book-col-title{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);grid-column:1/-1}
+.book-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;border-left:4px solid transparent;transition:all .3s}
+.book-item:hover{background:var(--card-hover)}
+.book-item.urgent{border-left-color:var(--danger);background:rgba(231,76,60,.03)}
+.book-item.pending{border-left-color:var(--warning)}
+.book-item.booked{border-left-color:var(--success)}
+.book-name{font-weight:600;font-size:.85rem;margin-bottom:.2rem}
+.book-meta{font-size:.75rem;color:var(--muted);line-height:1.5}
+.book-status{display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:600;margin-top:.4rem}
+.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sdot.red{background:var(--danger);animation:blink 1.5s infinite}
+.sdot.yel{background:var(--warning)}
+.sdot.grn{background:var(--success)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.book-conf{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--lake-light);background:rgba(26,107,138,.1);padding:.2rem .5rem;border-radius:5px;user-select:all;display:inline-block;margin-top:.3rem}
+
+/* ===== COSTS (side by side) ===== */
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.cost-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem}
+.cost-title{font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:.8rem}
+.cost-total{font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;margin-bottom:1rem}
+.cost-total.sl{color:var(--sl)}.cost-total.ja{color:var(--ja)}
+.cost-line{display:flex;justify-content:space-between;font-size:.8rem;padding:.35rem 0;border-bottom:1px solid rgba(42,58,74,.4)}
+.cost-line-l{color:var(--muted)}.cost-line-v{font-family:'JetBrains Mono',monospace;font-weight:500}
+.curr-note{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.8rem 1.2rem;margin-bottom:1.2rem;font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.6rem}
+.curr-note strong{font-family:'JetBrains Mono',monospace;color:var(--gold)}
+.flight-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem}
+.flight-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem}
+.fl-route{font-weight:600;font-size:.8rem}.fl-code{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--lake-light)}
+.fl-cost{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:.8rem}.fl-reimb{font-size:.7rem;color:var(--muted)}
+
+/* ===== PACKING (dashboard) ===== */
+.pack-dash{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.pack-left{display:flex;flex-direction:column;gap:.8rem}
+.pack-right{display:flex;flex-direction:column;gap:.4rem;max-height:65vh;overflow-y:auto;padding-right:.3rem}
+
+.ppc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.8rem 1rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:.8rem}
+.ppc:hover{background:var(--card-hover)}
+.ppc.active-ppc{border-color:var(--gold)}
+.ppc-name{font-weight:600;font-size:.85rem;flex:1}
+.ppc-bar{flex:1;max-width:120px;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.ppc-fill{height:100%;border-radius:3px;transition:width .5s}
+.ppc-count{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);min-width:60px;text-align:right}
+
+.pack-section{margin-bottom:.3rem}
+.pack-sec-hdr{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:.6rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;transition:all .2s;font-size:.85rem}
+.pack-sec-hdr:hover{background:var(--card-hover)}
+.pack-sec-title{font-weight:600}
+.pack-prog{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:var(--muted)}
+.prog-bar{width:60px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--lake-light),var(--forest-light));border-radius:2px;transition:width .4s}
+.pack-chev{transition:transform .3s;color:var(--muted);font-size:.6rem}
+.pack-section.expanded .pack-chev{transform:rotate(180deg)}
+.pack-items{display:none;padding:.3rem 1rem .6rem;background:rgba(26,42,58,.2);border-radius:0 0 8px 8px;margin-top:-.15rem}
+.pack-section.expanded .pack-items{display:block}
+.pk-item{display:flex;align-items:center;gap:.6rem;padding:.35rem 0;border-bottom:1px solid rgba(42,58,74,.2);font-size:.8rem;cursor:pointer;user-select:none}
+.pk-item:last-child{border-bottom:none}
+.pk-cb{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.6rem;color:transparent;transition:all .2s}
+.pk-item.checked .pk-cb{background:var(--forest-light);border-color:var(--forest-light);color:#fff}
+.pk-item.checked .pk-lbl{text-decoration:line-through;color:var(--dim)}
+.pk-dots{display:flex;gap:2px;margin-left:auto;flex-shrink:0}
+.pk-dot{width:10px;height:10px;border-radius:50%;opacity:.15;transition:opacity .3s}
+.pk-dot.packed{opacity:1}
+.pk-dot.s{background:var(--stephen)}.pk-dot.l{background:var(--lindsay)}.pk-dot.j{background:var(--jared)}.pk-dot.a{background:var(--ariel)}
+
+/* ===== UPDATES ===== */
+.updates-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.composer{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem}
+.composer textarea{width:100%;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:8px;padding:.6rem .8rem;color:var(--text);font-family:'Inter',sans-serif;font-size:.85rem;resize:vertical;min-height:100px;outline:none;transition:border-color .3s}
+.composer textarea:focus{border-color:var(--lake-light)}
+.composer textarea::placeholder{color:var(--dim)}
+.composer-bar{display:flex;justify-content:space-between;align-items:center;margin-top:.6rem}
+.composer-hint{font-size:.7rem;color:var(--dim)}
+.post-btn{background:var(--lake);border:none;color:#fff;padding:.4rem 1.2rem;border-radius:8px;font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .3s}
+.post-btn:hover{background:var(--lake-light)}
+.feed{display:flex;flex-direction:column;gap:.6rem;max-height:50vh;overflow-y:auto}
+.upd-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem}
+.upd-hdr{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.upd-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#fff;flex-shrink:0}
+.upd-author{font-weight:600;font-size:.85rem}
+.upd-time{font-size:.65rem;color:var(--dim);margin-left:auto}
+.upd-text{font-size:.8rem;color:var(--muted);line-height:1.5;white-space:pre-wrap}
+.no-updates{text-align:center;padding:2rem;color:var(--dim);font-size:.85rem}
+
+/* ===== TIPS (grid) ===== */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.8rem}
+.tip-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;transition:all .3s}
+.tip-card:hover{background:var(--card-hover);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.tip-hdr{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.tip-icon{font-size:1.1rem;flex-shrink:0;width:34px;height:34px;background:rgba(212,168,71,.1);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.tip-title{font-weight:700;font-size:.9rem}
+.tip-loc{font-size:.65rem;color:var(--muted)}
+.tip-text{font-size:.8rem;color:var(--muted);line-height:1.5}
+.tip-text strong{color:var(--text)}
+.tip-v{display:inline-block;margin-top:.4rem;padding:.15rem .5rem;border-radius:50px;font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.tip-v.must{background:rgba(39,174,96,.15);color:var(--success)}
+.tip-v.nice{background:rgba(52,152,219,.15);color:var(--sky)}
+.tip-v.warn{background:rgba(243,156,18,.15);color:var(--warning)}
+
+/* SECTION HEADERS */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.sh-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700}
+.sh-desc{color:var(--muted);font-size:.8rem}
+.sh-left{flex:1}
+
+/* FILTER BAR */
+.filters{display:flex;gap:.4rem;flex-wrap:wrap}
+.fbtn{padding:.3rem .8rem;border-radius:50px;font-size:.7rem;font-weight:500;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .3s;font-family:inherit}
+.fbtn:hover{border-color:var(--dim);color:var(--text)}
+.fbtn.active{background:var(--lake);border-color:var(--lake);color:#fff}
+
+/* ACTION BANNER */
+.alert-bar{background:linear-gradient(135deg,rgba(231,76,60,.08),rgba(243,156,18,.08));border:1px solid rgba(231,76,60,.2);border-radius:12px;padding:.8rem 1.2rem;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem;font-size:.8rem}
+.alert-bar strong{color:var(--danger)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.dash{grid-template-columns:1fr}.dash-sidebar{max-height:none;flex-direction:row;flex-wrap:wrap;overflow-x:auto}.day-pill{min-width:250px}.dest-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:768px){.dest-grid{grid-template-columns:repeat(2,1fr)}.book-grid,.cost-grid,.pack-dash,.updates-layout,.flight-grid{grid-template-columns:1fr}.tips-grid{grid-template-columns:1fr}.hero-brand{font-size:2.2rem}.countdown{gap:.8rem}.user-pill{top:auto;bottom:.5rem;right:.5rem}}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--dim)}
+</style>
+</head>
+<body>
+
+<!-- PERSON SELECTOR -->
+<div class="modal-overlay" id="person-modal">
+  <div class="modal">
+    <h2>Kia Ora!</h2>
+    <p>Who are you? Pick yourself to track packing and post updates.</p>
+    <div class="person-grid">
+      <button class="person-btn" data-person="Stephen" onclick="selectPerson('Stephen')"><span class="person-emoji">&#9968;</span>Stephen</button>
+      <button class="person-btn" data-person="Lindsay" onclick="selectPerson('Lindsay')"><span class="person-emoji">&#127800;</span>Lindsay</button>
+      <button class="person-btn" data-person="Jared" onclick="selectPerson('Jared')"><span class="person-emoji">&#127956;</span>Jared</button>
+      <button class="person-btn" data-person="Ariel" onclick="selectPerson('Ariel')"><span class="person-emoji">&#127754;</span>Ariel</button>
+    </div>
+  </div>
+</div>
+
+<!-- USER PILL -->
+<div class="user-pill hidden" id="user-pill" onclick="document.getElementById('person-modal').classList.remove('hidden')">
+  <div class="user-avatar" id="user-avatar"></div>
+  <span id="user-name-display"></span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-stars" id="stars"></div>
+  <div class="hero-inner">
+    <h1 class="hero-brand">geNZ bebe</h1>
+    <p class="hero-sub">South Island &middot; May 16&ndash;30, 2026</p>
+    <div class="countdown">
+      <div class="cd-unit"><span class="cd-val" id="cd-d">--</span><div class="cd-lbl">Days</div></div>
+      <div class="cd-unit"><span class="cd-val" id="cd-h">--</span><div class="cd-lbl">Hours</div></div>
+      <div class="cd-unit"><span class="cd-val" id="cd-m">--</span><div class="cd-lbl">Min</div></div>
+      <div class="cd-unit"><span class="cd-val" id="cd-s">--</span><div class="cd-lbl">Sec</div></div>
+    </div>
+    <div class="hero-couples">
+      <div class="couple-badge sl"><span class="couple-dot sl"></span>Stephen &amp; Lindsay &middot; May 16&ndash;30</div>
+      <div class="couple-badge ja"><span class="couple-dot ja"></span>Jared &amp; Ariel &middot; May 19&ndash;30</div>
+    </div>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav class="nav"><div class="nav-inner">
+  <div class="nav-tab active" data-tab="itinerary">Itinerary</div>
+  <div class="nav-tab" data-tab="bookings">Bookings<span class="badge">6</span></div>
+  <div class="nav-tab" data-tab="costs">Costs</div>
+  <div class="nav-tab" data-tab="packing">Packing</div>
+  <div class="nav-tab" data-tab="updates">Updates</div>
+  <div class="nav-tab" data-tab="tips">Tips</div>
+</div></nav>
+
+<!-- SETUP -->
+<div class="setup-banner"><div class="setup-card" id="setup-card">
+  <span class="setup-mode off" id="setup-mode">Offline Mode</span>
+  <h3>Enable Real-Time Sync</h3>
+  <p>To sync packing &amp; updates across all travelers:</p>
+  <ol>
+    <li>Go to <strong>console.firebase.google.com</strong> &rarr; Create project</li>
+    <li><strong>Build &rarr; Realtime Database &rarr; Create Database</strong> (test mode)</li>
+    <li>Gear icon &rarr; Project settings &rarr; Add web app &rarr; Copy <code>firebaseConfig</code></li>
+    <li>Paste config into <code>FIREBASE_CONFIG</code> at top of the <code>&lt;script&gt;</code> section in this file</li>
+  </ol>
+</div></div>
+
+<!-- ITINERARY -->
+<div class="section active" id="itinerary">
+  <div class="alert-bar">&#9888;&#65039; <span><strong>6 items need booking.</strong> Christchurch hotels filling fast (concert at new stadium). Te Anau &amp; Wanaka still unbooked.</span></div>
+
+  <!-- Destination photo cards -->
+  <div class="dest-grid" id="dest-grid"></div>
+
+  <!-- Dashboard: day list + detail -->
+  <div class="sh">
+    <div class="sh-left"><span class="sh-title">Day by Day</span></div>
+    <div class="filters">
+      <button class="fbtn active" data-filter="all">All</button>
+      <button class="fbtn" data-filter="sl">S&amp;L</button>
+      <button class="fbtn" data-filter="ja">J&amp;A</button>
+      <button class="fbtn" data-filter="needs-action">Needs Action</button>
+    </div>
+  </div>
+  <div class="dash">
+    <div class="dash-sidebar" id="day-list"></div>
+    <div class="dash-main" id="day-detail"><div class="detail-empty">Select a day to view details</div></div>
+  </div>
+</div>
+
+<!-- BOOKINGS -->
+<div class="section" id="bookings">
+  <div class="sh"><div class="sh-left"><span class="sh-title">Booking Tracker</span><div class="sh-desc">Red = urgent. Yellow = should book soon. Green = confirmed.</div></div></div>
+  <div class="book-grid">
+    <h3 class="book-col-title" style="color:var(--danger)">&#128308; Book Now</h3>
+    <div class="book-item urgent"><div class="book-name">Christchurch Hotel &mdash; May 16 &amp; 17</div><div class="book-meta">S&amp;L only &middot; ~$250/night &middot; Concert limiting rooms!</div><div class="book-status" style="color:var(--danger)"><span class="sdot red"></span>BOOK ASAP</div></div>
+    <div class="book-item urgent"><div class="book-name">Te Anau Hotel &mdash; May 24 &amp; 25</div><div class="book-meta">Both couples &middot; Distinction ($320/night) or Fiordland Lakeview ($270/night, 2BR)</div><div class="book-status" style="color:var(--danger)"><span class="sdot red"></span>CHOOSE &amp; BOOK</div></div>
+    <div class="book-item urgent"><div class="book-name">Wanaka &mdash; May 26&ndash;28</div><div class="book-meta">Airbnb ($259/night), Archway Motels ($151/night), or Marriott (points)</div><div class="book-status" style="color:var(--danger)"><span class="sdot red"></span>CHOOSE &amp; BOOK</div></div>
+    <div class="book-item urgent"><div class="book-name">Milford Sound Cruise &mdash; May 25</div><div class="book-meta">Mitre Peak Cruises &middot; 2hr &middot; ~$105/person &middot; Could sell out</div><div class="book-status" style="color:var(--danger)"><span class="sdot red"></span>BOOK NOW</div></div>
+    <div class="book-item urgent"><div class="book-name">May 29&ndash;31 &mdash; Unplanned</div><div class="book-meta">No accommodation or plans. Extend Wanaka? Back to CHC?</div><div class="book-status" style="color:var(--danger)"><span class="sdot red"></span>PLAN NEEDED</div></div>
+    <div class="book-item urgent"><div class="book-name">Skyline Gondola &mdash; May 22</div><div class="book-meta">~$276 total &middot; Pre-book gondola + luge combos</div><div class="book-status" style="color:var(--danger)"><span class="sdot red"></span>BOOK SOON</div></div>
+
+    <h3 class="book-col-title" style="color:var(--warning)">&#128992; Should Book Soon</h3>
+    <div class="book-item pending"><div class="book-name">Akaroa Dolphin Cruise &mdash; May 17</div><div class="book-meta">S&amp;L only &middot; Day trip from Christchurch</div><div class="book-status" style="color:var(--warning)"><span class="sdot yel"></span>SHOULD BOOK</div></div>
+    <div class="book-item pending"><div class="book-name">Wanaka Water Taxi &mdash; May 27</div><div class="book-meta">Cruise only / +hike / +hike+lunch</div><div class="book-status" style="color:var(--warning)"><span class="sdot yel"></span>DECIDE &amp; BOOK</div></div>
+    <div class="book-item pending"><div class="book-name">Winery Tour &mdash; May 23</div><div class="book-meta">Gibbston Valley: Kinross, Mt. Rosa, Mt Difficulty</div><div class="book-status" style="color:var(--warning)"><span class="sdot yel"></span>PLAN DETAILS</div></div>
+
+    <h3 class="book-col-title" style="color:var(--success)">&#128994; Confirmed</h3>
+    <div class="book-item booked"><div class="book-name">Peppers Bluewater &mdash; Lake Tekapo</div><div class="book-meta">S&amp;L &middot; May 18&ndash;20 &middot; $244.33/night</div><div class="book-conf">#364075017998</div></div>
+    <div class="book-item booked"><div class="book-name">Queenstown AirBnb</div><div class="book-meta">All &middot; May 19&ndash;23 &middot; $446.97/night</div><div class="book-conf">HMR8T8DPCQ</div></div>
+    <div class="book-item booked"><div class="book-name">AKL&rarr;CHC Jetstar</div><div class="book-meta">S&amp;L internal flight</div><div class="book-conf">UQJRND</div></div>
+    <div class="book-item booked"><div class="book-name">ZQN&rarr;MEL Qantas</div><div class="book-meta">S&amp;L &middot; QF178</div><div class="book-conf">QF178</div></div>
+    <div class="book-item booked"><div class="book-name">J&amp;A NZ Flights</div><div class="book-meta">International</div><div class="book-conf">2KB6JH</div></div>
+  </div>
+</div>
+
+<!-- COSTS -->
+<div class="section" id="costs">
+  <div class="sh"><div class="sh-left"><span class="sh-title">Cost Breakdown</span></div></div>
+  <div class="curr-note">&#128177; <strong>1 NZD = $0.57 USD</strong> &middot; All prices in USD &middot; Sabbatical tax rate: 35.91%</div>
+  <div class="cost-grid">
+    <div class="cost-card"><div class="cost-title">Stephen &amp; Lindsay</div><div class="cost-total sl">$4,500.18</div><div><div class="cost-line"><span class="cost-line-l">Hotels</span><span class="cost-line-v">$1,903.45</span></div><div class="cost-line"><span class="cost-line-l">Activities</span><span class="cost-line-v">$348.00</span></div><div class="cost-line"><span class="cost-line-l">Flights (post-reimburse)</span><span class="cost-line-v">$2,248.73</span></div></div></div>
+    <div class="cost-card"><div class="cost-title">Jared &amp; Ariel</div><div class="cost-total ja">$4,056.90</div><div><div class="cost-line"><span class="cost-line-l">Hotels</span><span class="cost-line-v">$1,564.40</span></div><div class="cost-line"><span class="cost-line-l">Activities</span><span class="cost-line-v">$348.00</span></div><div class="cost-line"><span class="cost-line-l">Flights (post-reimburse)</span><span class="cost-line-v">$2,144.50</span></div></div></div>
+  </div>
+  <div class="flight-grid" style="margin-top:1.2rem">
+    <div class="flight-item"><div class="fl-route">S&amp;L: MSN&rarr;LAX</div><div class="fl-cost">$1,293.20</div><div class="fl-reimb">Reimburse: $828.68</div></div>
+    <div class="flight-item"><div class="fl-route">Stephen: LAX&rarr;NZ</div><div class="fl-cost">$1,108.03</div><div class="fl-reimb">Reimburse: $710.03</div></div>
+    <div class="flight-item"><div class="fl-route">Lindsay: LAX&rarr;NZ</div><div class="fl-cost">$1,108.03</div><div class="fl-reimb">Reimburse: $710.03</div></div>
+    <div class="flight-item"><div class="fl-route">J&amp;A: Domestic&rarr;LAX</div><div class="fl-cost">$1,156.94</div><div class="fl-reimb">Reimburse: $741.37</div></div>
+    <div class="flight-item"><div class="fl-route">J&amp;A: International NZ</div><div class="fl-code">2KB6JH</div><div class="fl-cost">$2,189.66</div><div class="fl-reimb">Reimburse: $1,403.13</div></div>
+  </div>
+</div>
+
+<!-- PACKING -->
+<div class="section" id="packing">
+  <div class="sh"><div class="sh-left"><span class="sh-title">Packing List</span><div class="sh-desc">5&ndash;15&deg;C (40&ndash;60&deg;F) &middot; Check items as you pack &middot; Everyone sees progress</div></div></div>
+  <div class="pack-dash">
+    <div class="pack-left" id="pack-left"></div>
+    <div class="pack-right" id="pack-right"></div>
+  </div>
+</div>
+
+<!-- UPDATES -->
+<div class="section" id="updates">
+  <div class="sh"><div class="sh-left"><span class="sh-title">Trip Updates</span><div class="sh-desc">Share bookings, questions, ideas, or hype.</div></div></div>
+  <div class="updates-layout">
+    <div class="composer"><textarea id="upd-input" placeholder="Share an update... booked something? found a cool spot? have a question?"></textarea><div class="composer-bar"><span class="composer-hint" id="comp-hint">Posting as <strong></strong></span><button class="post-btn" onclick="postUpdate()">Post</button></div></div>
+    <div class="feed" id="feed"><div class="no-updates" id="no-upd">No updates yet. Be the first!</div></div>
+  </div>
+</div>
+
+<!-- TIPS -->
+<div class="section" id="tips">
+  <div class="sh"><div class="sh-left"><span class="sh-title">Insider Tips &amp; Recs</span><div class="sh-desc">From Caitlin Brown's NZ trip &amp; local research</div></div></div>
+  <div class="tips-grid">
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#127863;</div><div><div class="tip-title">Night Flower</div><div class="tip-loc">Wellington</div></div></div><div class="tip-text"><strong>"Best bar ever!"</strong> No menu &mdash; tell them what you like, custom cocktail.<div><span class="tip-v must">Must Visit</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#127754;</div><div><div class="tip-title">Milford Sound Weather</div><div class="tip-loc">Te Anau / Fiordland</div></div></div><div class="tip-text">Caitlin <strong>missed Doubtful Sound</strong> due to wind. Build a buffer day. You're driving (~1:45) but weather can still cancel.<div><span class="tip-v warn">Build Buffer</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#9749;</div><div><div class="tip-title">Christchurch Food Crawl</div><div class="tip-loc">May 17&ndash;18</div></div></div><div class="tip-text"><strong>Riverside Market</strong> (butcher's pie), <strong>The Ducking Stool</strong> (hot cocoa), <strong>Little High</strong> (9 vendors), <strong>Bohemian Bakery</strong>.<div><span class="tip-v must">Don't Miss</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#127956;</div><div><div class="tip-title">Castle Hill</div><div class="tip-loc">CHC&rarr;Tekapo route</div></div></div><div class="tip-text">Stunning limestone boulders. Perfect road stop between Christchurch and Lake Tekapo.<div><span class="tip-v nice">Great Stop</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#127750;</div><div><div class="tip-title">Bob's Peak &amp; Ben Lomond</div><div class="tip-loc">Queenstown</div></div></div><div class="tip-text">Queenstown must-do. Skyline Gondola or full hike. <strong>Altitude Brewing</strong> post-hike.<div><span class="tip-v must">Must Do</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#127863;</div><div><div class="tip-title">Gibbston Valley Wine</div><div class="tip-loc">May 23</div></div></div><div class="tip-text"><strong>Kinross, Mt. Rosa, Mt Difficulty.</strong> NZ's highest altitude wine region &mdash; famous Pinot Noir.<div><span class="tip-v must">Don't Miss</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#127958;</div><div><div class="tip-title">Rippon Vineyard</div><div class="tip-loc">Wanaka &middot; May 28</div></div></div><div class="tip-text">One of NZ's most <strong>spectacular vineyard views</strong> overlooking Lake Wanaka.<div><span class="tip-v must">Must Visit</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#128024;</div><div><div class="tip-title">Sandfly Warning</div><div class="tip-loc">Fiordland</div></div></div><div class="tip-text"><strong>DEET-based repellent</strong> essential. Long sleeves near water in Te Anau &amp; Milford Sound area.<div><span class="tip-v warn">Be Prepared</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#128739;</div><div><div class="tip-title">Laundry Strategy</div><div class="tip-loc">Wanaka (3 nights)</div></div></div><div class="tip-text"><strong>Wanaka = mid-trip laundry.</strong> Bring detergent packets. Do a full load on arrival (May 26).<div><span class="tip-v nice">Pro Tip</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#127777;</div><div><div class="tip-title">May Weather</div><div class="tip-loc">All locations</div></div></div><div class="tip-text">Late autumn: <strong>5&ndash;15&deg;C</strong>. Near freezing at night in QT/Te Anau. <strong>Rain jacket non-negotiable.</strong><div><span class="tip-v warn">Essential</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#128038;</div><div><div class="tip-title">Kiwi Park</div><div class="tip-loc">Queenstown</div></div></div><div class="tip-text">Good bird park with a show. Nice way to actually see a kiwi bird!<div><span class="tip-v nice">Nice to Have</span></div></div></div>
+    <div class="tip-card"><div class="tip-hdr"><div class="tip-icon">&#128087;</div><div><div class="tip-title">Rollickin' Gelato</div><div class="tip-loc">Christchurch area</div></div></div><div class="tip-text">South Island's best gelato. Hit it on the Christchurch or Tekapo days.<div><span class="tip-v nice">Treat Yourself</span></div></div></div>
+  </div>
+</div>
+
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyA9uFbCOvSgRXUcgnSGqhN7N0obZ_4MHZg",
+  authDomain: "genz-bebe.firebaseapp.com",
+  databaseURL: "https://genz-bebe-default-rtdb.firebaseio.com",
+  projectId: "genz-bebe",
+  storageBucket: "genz-bebe.firebasestorage.app",
+  messagingSenderId: "1074085423986",
+  appId: "1:1074085423986:web:2f921e8e03032293298beb"
+};
+
+let db=null,currentUser=localStorage.getItem('nz-trip-user')||null,allPacking={Stephen:{},Lindsay:{},Jared:{},Ariel:{}},viewUser=null,selectedDayIdx=0;
+const PEOPLE=['Stephen','Lindsay','Jared','Ariel'];
+const PCOL={Stephen:'#e67e22',Lindsay:'#e6a55e',Jared:'#9b59b6',Ariel:'#c39bd3'};
+const PINIT={Stephen:'S',Lindsay:'L',Jared:'J',Ariel:'A'};
+const PEMOJI={Stephen:'\u26F0',Lindsay:'\uD83C\uDF38',Jared:'\uD83C\uDFD4',Ariel:'\uD83C\uDF0A'};
+
+// DESTINATIONS
+const DESTS=[
+  {name:'Christchurch',dates:'May 16\u201317',img:'https://plus.unsplash.com/premium_photo-1675122317329-113bb7c36023?w=600&q=80&fit=crop',weather:{temp:'43\u201357°F (6\u201314°C)',rain:'65mm',sun:'9h',desc:'Cool, partly cloudy'}},
+  {name:'Lake Tekapo',dates:'May 18\u201320',img:'https://images.unsplash.com/photo-1727001503338-bfb780a211af?w=600&q=80&fit=crop',weather:{temp:'34\u201350°F (1\u201310°C)',rain:'50mm',sun:'9h',desc:'Cold, clear nights'}},
+  {name:'Queenstown',dates:'May 19\u201323',img:'https://plus.unsplash.com/premium_photo-1661882021629-2b0888d93c94?w=600&q=80&fit=crop',weather:{temp:'36\u201350°F (2\u201310°C)',rain:'75mm',sun:'9h',desc:'Cold, possible frost'}},
+  {name:'Te Anau',dates:'May 24\u201325',img:'https://images.unsplash.com/photo-1553579857-74fb7643a502?w=600&q=80&fit=crop',weather:{temp:'37\u201350°F (3\u201310°C)',rain:'130mm',sun:'8.5h',desc:'Wet, bring rain gear'}},
+  {name:'Wanaka',dates:'May 26\u201328',img:'https://images.unsplash.com/photo-1704584648208-06d1c3611e82?w=600&q=80&fit=crop',weather:{temp:'36\u201352°F (2\u201311°C)',rain:'55mm',sun:'9h',desc:'Crisp, scenic'}}
+];
+
+// DAY DATA
+const DAYS=[
+  {date:'2026-05-16',wd:'Sat',locs:[{city:'Christchurch',who:'sl',wl:'S&L',dest:0,accom:{name:'TBD - Book ASAP!',cost:'~$250/night',st:'urgent',note:'Concert at new One NZ Stadium limiting rooms!'},acts:['Arrive in Christchurch','Settle in, explore city center'],food:[]}]},
+  {date:'2026-05-17',wd:'Sun',locs:[{city:'Christchurch',who:'sl',wl:'S&L',dest:0,accom:{name:'TBD - Book ASAP!',cost:'~$250/night',st:'urgent',note:'Same concert impact'},acts:['Akaroa Dolphin Cruise (day trip)'],food:['The Ducking Stool (hot cocoa)','Lyttelton Coffee Co','Riverside Market (butcher\'s pie)']}]},
+  {date:'2026-05-18',wd:'Mon',locs:[{city:'Lake Tekapo',who:'sl',wl:'S&L',dest:1,accom:{name:'Peppers Bluewater Resort',cost:'$244.33/night',st:'booked',conf:'#364075017998'},acts:['Drive from CHC (stop at Castle Hill)','Botanical Gardens & Avon River','Red Cliffs walk'],food:['Tramway Restaurant (steak)','Rollickin\' Gelato']}]},
+  {date:'2026-05-19',wd:'Tue',locs:[{city:'Lake Tekapo',who:'sl',wl:'S&L',dest:1,accom:{name:'Peppers Bluewater Resort',cost:'$244.33/night',st:'booked',conf:'#364075017998'},acts:['New Regent Street','Rakaia Gorge Track','Stargazing at Church of the Good Shepherd'],food:['Little High (9 vendors)','Sweet Soul Patisserie','Austin Club','Bohemian Bakery','Hello Sunday Cafe']},{city:'Queenstown',who:'ja',wl:'J&A',dest:2,accom:{name:'Queenstown AirBnb',cost:'$446.97/night',st:'booked',conf:'HMR8T8DPCQ'},acts:['Arrive in Queenstown!','Relax and settle in','Buy groceries, walk around'],food:[]}]},
+  {date:'2026-05-20',wd:'Wed',locs:[{city:'Lake Tekapo',who:'sl',wl:'S&L',dest:1,accom:{name:'Peppers Bluewater Resort',cost:'$244.33/night',st:'booked',conf:'#364075017998'},acts:['Final day at Lake Tekapo','Free exploration'],food:[]},{city:'Queenstown',who:'ja',wl:'J&A',dest:2,accom:{name:'Queenstown AirBnb',cost:'$446.97/night',st:'booked',conf:'HMR8T8DPCQ'},acts:['Bob\'s Peak / Ben Lomond hike','Basket of Dreams hike'],food:['Altitude Brewing']}]},
+  {date:'2026-05-21',wd:'Thu',locs:[{city:'Queenstown',who:'all',wl:'Everyone',dest:2,accom:{name:'Queenstown AirBnb',cost:'$446.97/night',st:'booked',conf:'HMR8T8DPCQ'},acts:['S&L arrive in Queenstown!','All four together!','Explore QT together'],food:[]}]},
+  {date:'2026-05-22',wd:'Fri',locs:[{city:'Queenstown',who:'all',wl:'Everyone',dest:2,accom:{name:'Queenstown AirBnb',cost:'$446.97/night',st:'booked',conf:'HMR8T8DPCQ'},acts:['Skyline Gondola (~$276 group)','Oxenbridge Tunnel Track (20min lookout walk)'],food:['Canyon Brewing','Bellakachina']}]},
+  {date:'2026-05-23',wd:'Sat',locs:[{city:'Queenstown',who:'all',wl:'Everyone',dest:2,accom:{name:'Queenstown AirBnb',cost:'$446.97/night',st:'booked',conf:'HMR8T8DPCQ'},acts:['Gibbston Valley Wine Trail (PM)','Kinross Winery (~30min from QT)','Mt. Rosa Wines','Mt Difficulty Wines'],food:[]}]},
+  {date:'2026-05-24',wd:'Sun',locs:[{city:'Te Anau',who:'all',wl:'Everyone',dest:3,accom:{name:'TBD - Choose!',st:'choose',opts:[{name:'Distinction Te Anau',cost:'$320/night',note:'Hotel'},{name:'Fiordland Lakeview Motel',cost:'$270/night',note:'2BR apartment'}]},acts:['Drive QT to Te Anau','Settle in, explore lakefront'],food:[]}]},
+  {date:'2026-05-25',wd:'Mon',locs:[{city:'Te Anau',who:'all',wl:'Everyone',dest:3,accom:{name:'TBD - Same as May 24',st:'choose'},acts:['Milford Sound Cruise (Mitre Peak)','2hr cruise \u2013 11am or 1:30pm?','~1:45 drive to Milford Sound','One of NZ\'s most iconic experiences'],food:[]}]},
+  {date:'2026-05-26',wd:'Tue',locs:[{city:'Wanaka',who:'all',wl:'Everyone',dest:4,accom:{name:'TBD - Choose!',st:'choose',opts:[{name:'Airbnb',cost:'$259/night',note:'More space'},{name:'Archway Motels',cost:'$151/night',note:'Budget-friendly!'},{name:'Marriott Villa',cost:'Points',note:'Marriott points'}]},acts:['Drive Te Anau to Wanaka','Laundry day!','Explore lakefront'],food:[]}]},
+  {date:'2026-05-27',wd:'Wed',locs:[{city:'Wanaka',who:'all',wl:'Everyone',dest:4,accom:{name:'TBD - Same as May 26',st:'choose'},acts:['Wanaka Water Taxi Adventure','Options: cruise / +hike / +hike+lunch'],food:[]}]},
+  {date:'2026-05-28',wd:'Thu',locs:[{city:'Wanaka',who:'all',wl:'Everyone',dest:4,accom:{name:'TBD - Same as May 26',st:'choose'},acts:['Rippon Vineyard \u2013 lake views','Free afternoon'],food:[]}]},
+  {date:'2026-05-29',wd:'Fri',locs:[{city:'Unplanned',who:'all',wl:'Everyone',dest:-1,accom:{name:'No plans yet!',st:'empty'},acts:['Nothing planned \u2013 decide!','Extend Wanaka? CHC? Somewhere new?'],food:[]}]},
+  {date:'2026-05-30',wd:'Sat',locs:[{city:'Departure',who:'all',wl:'Everyone',dest:-1,accom:{name:'No plans yet',st:'empty'},acts:['Depart New Zealand','Plan airport logistics'],food:[]}]}
+];
+
+const PACKING={
+  'Footwear':['Hiking boots (waterproof)','Walking shoes','Casual/dining shoes','Sandals'],
+  'Base Layers':['Underwear (7+ days)','Wool hiking socks (4+)','Sports bras / undershirts','Thermal base layers'],
+  'Mid Layers':['T-shirts (4-5)','Long-sleeve shirts (2-3)','Fleece / insulated jacket','Sweater / hoodie'],
+  'Outer Layers':['Waterproof rain jacket','Rain pants','Puffy jacket / vest'],
+  'Bottoms':['Hiking pants (2)','Jeans (1)','Shorts (1-2)','Travel pants (1)'],
+  'Accessories':['Beanie','Sun hat','Sunglasses','Buff / neck gaiter','Gloves','Belt'],
+  'Hiking Gear':['Daypack (20-30L)','Dry bags','Water bottles','Hiking poles','Headlamp','Whistle','Offline maps'],
+  'Sun & Weather':['SPF 30+ sunscreen','Lip balm SPF','Insect repellent (DEET!)','Compact umbrella'],
+  'Electronics':['Phone + charger','Camera + SD cards','Power bank','Type I adapter (NZ)','Laptop/tablet','Headphones','E-reader'],
+  'Documents':['Passport','Flight confirmations','Accommodation confirmations','Travel insurance','Credit cards (notify bank!)','NZD cash','Driver\'s license','Sabbatical reimbursement forms'],
+  'Toiletries':['Toothbrush + paste','Shampoo','Body wash','Deodorant','Razor','Moisturizer','Contacts / glasses'],
+  'First Aid':['Prescriptions','Pain relievers','Antihistamine','Motion sickness meds','Blister treatment','First aid kit'],
+  'Misc':['Reusable bags','Laundry detergent','Ziploc bags','Travel pillow','Eye mask + earplugs','Books / games','Collapsible duffel'],
+  'Car':['Phone mount','Car charger','Cooler bag','Protein bars','Trail mix','Electrolyte packets']
+};
+const TOTAL_ITEMS=Object.values(PACKING).reduce((s,i)=>s+i.length,0);
+
+// FIREBASE
+function initFB(){if(!FIREBASE_CONFIG)return false;try{firebase.initializeApp(FIREBASE_CONFIG);db=firebase.database();document.getElementById('setup-card').classList.add('hidden');return true}catch(e){return false}}
+const fbOn=initFB();
+if(fbOn){document.getElementById('setup-mode').textContent='Live Sync';document.getElementById('setup-mode').className='setup-mode on'}
+
+// PERSON
+function selectPerson(n){currentUser=n;viewUser=n;localStorage.setItem('nz-trip-user',n);document.getElementById('person-modal').classList.add('hidden');document.getElementById('user-pill').classList.remove('hidden');const a=document.getElementById('user-avatar');a.textContent=PINIT[n];a.style.background=PCOL[n];document.getElementById('user-name-display').textContent=n;document.getElementById('comp-hint').innerHTML='Posting as <strong>'+n+'</strong>';loadPacking();renderPackOverview();renderPackList();loadUpdates()}
+if(currentUser)selectPerson(currentUser);
+
+// COUNTDOWN
+const TS=new Date('2026-05-16T00:00:00+12:00');
+function cdUp(){const d=TS-new Date();if(d<=0){document.getElementById('cd-d').textContent='NOW';return}document.getElementById('cd-d').textContent=Math.floor(d/864e5);document.getElementById('cd-h').textContent=String(Math.floor(d%864e5/36e5)).padStart(2,'0');document.getElementById('cd-m').textContent=String(Math.floor(d%36e5/6e4)).padStart(2,'0');document.getElementById('cd-s').textContent=String(Math.floor(d%6e4/1e3)).padStart(2,'0')}
+setInterval(cdUp,1000);cdUp();
+
+// STARS
+(function(){const c=document.getElementById('stars');for(let i=0;i<50;i++){const s=document.createElement('div');s.className='star';const z=Math.random()*2+.5;s.style.cssText='width:'+z+'px;height:'+z+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;animation-delay:'+Math.random()*3+'s;animation-duration:'+(2+Math.random()*3)+'s';c.appendChild(s)}})();
+
+// NAV
+document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById(t.dataset.tab).classList.add('active')}));
+
+// DEST CARDS
+function renderDests(){const g=document.getElementById('dest-grid');g.innerHTML='';DESTS.forEach((d,i)=>{const c=document.createElement('div');c.className='dest-card';c.innerHTML='<div class="dest-img" style="background-image:url(\''+d.img+'\')"></div><div class="dest-overlay"><div class="dest-name">'+d.name+'</div><div class="dest-dates">'+d.dates+'</div><div class="dest-weather">'+d.weather.temp+' &middot; '+d.weather.desc+'</div></div>';c.onclick=()=>{const idx=DAYS.findIndex(dy=>dy.locs.some(l=>l.dest===i));if(idx>=0)selectDay(idx)};g.appendChild(c)})}
+renderDests();
+
+// DAY LIST + DETAIL
+function renderDayList(filter){
+  const el=document.getElementById('day-list');el.innerHTML='';
+  let flatDays=[];
+  DAYS.forEach((d,di)=>d.locs.forEach((l,li)=>{
+    if(filter==='sl'&&l.who!=='sl'&&l.who!=='all')return;
+    if(filter==='ja'&&l.who!=='ja'&&l.who!=='all')return;
+    if(filter==='needs-action'&&l.accom.st!=='urgent'&&l.accom.st!=='choose'&&l.accom.st!=='empty')return;
+    flatDays.push({d,l,di,li});
+  }));
+  flatDays.forEach(({d,l,di,li})=>{
+    const p=document.createElement('div');
+    const sc=l.accom.st==='booked'?'all-good':l.accom.st==='urgent'||l.accom.st==='empty'?'needs-action':'choose';
+    p.className='day-pill '+sc;
+    if(di===selectedDayIdx)p.classList.add('active-day');
+    const dt=new Date(d.date+'T12:00:00');
+    const whoTag=l.who==='sl'?'<span class="tag tag-sl">S&L</span>':l.who==='ja'?'<span class="tag tag-ja">J&A</span>':'<span class="tag tag-all">All</span>';
+    p.innerHTML='<div class="dp-date">'+dt.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'<span class="dp-weekday">'+d.wd+'</span></div><div class="dp-city">'+l.city+'</div><div class="dp-tags">'+whoTag+'</div>';
+    p.onclick=()=>selectDay(di,li);
+    el.appendChild(p);
+  });
+  if(flatDays.length)selectDay(flatDays[0].di,flatDays[0].li);
+}
+
+function selectDay(di,li){
+  selectedDayIdx=di;li=li||0;
+  document.querySelectorAll('.day-pill').forEach((p,i)=>{p.classList.toggle('active-day',false)});
+  // highlight correct pill
+  document.querySelectorAll('.day-pill').forEach(p=>{const dt=p.querySelector('.dp-date');const city=p.querySelector('.dp-city');if(DAYS[di]&&city.textContent===DAYS[di].locs[li].city){const dStr=new Date(DAYS[di].date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});if(dt.textContent.includes(dStr.split(',')[0]))p.classList.add('active-day')}});
+  renderDetail(di,li);
+}
+
+function renderDetail(di,li){
+  const el=document.getElementById('day-detail');
+  const d=DAYS[di],l=d.locs[li||0];
+  const dt=new Date(d.date+'T12:00:00');
+  const dest=l.dest>=0?DESTS[l.dest]:null;
+
+  let html='<div class="detail-header"><div><div class="detail-city">'+l.city+'</div><div class="detail-date">'+dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})+' &middot; '+l.wl+'</div></div></div>';
+
+  if(dest){
+    html+='<div class="detail-weather"><div class="dw-item">&#127777; <span>'+dest.weather.temp+'</span></div><div class="dw-item">&#127807; <span>'+dest.weather.rain+' rain</span></div><div class="dw-item">&#9728; <span>'+dest.weather.sun+' daylight</span></div><div class="dw-item">'+dest.weather.desc+'</div></div>';
+  }
+
+  // Accommodation
+  html+='<div class="detail-section"><div class="detail-label">Accommodation</div>';
+  if(l.accom.opts){
+    html+='<div class="accom-options">'+l.accom.opts.map(o=>'<div class="opt-card"><div><div class="name">'+o.name+'</div><div class="note">'+o.note+'</div></div><div class="cost">'+o.cost+'</div></div>').join('')+'</div>';
+  }else{
+    html+='<div class="detail-accom"><div class="name">'+l.accom.name+'</div>'+(l.accom.conf?'<div class="conf">Conf: '+l.accom.conf+'</div>':'')+(l.accom.cost?'<div class="cost">'+l.accom.cost+'</div>':'')+(l.accom.note?'<div class="note">'+l.accom.note+'</div>':'')+'</div>';
+  }
+  html+='</div>';
+
+  // Activities
+  if(l.acts.length){html+='<div class="detail-section"><div class="detail-label">Activities</div><div class="activity-list">'+l.acts.map(a=>'<div class="act-item"><span class="act-icon">&#9654;</span>'+a+'</div>').join('')+'</div></div>'}
+
+  // Food
+  if(l.food&&l.food.length){html+='<div class="detail-section"><div class="detail-label">Food & Drink</div><div class="food-recs">'+l.food.map(f=>'<span class="food-chip">'+f+'</span>').join('')+'</div></div>'}
+
+  // Day Notes
+  const nk=d.date+'-'+li;
+  html+='<div class="detail-section day-notes"><div class="detail-label">Planning Notes</div><textarea id="day-note-input" data-nk="'+nk+'" placeholder="Add notes for this day\u2026 activities, reservations, ideas"></textarea><div class="notes-actions"><button class="notes-save" onclick="saveDayNote()" id="notes-save-btn">Save Notes</button><span class="notes-saved" id="notes-saved-msg">Saved!</span><span class="notes-author" id="notes-last-edit"></span></div></div>';
+
+  el.innerHTML=html;
+  loadDayNote(nk);
+}
+
+renderDayList('all');
+
+// Filters
+document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderDayList(b.dataset.filter)}));
+
+// PACKING
+function lk(p){return'nz-pk-'+p}
+function loadPacking(){if(fbOn){PEOPLE.forEach(p=>db.ref('packing/'+p).on('value',s=>{allPacking[p]=s.val()||{};renderPackOverview();renderPackList()}))}else{PEOPLE.forEach(p=>{allPacking[p]=JSON.parse(localStorage.getItem(lk(p))||'{}')})}}
+function setPk(p,k,v){allPacking[p][k]=v;if(fbOn)db.ref('packing/'+p+'/'+k).set(v);else localStorage.setItem(lk(p),JSON.stringify(allPacking[p]))}
+
+function renderPackOverview(){
+  const el=document.getElementById('pack-left');el.innerHTML='';
+  PEOPLE.forEach(p=>{const st=allPacking[p]||{};const ck=Object.values(st).filter(Boolean).length;const pct=Math.round(ck/TOTAL_ITEMS*100);
+    const c=document.createElement('div');c.className='ppc'+(viewUser===p?' active-ppc':'');
+    c.innerHTML='<div class="ppc-name" style="color:'+PCOL[p]+'">'+PEMOJI[p]+' '+p+'</div><div class="ppc-bar"><div class="ppc-fill" style="width:'+pct+'%;background:'+PCOL[p]+'"></div></div><div class="ppc-count">'+ck+'/'+TOTAL_ITEMS+' ('+pct+'%)</div>';
+    c.onclick=()=>{viewUser=p;renderPackOverview();renderPackList()};
+    el.appendChild(c);
+  });
+}
+
+function renderPackList(){
+  const el=document.getElementById('pack-right');el.innerHTML='';
+  const p=viewUser||currentUser;if(!p)return;
+  const st=allPacking[p]||{};const own=p===currentUser;
+  Object.entries(PACKING).forEach(([sec,items])=>{
+    const ck=items.filter((_,i)=>st[sec+'-'+i]).length;const pct=Math.round(ck/items.length*100);
+    const d=document.createElement('div');d.className='pack-section';
+    d.innerHTML='<div class="pack-sec-hdr"><span class="pack-sec-title">'+sec+'</span><div class="pack-prog"><span>'+ck+'/'+items.length+'</span><div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div><span class="pack-chev">&#9660;</span></div></div><div class="pack-items">'+items.map((it,i)=>{
+      const k=sec+'-'+i,c=st[k]?'checked':'';
+      const dots=PEOPLE.map(pp=>{const ps=allPacking[pp]||{};return'<span class="pk-dot '+PINIT[pp].toLowerCase()+(ps[k]?' packed':'')+'" title="'+pp+'"></span>'}).join('');
+      return'<div class="pk-item '+c+'" data-key="'+k+'"><div class="pk-cb">'+(c?'&#10003;':'')+'</div><span class="pk-lbl">'+it+'</span><div class="pk-dots">'+dots+'</div></div>'
+    }).join('')+'</div>';
+    d.querySelector('.pack-sec-hdr').onclick=()=>d.classList.toggle('expanded');
+    if(own)d.querySelectorAll('.pk-item').forEach(it=>it.onclick=()=>{const k=it.dataset.key,ic=it.classList.toggle('checked');it.querySelector('.pk-cb').innerHTML=ic?'&#10003;':'';setPk(p,k,ic);const sd=it.closest('.pack-section'),ai=sd.querySelectorAll('.pk-item'),cc=sd.querySelectorAll('.pk-item.checked').length;sd.querySelector('.pack-prog span').textContent=cc+'/'+ai.length;sd.querySelector('.prog-fill').style.width=Math.round(cc/ai.length*100)+'%';if(!fbOn)renderPackOverview()});
+    else d.querySelectorAll('.pk-item').forEach(it=>{it.style.cursor='default';it.style.opacity='.8'});
+    el.appendChild(d);
+  });
+}
+
+// UPDATES
+function postUpdate(){const inp=document.getElementById('upd-input'),txt=inp.value.trim();if(!txt||!currentUser)return;const u={author:currentUser,text:txt,timestamp:Date.now()};if(fbOn)db.ref('updates').push(u);else{const ups=JSON.parse(localStorage.getItem('nz-upd')||'[]');ups.push(u);localStorage.setItem('nz-upd',JSON.stringify(ups));renderUpds(ups)}inp.value=''}
+function loadUpdates(){if(fbOn)db.ref('updates').orderByChild('timestamp').on('value',s=>{const u=[];s.forEach(c=>u.push(c.val()));renderUpds(u)});else renderUpds(JSON.parse(localStorage.getItem('nz-upd')||'[]'))}
+function renderUpds(ups){const f=document.getElementById('feed'),n=document.getElementById('no-upd');if(!ups.length){f.innerHTML='';f.appendChild(n);n.style.display='block';return}n.style.display='none';f.innerHTML='';ups.slice().reverse().forEach(u=>{const c=document.createElement('div');c.className='upd-card';c.innerHTML='<div class="upd-hdr"><div class="upd-av" style="background:'+(PCOL[u.author]||'var(--dim)')+'">'+((PINIT[u.author])||'?')+'</div><span class="upd-author">'+u.author+'</span><span class="upd-time">'+fmtTime(u.timestamp)+'</span></div><div class="upd-text">'+escHtml(u.text)+'</div>';f.appendChild(c)})}
+function fmtTime(ts){const d=Date.now()-ts,m=Math.floor(d/6e4);if(m<1)return'just now';if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';const dy=Math.floor(h/24);if(dy<7)return dy+'d ago';return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'})}
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+document.getElementById('upd-input').addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')postUpdate()});
+
+// DAY NOTES
+let dayNotesCache={};
+function loadDayNote(nk){
+  const inp=document.getElementById('day-note-input');
+  const edit=document.getElementById('notes-last-edit');
+  if(!inp)return;
+  if(fbOn){
+    db.ref('dayNotes/'+nk).once('value',s=>{
+      const v=s.val();
+      if(inp.dataset.nk===nk){
+        inp.value=v?v.text||'':'';
+        dayNotesCache[nk]=inp.value;
+        if(v&&v.author&&v.timestamp)edit.textContent='Last edit by '+v.author+' \u00b7 '+fmtTime(v.timestamp);
+        else edit.textContent='';
+      }
+    });
+    db.ref('dayNotes/'+nk).on('value',s=>{
+      const v=s.val();
+      if(inp.dataset.nk===nk){
+        inp.value=v?v.text||'':'';
+        dayNotesCache[nk]=inp.value;
+        if(v&&v.author&&v.timestamp)edit.textContent='Last edit by '+v.author+' \u00b7 '+fmtTime(v.timestamp);
+        else edit.textContent='';
+      }
+    });
+  }else{
+    const v=JSON.parse(localStorage.getItem('nz-daynotes')||'{}')[nk];
+    inp.value=v?v.text||'':'';
+    dayNotesCache[nk]=inp.value;
+    if(v&&v.author&&v.timestamp)edit.textContent='Last edit by '+v.author+' \u00b7 '+fmtTime(v.timestamp);
+    else edit.textContent='';
+  }
+}
+function saveDayNote(){
+  const inp=document.getElementById('day-note-input');
+  if(!inp||!currentUser)return;
+  const nk=inp.dataset.nk,txt=inp.value;
+  const note={text:txt,author:currentUser,timestamp:Date.now()};
+  if(fbOn){
+    db.ref('dayNotes/'+nk).set(note);
+  }else{
+    const all=JSON.parse(localStorage.getItem('nz-daynotes')||'{}');
+    all[nk]=note;
+    localStorage.setItem('nz-daynotes',JSON.stringify(all));
+  }
+  dayNotesCache[nk]=txt;
+  const msg=document.getElementById('notes-saved-msg');
+  const edit=document.getElementById('notes-last-edit');
+  msg.classList.add('show');
+  edit.textContent='Last edit by '+currentUser+' \u00b7 just now';
+  setTimeout(()=>msg.classList.remove('show'),2000);
+}
+</script>
+</body>
+</html>
