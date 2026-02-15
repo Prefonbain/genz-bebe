@@ -307,8 +307,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .alert-bar strong{color:var(--danger)}
 
 /* RESPONSIVE */
-@media(max-width:1024px){.dash{grid-template-columns:1fr}.dash-sidebar{max-height:none;flex-direction:row;flex-wrap:wrap;overflow-x:auto}.day-pill{min-width:250px}.dest-grid{grid-template-columns:repeat(3,1fr)}.dash-main{max-height:none}}
-@media(max-width:768px){.dest-grid{grid-template-columns:repeat(2,1fr)}.book-grid,.cost-grid,.pack-dash,.updates-layout,.flight-grid{grid-template-columns:1fr}.tips-grid{grid-template-columns:1fr}.hero{padding:2rem 1rem 1.5rem}.hero-brand{font-size:2.2rem}.hero-sub{font-size:.95rem}.countdown{gap:.8rem}.cd-val{font-size:1.6rem}.user-pill{top:auto;bottom:.5rem;right:.5rem;font-size:.7rem}.section{padding:1rem}.route-map-wrap #route-map{height:250px}.act-fields{flex-direction:column;gap:.4rem}.act-fields .act-field{width:100%}.act-field input,.act-field select{width:100%}.act-save{width:100%}.day-pill{min-width:200px}.detail-city{font-size:1.2rem}.sh-title{font-size:1.1rem}.nav-tab{padding:.7rem .8rem;font-size:.65rem;letter-spacing:1px}}
+@media(max-width:1024px){.dash{grid-template-columns:1fr}.dash-sidebar{max-height:none;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:.5rem;gap:.4rem;scroll-snap-type:x mandatory}.day-pill{min-width:160px;flex-shrink:0;scroll-snap-align:start}.dest-grid{grid-template-columns:repeat(3,1fr)}.dash-main{max-height:none}}
+@media(max-width:768px){.dest-grid{grid-template-columns:repeat(2,1fr)}.book-grid,.cost-grid,.pack-dash,.updates-layout,.flight-grid{grid-template-columns:1fr}.tips-grid{grid-template-columns:1fr}.hero{padding:2rem 1rem 1.5rem}.hero-brand{font-size:2.2rem}.hero-sub{font-size:.95rem}.countdown{gap:.8rem}.cd-val{font-size:1.6rem}.user-pill{top:auto;bottom:.5rem;right:.5rem;font-size:.7rem}.section{padding:1rem}.route-map-wrap #route-map{height:250px}.act-fields{flex-direction:column;gap:.4rem}.act-fields .act-field{width:100%}.act-field input,.act-field select{width:100%}.act-save{width:100%}.day-pill{min-width:140px}.detail-city{font-size:1.2rem}.sh-title{font-size:1.1rem}.nav-tab{padding:.7rem .8rem;font-size:.65rem;letter-spacing:1px}.dp-city{font-size:.75rem}.dp-date{font-size:.6rem;min-width:45px}}
 @media(max-width:480px){.dest-grid{grid-template-columns:1fr}.countdown{gap:.5rem}.couple-badge{font-size:.7rem;padding:.3rem .7rem}.modal{padding:1.5rem}.person-grid{grid-template-columns:1fr}.person-btn{padding:.8rem}}
 
 ::-webkit-scrollbar{width:6px;height:6px}
@@ -631,9 +631,11 @@ function renderDayList(filter){
 function selectDay(di,li){
   selectedDayIdx=di;li=li||0;
   document.querySelectorAll('.day-pill').forEach((p,i)=>{p.classList.toggle('active-day',false)});
-  // highlight correct pill
-  document.querySelectorAll('.day-pill').forEach(p=>{const dt=p.querySelector('.dp-date');const city=p.querySelector('.dp-city');if(DAYS[di]&&city.textContent===DAYS[di].locs[li].city){const dStr=new Date(DAYS[di].date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});if(dt.textContent.includes(dStr.split(',')[0]))p.classList.add('active-day')}});
+  // highlight correct pill and scroll it into view
+  document.querySelectorAll('.day-pill').forEach(p=>{const dt=p.querySelector('.dp-date');const city=p.querySelector('.dp-city');if(DAYS[di]&&city.textContent===DAYS[di].locs[li].city){const dStr=new Date(DAYS[di].date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});if(dt.textContent.includes(dStr.split(',')[0])){p.classList.add('active-day');p.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}}});
   renderDetail(di,li);
+  // On mobile, scroll detail panel into view
+  if(window.innerWidth<=1024){setTimeout(()=>{const el=document.getElementById('day-detail');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},100)}
 }
 
 function renderDetail(di,li){
