@@ -1201,19 +1201,6 @@ function renderCosts(){
     });
   });
 
-  // Flight data
-  const flights={
-    sl:[
-      {route:'MSN \u2192 LAX',cost:1293.20,reimb:828.68},
-      {route:'Stephen: LAX \u2192 NZ',cost:1108.03,reimb:710.03},
-      {route:'Lindsay: LAX \u2192 NZ',cost:1108.03,reimb:710.03}
-    ],
-    ja:[
-      {route:'Domestic \u2192 LAX',cost:1156.94,reimb:741.37},
-      {route:'International NZ',cost:2189.66,reimb:1403.13}
-    ]
-  };
-
   // Helper: format date range
   function fmtRange(dates){
     if(!dates.length)return'';
@@ -1224,11 +1211,10 @@ function renderCosts(){
   }
 
   // Build card for each couple
-  function buildCard(label,colorClass,coupleKey,flightKey){
+  function buildCard(label,colorClass,coupleKey){
     // Filter stays
     const myStays=stays.filter(s=>s.who===coupleKey||s.who==='all');
     const myActs=actItems.filter(a=>a.who===coupleKey||a.who==='all');
-    const myFlights=flights[flightKey];
 
     // Calculate hotel total for this couple
     let hotelTotal=0;
@@ -1261,12 +1247,7 @@ function renderCosts(){
     const carTotalUSD=carTotalNZD/NZD_RATE;
     const carPerCouple=carTotalUSD/2;
 
-    // Calculate flight total & reimbursement
-    let flightTotal=0,flightReimb=0;
-    myFlights.forEach(f=>{flightTotal+=f.cost;flightReimb+=f.reimb});
-
-    const grandTotal=hotelTotal+actTotal+flightTotal+carPerCouple;
-    const netAfterReimb=grandTotal-flightReimb;
+    const grandTotal=hotelTotal+actTotal+carPerCouple;
 
     // Build HTML
     let h='<div class="cost-card"><div class="cost-title">'+label+'</div>';
@@ -1318,27 +1299,17 @@ function renderCosts(){
     h+='<div class="cost-section-total"><span class="cst-lbl">Car Subtotal</span><span class="cst-val">$'+carPerCouple.toFixed(2)+'</span></div>';
     h+='</div>';
 
-    // Flights section
-    h+='<div class="cost-line" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\')"><span class="cost-line-l">\u2708\uFE0F Flights <span class="cost-chev">\u25BC</span></span><span class="cost-line-v">$'+flightTotal.toFixed(2)+'</span></div>';
-    h+='<div class="cost-sub">';
-    myFlights.forEach(f=>{
-      h+='<div class="cost-sub-item"><span class="csi-name">'+f.route+'</span><span class="csi-detail">Reimb: $'+f.reimb.toFixed(2)+'</span><span class="csi-val">$'+f.cost.toFixed(2)+'</span></div>';
-    });
-    h+='<div class="cost-section-total"><span class="cst-lbl">Flight Subtotal</span><span class="cst-val">$'+flightTotal.toFixed(2)+'</span></div>';
-    h+='</div>';
-
-    // Net summary
+    // Total
     h+='<div style="margin-top:.8rem;padding-top:.6rem;border-top:2px solid var(--border)">';
-    h+='<div class="cost-line" style="border:none;font-weight:700;cursor:default"><span class="cost-line-l">Gross Total</span><span class="cost-line-v">$'+grandTotal.toFixed(2)+'</span></div>';
-    h+='<div class="cost-line" style="border:none;cursor:default"><span class="cost-line-l" style="color:var(--success)">\u2713 Flight Reimbursement</span><span class="cost-line-v" style="color:var(--success)">-$'+flightReimb.toFixed(2)+'</span></div>';
-    h+='<div class="cost-line" style="border:none;font-weight:700;font-size:.9rem;cursor:default"><span class="cost-line-l">Net Cost</span><span class="cost-line-v '+colorClass+'">$'+netAfterReimb.toFixed(2)+'</span></div>';
+    h+='<div class="cost-line" style="border:none;font-weight:700;font-size:.9rem;cursor:default"><span class="cost-line-l">Trip Total</span><span class="cost-line-v '+colorClass+'">$'+grandTotal.toFixed(2)+'</span></div>';
+    h+='<div style="font-size:.68rem;color:var(--dim);font-style:italic;margin-top:.2rem">\u2708\uFE0F Flights excluded (already settled)</div>';
     h+='</div>';
 
     h+='</div>';
     return h;
   }
 
-  grid.innerHTML=buildCard('Stephen & Lindsay','sl','sl','sl')+buildCard('Jared & Ariel','ja','ja','ja');
+  grid.innerHTML=buildCard('Stephen & Lindsay','sl','sl')+buildCard('Jared & Ariel','ja','ja');
 }
 renderCosts();
 
