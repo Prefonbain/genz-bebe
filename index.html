@@ -546,6 +546,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
     <div class="book-item booked"><div class="book-name">AKL&rarr;CHC Jetstar</div><div class="book-meta">S&amp;L internal flight</div><div class="book-conf">UQJRND</div></div>
     <div class="book-item booked"><div class="book-name">ZQN&rarr;MEL Qantas</div><div class="book-meta">S&amp;L &middot; QF178</div><div class="book-conf">QF178</div></div>
     <div class="book-item booked"><div class="book-name">J&amp;A NZ Flights</div><div class="book-meta">International</div><div class="book-conf">2KB6JH</div></div>
+    <div class="book-item booked"><div class="book-name">Touchdown Car Rentals</div><div class="book-meta">All &middot; NZ$1,976 &middot; Split 50/50</div><div class="book-conf">13562</div></div>
   </div>
 </div>
 
@@ -1255,11 +1256,16 @@ function renderCosts(){
       actTotal+=amt;
     });
 
+    // Car rental — NZ$1,976 split 50/50, converted to USD
+    const carTotalNZD=1976;
+    const carTotalUSD=carTotalNZD/NZD_RATE;
+    const carPerCouple=carTotalUSD/2;
+
     // Calculate flight total & reimbursement
     let flightTotal=0,flightReimb=0;
     myFlights.forEach(f=>{flightTotal+=f.cost;flightReimb+=f.reimb});
 
-    const grandTotal=hotelTotal+actTotal+flightTotal;
+    const grandTotal=hotelTotal+actTotal+flightTotal+carPerCouple;
     const netAfterReimb=grandTotal-flightReimb;
 
     // Build HTML
@@ -1303,6 +1309,13 @@ function renderCosts(){
       });
     }
     h+='<div class="cost-section-total"><span class="cst-lbl">Activity Subtotal</span><span class="cst-val">$'+actTotal.toFixed(2)+'</span></div>';
+    h+='</div>';
+
+    // Car rental section
+    h+='<div class="cost-line" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\')"><span class="cost-line-l">\uD83D\uDE97 Car Rental <span class="cost-chev">\u25BC</span></span><span class="cost-line-v">$'+carPerCouple.toFixed(2)+'</span></div>';
+    h+='<div class="cost-sub">';
+    h+='<div class="cost-sub-item"><span class="csi-name">Touchdown Car Rentals</span><span class="csi-detail">Conf: 13562 \u00B7 NZ$'+carTotalNZD+' total \u00B7 50/50 split</span><span class="csi-val">$'+carPerCouple.toFixed(2)+'</span></div>';
+    h+='<div class="cost-section-total"><span class="cst-lbl">Car Subtotal</span><span class="cst-val">$'+carPerCouple.toFixed(2)+'</span></div>';
     h+='</div>';
 
     // Flights section
