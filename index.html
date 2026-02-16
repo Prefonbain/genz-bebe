@@ -1360,7 +1360,7 @@ function renderCosts(){
     // Car rental section
     h+='<div class="cost-line" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\')"><span class="cost-line-l">\uD83D\uDE97 Car Rental <span class="cost-chev">\u25BC</span></span><span class="cost-line-v">$'+carPerCouple.toFixed(2)+'</span></div>';
     h+='<div class="cost-sub">';
-    h+='<div class="cost-sub-item"><span class="csi-name">Touchdown Car Rentals</span><span class="csi-detail">Conf: 13562 \u00B7 NZ$'+carTotalNZD+' total \u00B7 50/50 split</span><span class="csi-val">$'+carPerCouple.toFixed(2)+'</span></div>';
+    h+='<div class="cost-sub-item csi-booked"><span class="csi-name"><span style="color:var(--success);margin-right:.3rem">\u2713</span>Touchdown Car Rentals</span><span class="csi-detail">Conf: 13562 \u00B7 NZ$'+carTotalNZD+' total \u00B7 50/50 split</span><span class="csi-val">$'+carPerCouple.toFixed(2)+'</span></div>';
     h+='<div class="cost-section-total"><span class="cst-lbl">Car Subtotal</span><span class="cst-val">$'+carPerCouple.toFixed(2)+'</span></div>';
     h+='</div>';
 
