@@ -237,6 +237,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .cost-line.open .cost-chev{transform:rotate(180deg)}
 .cost-sub{display:none;padding:0 0 .3rem}
 .cost-sub.open{display:block}
+.cost-city-hdr{font-size:.7rem;font-weight:700;color:var(--forest);padding:.45rem .8rem .15rem;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);margin-top:.3rem}
+.cost-city-hdr:first-child{margin-top:0}
 .cost-sub-item{display:flex;justify-content:space-between;font-size:.72rem;padding:.25rem .8rem;color:var(--dim)}
 .cost-sub-item .csi-name{flex:1}
 .cost-sub-item .csi-detail{font-size:.65rem;color:var(--dim);margin-left:.3rem}
@@ -1303,20 +1305,29 @@ function renderCosts(){
     // Hotels section
     h+='<div class="cost-line" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\')"><span class="cost-line-l">\uD83C\uDFE8 Hotels <span class="cost-chev">\u25BC</span></span><span class="cost-line-v">$'+hotelTotal.toFixed(2)+'</span></div>';
     h+='<div class="cost-sub">';
+    // Group stays by city
+    const cityOrder=[];const cityMap={};
     myStays.forEach(s=>{
+      if(!cityMap[s.city]){cityMap[s.city]=[];cityOrder.push(s.city)}
       let myCost=0;
       if(s.who==='all'){
         if(s.split===(coupleKey==='sl'?'S&L pays':'J&A pays'))myCost=s.total;
         else if(s.split&&s.split.indexOf('pays')>-1)myCost=0;
         else myCost=s.total/2;
       }else myCost=s.total;
-      if(myCost<=0&&s.costPerNight<=0){
-        const freeNote=s.costStr&&s.costStr.toLowerCase()==='points';
-        h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+s.city+' \u00B7 '+fmtRange(s.dates)+' \u00B7 '+s.nights+'n</span><span class="csi-val" style="'+(freeNote?'color:var(--success)':'')+'">'+(freeNote?'Free (Points)':'TBD')+'</span></div>';
-      }else{
-        const splitNote=s.who==='all'?(s.split||'50/50'):'';
-        h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+s.city+' \u00B7 '+fmtRange(s.dates)+' \u00B7 '+s.nights+'n \u00D7 '+s.costStr+(splitNote?' \u00B7 '+splitNote:'')+'</span><span class="csi-val">$'+myCost.toFixed(2)+'</span></div>';
-      }
+      cityMap[s.city].push({stay:s,myCost:myCost});
+    });
+    cityOrder.forEach(city=>{
+      h+='<div class="cost-city-hdr">'+city+'</div>';
+      cityMap[city].forEach(({stay:s,myCost})=>{
+        const isFree=s.costStr&&s.costStr.toLowerCase()==='points';
+        if(myCost<=0&&s.costPerNight<=0){
+          h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+fmtRange(s.dates)+' \u00B7 '+s.nights+'n</span><span class="csi-val" style="'+(isFree?'color:var(--success)':'')+'">'+(isFree?'Free (Points)':'TBD')+'</span></div>';
+        }else{
+          const splitNote=s.who==='all'?(s.split||'50/50'):'';
+          h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+fmtRange(s.dates)+' \u00B7 '+s.nights+'n \u00D7 '+s.costStr+(splitNote?' \u00B7 '+splitNote:'')+'</span><span class="csi-val">$'+myCost.toFixed(2)+'</span></div>';
+        }
+      });
     });
     h+='<div class="cost-section-total"><span class="cst-lbl">Hotel Subtotal</span><span class="cst-val">$'+hotelTotal.toFixed(2)+'</span></div>';
     h+='</div>';
