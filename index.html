@@ -239,7 +239,9 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .cost-sub.open{display:block}
 .cost-city-hdr{font-size:.7rem;font-weight:700;color:var(--forest);padding:.45rem .8rem .15rem;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);margin-top:.3rem}
 .cost-city-hdr:first-child{margin-top:0}
-.cost-sub-item{display:flex;justify-content:space-between;font-size:.72rem;padding:.25rem .8rem;color:var(--dim)}
+.cost-sub-item{display:flex;justify-content:space-between;font-size:.72rem;padding:.25rem .8rem;color:var(--dim);border-left:3px solid transparent;margin-left:.3rem}
+.cost-sub-item.csi-booked{border-left-color:var(--success);color:var(--muted)}
+.cost-sub-item.csi-tentative{border-left-color:var(--warning);opacity:.7}
 .cost-sub-item .csi-name{flex:1}
 .cost-sub-item .csi-detail{font-size:.65rem;color:var(--dim);margin-left:.3rem}
 .cost-sub-item .csi-val{font-family:'JetBrains Mono',monospace;color:var(--muted);flex-shrink:0}
@@ -1223,12 +1225,12 @@ function renderCosts(){
           const optMeta=accomMeta[optKey]||{};
           const oWho=optMeta.who||who;
           const gk=o.name+'|'+l.city+'|'+oWho;
-          if(!stayMap[gk])stayMap[gk]={name:o.name,city:l.city,who:oWho,dates:[],costStr:optMeta.costPerNight||o.cost||'',split:optMeta.split||'',conf:'',isOption:true};
+          if(!stayMap[gk])stayMap[gk]={name:o.name,city:l.city,who:oWho,dates:[],costStr:optMeta.costPerNight||o.cost||'',split:optMeta.split||'',conf:'',isOption:true,st:optMeta.status||l.accom.st||'choose'};
           if(!stayMap[gk].dates.includes(d.date))stayMap[gk].dates.push(d.date);
         });
       }else{
         const gk=l.accom.name+'|'+l.city+'|'+who;
-        if(!stayMap[gk])stayMap[gk]={name:l.accom.name,city:l.city,who:who,dates:[],costStr:meta.costPerNight||l.accom.cost||'',split:meta.split||'',conf:l.accom.conf||'',isOption:false};
+        if(!stayMap[gk])stayMap[gk]={name:l.accom.name,city:l.city,who:who,dates:[],costStr:meta.costPerNight||l.accom.cost||'',split:meta.split||'',conf:l.accom.conf||'',isOption:false,st:meta.status||l.accom.st||''};
         if(!stayMap[gk].dates.includes(d.date))stayMap[gk].dates.push(d.date);
       }
     });
@@ -1322,11 +1324,14 @@ function renderCosts(){
       h+='<div class="cost-city-hdr">'+city+'</div>';
       cityMap[city].forEach(({stay:s,myCost})=>{
         const isFree=s.costStr&&s.costStr.toLowerCase()==='points';
+        const isBooked=s.st==='booked';
+        const cls=isBooked?'csi-booked':'csi-tentative';
+        const tag=isBooked?'<span style="color:var(--success);margin-right:.3rem">\u2713</span>':'<span style="color:var(--warning);margin-right:.3rem">\u25CB</span>';
         if(myCost<=0&&s.costPerNight<=0){
-          h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+fmtRange(s.dates)+' \u00B7 '+s.nights+'n</span><span class="csi-val" style="'+(isFree?'color:var(--success)':'')+'">'+(isFree?'Free (Points)':'TBD')+'</span></div>';
+          h+='<div class="cost-sub-item '+cls+'"><span class="csi-name">'+tag+s.name+'</span><span class="csi-detail">'+fmtRange(s.dates)+' \u00B7 '+s.nights+'n</span><span class="csi-val" style="'+(isFree?'color:var(--success)':'')+'">'+(isFree?'Free (Points)':'TBD')+'</span></div>';
         }else{
           const splitNote=s.who==='all'?(s.split||'50/50'):'';
-          h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+fmtRange(s.dates)+' \u00B7 '+s.nights+'n \u00D7 '+s.costStr+(splitNote?' \u00B7 '+splitNote:'')+'</span><span class="csi-val">$'+myCost.toFixed(2)+'</span></div>';
+          h+='<div class="cost-sub-item '+cls+'"><span class="csi-name">'+tag+s.name+'</span><span class="csi-detail">'+fmtRange(s.dates)+' \u00B7 '+s.nights+'n \u00D7 '+s.costStr+(splitNote?' \u00B7 '+splitNote:'')+'</span><span class="csi-val">$'+myCost.toFixed(2)+'</span></div>';
         }
       });
     });
