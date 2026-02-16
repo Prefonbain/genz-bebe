@@ -1159,11 +1159,16 @@ function updateStats(){
   // Days to go
   const daysLeft=Math.max(0,Math.floor((new Date('2026-05-16T00:00:00+12:00')-new Date())/864e5));
   document.getElementById('stat-days').textContent=daysLeft;
-  // Booked count
-  const totalNights=DAYS.length;
-  let bookedCount=0;
-  DAYS.forEach(d=>d.locs.forEach(l=>{if(l.accom.st==='booked')bookedCount++}));
-  const bookedPct=Math.round(bookedCount/totalNights*100);
+  // Booked count — count nights that need accommodation (exclude departure/N/A days)
+  let totalNights=0,bookedCount=0;
+  DAYS.forEach(d=>{
+    // Count one entry per day — use first loc, skip if all locs are departure/N/A
+    const realLocs=d.locs.filter(l=>l.accom&&l.accom.name&&l.accom.name.indexOf('N/A')!==0&&l.accom.st!=='empty');
+    if(!realLocs.length)return;
+    totalNights++;
+    if(realLocs.some(l=>l.accom.st==='booked'))bookedCount++;
+  });
+  const bookedPct=totalNights?Math.round(bookedCount/totalNights*100):0;
   document.getElementById('stat-booked').textContent=bookedCount+'/'+totalNights;
   document.getElementById('stat-booked-bar').style.width=bookedPct+'%';
   // Packing average
