@@ -1264,7 +1264,8 @@ function renderCosts(){
         else myCost=s.total/2;
       }else myCost=s.total;
       if(myCost<=0&&s.costPerNight<=0){
-        h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+s.city+' \u00B7 '+fmtRange(s.dates)+' \u00B7 '+s.nights+'n</span><span class="csi-val">TBD</span></div>';
+        const freeNote=s.costStr&&s.costStr.toLowerCase()==='points';
+        h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+s.city+' \u00B7 '+fmtRange(s.dates)+' \u00B7 '+s.nights+'n</span><span class="csi-val" style="'+(freeNote?'color:var(--success)':'')+'">'+(freeNote?'Free (Points)':'TBD')+'</span></div>';
       }else{
         const splitNote=s.who==='all'?(s.split||'50/50'):'';
         h+='<div class="cost-sub-item"><span class="csi-name">'+s.name+'</span><span class="csi-detail">'+s.city+' \u00B7 '+fmtRange(s.dates)+' \u00B7 '+s.nights+'n \u00D7 '+s.costStr+(splitNote?' \u00B7 '+splitNote:'')+'</span><span class="csi-val">$'+myCost.toFixed(2)+'</span></div>';
