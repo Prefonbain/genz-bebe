@@ -1192,6 +1192,7 @@ function renderCosts(){
   DAYS.forEach((d,di)=>{
     d.locs.forEach((l,li)=>{
       if(!l.accom||l.accom.st==='empty')return;
+      if(l.accom.name&&l.accom.name.indexOf('N/A')===0)return;
       const accKey=d.date+'-'+li+'-accom';
       const meta=accomMeta[accKey]||{};
       const who=meta.who||l.who;
