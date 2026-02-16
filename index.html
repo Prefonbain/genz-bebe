@@ -959,9 +959,56 @@ function renderPackList(){
 }
 
 // UPDATES
-function postUpdate(){const inp=document.getElementById('upd-input'),btn=document.querySelector('.post-btn'),txt=inp.value.trim();if(!txt||!currentUser){if(!currentUser)alert('Please select your name first (click the user icon).');return}const u={author:currentUser,text:txt,timestamp:Date.now()};if(fbOn){btn.textContent='Posting...';btn.disabled=true;db.ref('updates').push(u).then(()=>{inp.value='';btn.textContent='Posted!';setTimeout(()=>{btn.textContent='Post';btn.disabled=false},1200)}).catch(err=>{btn.textContent='Error!';btn.disabled=false;setTimeout(()=>{btn.textContent='Post'},2000);console.error('Post failed:',err)})}else{const ups=JSON.parse(localStorage.getItem('nz-upd')||'[]');ups.push(u);localStorage.setItem('nz-upd',JSON.stringify(ups));renderUpds(ups);inp.value=''}}
-function loadUpdates(){if(fbOn)db.ref('updates').orderByChild('timestamp').on('value',s=>{const u=[];s.forEach(c=>u.push(c.val()));renderUpds(u)});else renderUpds(JSON.parse(localStorage.getItem('nz-upd')||'[]'))}
-function renderUpds(ups){try{const f=document.getElementById('feed');if(!f)return;if(!ups||!ups.length){f.innerHTML='<div class="no-updates">No updates yet. Be the first!</div>';return}f.innerHTML='';ups.slice().reverse().forEach(u=>{if(!u)return;const c=document.createElement('div');c.className='upd-card';c.innerHTML='<div class="upd-hdr"><div class="upd-av" style="background:'+(PCOL[u.author]||'var(--dim)')+'">'+((PINIT[u.author])||'?')+'</div><span class="upd-author">'+(u.author||'Unknown')+'</span><span class="upd-time">'+fmtTime(u.timestamp)+'</span></div><div class="upd-text">'+escHtml(u.text||'')+'</div>';f.appendChild(c)})}catch(e){console.error('renderUpds error:',e)}}
+function postUpdate(){
+  const inp=document.getElementById('upd-input'),btn=document.querySelector('.post-btn'),txt=inp.value.trim();
+  if(!txt||!currentUser){if(!currentUser)alert('Please select your name first.');return}
+  const u={author:currentUser,text:txt,timestamp:Date.now()};
+  if(fbOn){
+    btn.textContent='Posting...';btn.disabled=true;
+    db.ref('updates').push(u).then(()=>{
+      inp.value='';btn.textContent='Posted!';
+      setTimeout(()=>{btn.textContent='Post';btn.disabled=false},1200);
+      fetchAndRenderUpdates();
+    }).catch(err=>{
+      btn.textContent='Error!';btn.disabled=false;
+      setTimeout(()=>{btn.textContent='Post'},2000);
+    });
+  }else{
+    const ups=JSON.parse(localStorage.getItem('nz-upd')||'[]');
+    ups.push(u);localStorage.setItem('nz-upd',JSON.stringify(ups));
+    renderUpds(ups);inp.value='';
+  }
+}
+function fetchAndRenderUpdates(){
+  if(fbOn){
+    db.ref('updates').orderByChild('timestamp').once('value',s=>{
+      const u=[];s.forEach(c=>u.push(c.val()));renderUpds(u);
+    });
+  }else{
+    renderUpds(JSON.parse(localStorage.getItem('nz-upd')||'[]'));
+  }
+}
+function loadUpdates(){
+  if(fbOn){
+    db.ref('updates').orderByChild('timestamp').on('value',s=>{
+      const u=[];s.forEach(c=>u.push(c.val()));renderUpds(u);
+    });
+  }else{
+    renderUpds(JSON.parse(localStorage.getItem('nz-upd')||'[]'));
+  }
+}
+function renderUpds(ups){
+  const f=document.getElementById('feed');
+  if(!f)return;
+  if(!ups||!ups.length){f.innerHTML='<div class="no-updates">No updates yet. Be the first!</div>';return}
+  f.innerHTML='';
+  ups.slice().reverse().forEach(u=>{
+    if(!u||typeof u!=='object')return;
+    const c=document.createElement('div');c.className='upd-card';
+    c.innerHTML='<div class="upd-hdr"><div class="upd-av" style="background:'+(PCOL[u.author]||'var(--dim)')+'">'+((PINIT[u.author])||'?')+'</div><span class="upd-author">'+(u.author||'Unknown')+'</span><span class="upd-time">'+fmtTime(u.timestamp||0)+'</span></div><div class="upd-text">'+escHtml(u.text||'')+'</div>';
+    f.appendChild(c);
+  });
+}
 function fmtTime(ts){const d=Date.now()-ts,m=Math.floor(d/6e4);if(m<1)return'just now';if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';const dy=Math.floor(h/24);if(dy<7)return dy+'d ago';return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'})}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 document.getElementById('upd-input').addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')postUpdate()});
