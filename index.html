@@ -936,6 +936,119 @@
   .unresolved-list ul { margin: 0; padding-left: 20px; font-size: 13px; color: var(--ink-soft); }
   .unresolved-list li { margin-bottom: 4px; }
 
+  /* ============ EMERGENCY STRIP ============ */
+  .emergency-strip { padding: 32px 24px 12px; }
+  .em-card {
+    max-width: 1180px; margin: 0 auto;
+    background: linear-gradient(135deg, rgba(230,57,70,0.08), rgba(230,57,70,0.03));
+    border: 1px solid rgba(230,57,70,0.28);
+    border-radius: 18px;
+    padding: 20px 22px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  @media (max-width: 720px) {
+    .em-card { grid-template-columns: 1fr; gap: 14px; }
+  }
+  .em-head {
+    font-size: 12px; font-weight: 800;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: #B8322B;
+    display: flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+  }
+  .em-items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 720px) {
+    .em-items { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    .em-items { grid-template-columns: 1fr; }
+  }
+  .em-item {
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(230,57,70,0.2);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .em-item:hover {
+    background: rgba(230,57,70,0.9);
+    border-color: rgba(230,57,70,0.9);
+  }
+  .em-item:hover .em-num, .em-item:hover .em-label { color: white; }
+  .em-num {
+    font-size: 16px; font-weight: 800;
+    color: #B8322B;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .em-label {
+    font-size: 10px; color: var(--ink-soft); font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  body.dark .em-card { background: linear-gradient(135deg, rgba(230,57,70,0.15), rgba(230,57,70,0.05)); }
+  body.dark .em-item { background: rgba(255,255,255,0.06); }
+
+  /* Install app button */
+  .install-cta {
+    max-width: 1180px; margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--alpine), var(--lake));
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .install-cta:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .install-cta-text { text-align: left; }
+  .install-cta-title { font-size: 14px; font-weight: 800; letter-spacing: -0.005em; }
+  .install-cta-sub { font-size: 11px; opacity: 0.9; margin-top: 2px; letter-spacing: 0.04em; }
+  .install-cta-icon { font-size: 24px; }
+
+  .install-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 200;
+    padding: 20px;
+  }
+  .install-modal.open { display: flex; }
+  .install-modal-card {
+    background: white;
+    border-radius: 18px;
+    padding: 28px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+  }
+  body.dark .install-modal-card { background: #1A2A3C; color: var(--ink); }
+  .install-modal-card h3 { margin: 0 0 10px; font-size: 18px; letter-spacing: -0.01em; }
+  .install-modal-card p { margin: 8px 0; font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+  .install-modal-card ol { margin: 8px 0; padding-left: 20px; font-size: 13px; color: var(--ink); line-height: 1.8; }
+  .install-modal-close {
+    margin-top: 16px;
+    background: var(--alpine); color: white;
+    border: none; border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+  }
+  .install-modal-close:hover { background: var(--lake); }
+
   footer {
     padding: 32px 24px 48px; text-align: center;
     font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em;
@@ -1180,39 +1293,76 @@
     --bg: #0A1420;
     --ink: #E5EBF0;
     --ink-soft: #95A3B0;
-    --ink-faint: #5A6670;
+    --ink-faint: #6A7580;
     --line: rgba(255,255,255,0.08);
     --line-strong: rgba(255,255,255,0.18);
-    --glass: rgba(26, 42, 60, 0.55);
-    --glass-strong: rgba(26, 42, 60, 0.75);
+    --glass: rgba(26, 42, 60, 0.6);
+    --glass-strong: rgba(26, 42, 60, 0.82);
     --glass-soft: rgba(26, 42, 60, 0.4);
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.25);
     --shadow-md: 0 6px 16px rgba(0,0,0,0.4), 0 18px 40px rgba(0,0,0,0.3);
     --shadow-lg: 0 12px 32px rgba(0,0,0,0.5), 0 32px 80px rgba(0,0,0,0.4);
+    background-color: #0A1420 !important;
+    background-image:
+      radial-gradient(1100px 700px at 8% -5%, rgba(11, 163, 179, 0.18), transparent 55%),
+      radial-gradient(1000px 600px at 100% 10%, rgba(242, 107, 94, 0.12), transparent 55%),
+      radial-gradient(1200px 700px at 50% 100%, rgba(123, 75, 148, 0.12), transparent 55%) !important;
+    color: #E5EBF0;
   }
   body.dark::before {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 260' preserveAspectRatio='none'><path fill='%23ffffff' fill-opacity='0.04' d='M0,260 L0,160 L80,180 L140,120 L200,150 L280,80 L340,130 L420,70 L500,140 L580,90 L660,160 L740,100 L820,150 L900,70 L980,130 L1060,90 L1140,150 L1220,110 L1300,160 L1380,120 L1440,170 L1440,260 Z'/><path fill='%23ffffff' fill-opacity='0.08' d='M0,260 L0,200 L60,220 L140,170 L220,210 L300,160 L380,200 L460,150 L540,190 L620,160 L700,210 L780,170 L860,200 L940,160 L1020,200 L1100,170 L1180,210 L1260,180 L1340,220 L1440,190 L1440,260 Z'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 260' preserveAspectRatio='none'><path fill='%23ffffff' fill-opacity='0.04' d='M0,260 L0,160 L80,180 L140,120 L200,150 L280,80 L340,130 L420,70 L500,140 L580,90 L660,160 L740,100 L820,150 L900,70 L980,130 L1060,90 L1140,150 L1220,110 L1300,160 L1380,120 L1440,170 L1440,260 Z'/><path fill='%23ffffff' fill-opacity='0.08' d='M0,260 L0,200 L60,220 L140,170 L220,210 L300,160 L380,200 L460,150 L540,190 L620,160 L700,210 L780,170 L860,200 L940,160 L1020,200 L1100,170 L1180,210 L1260,180 L1340,220 L1440,190 L1440,260 Z'/></svg>") !important;
   }
-  body.dark {
-    background-image:
-      radial-gradient(1100px 700px at 8% -5%, rgba(11, 163, 179, 0.15), transparent 55%),
-      radial-gradient(1000px 600px at 100% 10%, rgba(242, 107, 94, 0.12), transparent 55%),
-      radial-gradient(1200px 700px at 50% 100%, rgba(123, 75, 148, 0.1), transparent 55%);
-  }
-  body.dark .sticky-nav { background: rgba(10, 20, 32, 0.7); }
+  body.dark .sticky-nav { background: rgba(10, 20, 32, 0.85); border-bottom-color: rgba(255,255,255,0.06); }
   body.dark .nav-search,
   body.dark .nav-btn,
   body.dark .currency-row input {
-    background: rgba(255,255,255,0.05);
-    color: var(--ink);
+    background: rgba(255,255,255,0.06);
+    color: #E5EBF0;
+    border-color: rgba(255,255,255,0.14);
   }
+  body.dark .nav-search::placeholder { color: #6A7580; }
+  body.dark .day { background: rgba(26,42,60,0.7); border-color: rgba(255,255,255,0.08); }
+  body.dark .day-title { color: #E5EBF0; }
+  body.dark .day-num, body.dark .day-date { color: #3BC0AE; }
+  body.dark .day-sub, body.dark .day-dow { color: #95A3B0; }
+  body.dark .tl-card, body.dark .forecast-card, body.dark .planning-box,
+  body.dark .money-stats .stat-tile, body.dark .budget-table-wrap,
+  body.dark .splits-list, body.dark .unresolved-list {
+    background: rgba(26,42,60,0.72);
+    border-color: rgba(255,255,255,0.08);
+  }
+  body.dark .tl-date-num { color: #E5EBF0; }
+  body.dark .tl-cell-empty { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+  body.dark .stat { background: rgba(26,42,60,0.72); border-color: rgba(255,255,255,0.12); }
+  body.dark .hero h1 { filter: brightness(1.15); }
+  body.dark .phase-weather { background: rgba(26,42,60,0.92); color: #E5EBF0; border-color: rgba(255,255,255,0.14); }
+  body.dark .pw-temp { color: #3BC0AE; }
+  body.dark .pw-cond { color: #95A3B0; }
+  body.dark .stat-tile-val, body.dark .budget-total, body.dark .day-title,
+  body.dark .phase-title, body.dark .hero-sub { color: #E5EBF0; }
+  body.dark .hero-clock { background: rgba(26,42,60,0.82); border-color: rgba(255,255,255,0.14); }
+  body.dark .clock-date { color: #E5EBF0; }
+  body.dark .track { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.08); }
+  body.dark .activity { background: rgba(255,255,255,0.05); }
+  body.dark .activity.booked { background: rgba(11, 163, 179, 0.15); }
   body.dark .day-notes textarea {
-    background: rgba(244, 162, 97, 0.08);
-    color: var(--ink);
+    background: rgba(244, 162, 97, 0.1);
+    color: #E5EBF0;
+    border-color: rgba(244, 162, 97, 0.28);
   }
-  body.dark .activity { background: rgba(255,255,255,0.04); }
-  body.dark .activity.booked { background: rgba(11, 163, 179, 0.1); }
-  body.dark .track { background: rgba(255,255,255,0.03); }
+  body.dark .day-summary:hover { background: rgba(255,255,255,0.04); }
+  body.dark .em-card { background: linear-gradient(135deg, rgba(230,57,70,0.14), rgba(230,57,70,0.06)); }
+  body.dark .em-item { background: rgba(255,255,255,0.06); border-color: rgba(230,57,70,0.26); }
+  body.dark .em-num { color: #F06070; }
+  body.dark .em-label { color: #95A3B0; }
+  body.dark footer { color: #6A7580; }
+
+  /* Make search hits more visible */
+  .day.search-match {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+    background: rgba(244, 162, 97, 0.06) !important;
+  }
 
   /* ============ PLANNING & REFERENCE ============ */
   .planning-section { padding: 8px 24px 24px; }
@@ -2312,24 +2462,6 @@
         </summary>
         <div class="planning-body">
 
-          <div class="essential-group-label">Emergency · NZ</div>
-          <div class="essential">
-            <div class="essential-name">Emergency (police · fire · ambulance)</div>
-            <a href="tel:111" class="essential-contact">111</a>
-          </div>
-          <div class="essential">
-            <div class="essential-name">Non-emergency police</div>
-            <a href="tel:105" class="essential-contact">105</a>
-          </div>
-          <div class="essential">
-            <div class="essential-name">Healthline (free medical advice)</div>
-            <a href="tel:0800611116" class="essential-contact">0800 611 116</a>
-          </div>
-          <div class="essential">
-            <div class="essential-name">US Embassy · Wellington</div>
-            <a href="tel:+6444626000" class="essential-contact">+64 4 462 6000</a>
-          </div>
-
           <div class="essential-group-label">Transport</div>
           <div class="essential">
             <div class="essential-name">Touch Down Car Rentals<span class="sub">Booking U-01-13562</span></div>
@@ -2599,6 +2731,65 @@
         <li>Milford Sound cruise ($442) — who pays at venue?</li>
         <li>Gibbston wineries (May 23) — generally each couple pays their own tastings/food</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSTALL APP CTA ============ -->
+<section class="planning-section" style="padding-bottom:0;">
+  <div class="wrap">
+    <button class="install-cta" id="install-cta">
+      <div class="install-cta-icon">📱</div>
+      <div class="install-cta-text" style="flex:1;">
+        <div class="install-cta-title">Install on your phone</div>
+        <div class="install-cta-sub">Works offline in Fiordland · adds to home screen · no app store needed</div>
+      </div>
+      <div class="install-cta-icon">→</div>
+    </button>
+  </div>
+</section>
+
+<div class="install-modal" id="install-modal">
+  <div class="install-modal-card">
+    <h3>Add to Home Screen</h3>
+    <p><strong>iPhone / iPad:</strong></p>
+    <ol>
+      <li>Tap the <strong>Share</strong> button at the bottom of Safari</li>
+      <li>Scroll and tap <strong>Add to Home Screen</strong></li>
+      <li>Tap <strong>Add</strong> in the top right</li>
+    </ol>
+    <p><strong>Android / Chrome:</strong></p>
+    <ol>
+      <li>Tap the <strong>⋮</strong> menu (top right)</li>
+      <li>Tap <strong>Add to Home screen</strong> or <strong>Install app</strong></li>
+      <li>Confirm</li>
+    </ol>
+    <p style="color:var(--ink-faint);font-size:12px;">Once installed, it opens full-screen and works without signal once pages have been visited.</p>
+    <button class="install-modal-close" onclick="document.getElementById('install-modal').classList.remove('open')">Got it</button>
+  </div>
+</div>
+
+<!-- ============ EMERGENCY STRIP ============ -->
+<section class="emergency-strip">
+  <div class="em-card">
+    <div class="em-head">🚨 Emergency · NZ</div>
+    <div class="em-items">
+      <a href="tel:111" class="em-item">
+        <div class="em-num">111</div>
+        <div class="em-label">Police · Fire · Ambulance</div>
+      </a>
+      <a href="tel:105" class="em-item">
+        <div class="em-num">105</div>
+        <div class="em-label">Non-emergency police</div>
+      </a>
+      <a href="tel:0800611116" class="em-item">
+        <div class="em-num">0800 611 116</div>
+        <div class="em-label">Healthline · free advice</div>
+      </a>
+      <a href="tel:+6444626000" class="em-item">
+        <div class="em-num">+64 4 462 6000</div>
+        <div class="em-label">US Embassy Wellington</div>
+      </a>
     </div>
   </div>
 </section>
@@ -3056,12 +3247,43 @@
     usd.value = (parseFloat(nzd.value || 0) * rate).toFixed(2);
   })();
 
-  // ============ PWA registration ============
+  // ============ PWA registration + install prompt ============
+  let deferredPrompt = null;
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW reg failed', err));
     });
   }
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  (function() {
+    const cta = document.getElementById('install-cta');
+    const modal = document.getElementById('install-modal');
+    if (!cta || !modal) return;
+    cta.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (choice && choice.outcome === 'accepted') {
+          cta.style.display = 'none';
+        }
+      } else {
+        modal.classList.add('open');
+      }
+    });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+    // hide CTA if already installed
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+      cta.style.display = 'none';
+    }
+  })();
   function toggleAll(open) {
     document.querySelectorAll('details.day').forEach(d => d.open = open);
   }
