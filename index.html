@@ -1669,8 +1669,8 @@
       <a href="#money">Money</a>
     </div>
     <div class="nav-tools">
-      <input type="search" class="nav-search" id="nav-search" placeholder="Search…" autocomplete="off">
-      <button class="nav-btn" id="theme-toggle" title="Toggle dark mode">🌙</button>
+      <input type="search" class="nav-search" id="nav-search" placeholder="Search…" autocomplete="off" oninput="handleSearch(this.value)">
+      <button class="nav-btn" id="theme-toggle" title="Toggle dark mode" onclick="toggleTheme()">🌙</button>
     </div>
   </div>
 </nav>
@@ -2743,7 +2743,7 @@
 <!-- ============ INSTALL APP CTA ============ -->
 <section class="planning-section" style="padding-bottom:0;">
   <div class="wrap">
-    <button class="install-cta" id="install-cta">
+    <button class="install-cta" id="install-cta" onclick="handleInstall(event)">
       <div class="install-cta-icon">📱</div>
       <div class="install-cta-text" style="flex:1;">
         <div class="install-cta-title">Install on your phone</div>
@@ -3023,46 +3023,35 @@
 
   renderPacking();
 
-  // ============ Theme toggle ============
-  (function() {
+  // ============ Theme toggle (global function, inline onclick) ============
+  function toggleTheme() {
+    const dark = !document.body.classList.contains('dark');
+    document.documentElement.classList.toggle('dark', dark);
+    document.body.classList.toggle('dark', dark);
     const btn = document.getElementById('theme-toggle');
-    if (!btn) {
-      console.warn('[theme] toggle button not found');
-      return;
+    if (btn) btn.textContent = dark ? '☀️' : '🌙';
+    if (dark) {
+      document.body.style.backgroundColor = '#0A1420';
+      document.body.style.backgroundImage = 'radial-gradient(1100px 700px at 8% -5%, rgba(11,163,179,0.18), transparent 55%), radial-gradient(1000px 600px at 100% 10%, rgba(242,107,94,0.12), transparent 55%)';
+      document.body.style.color = '#E5EBF0';
+    } else {
+      document.body.style.backgroundColor = '';
+      document.body.style.backgroundImage = '';
+      document.body.style.color = '';
     }
-    function applyTheme(dark) {
-      document.documentElement.classList.toggle('dark', dark);
-      document.body.classList.toggle('dark', dark);
-      btn.textContent = dark ? '☀️' : '🌙';
-      // inline-force body background in case CSS cascade misses
-      if (dark) {
-        document.body.style.backgroundColor = '#0A1420';
-        document.body.style.color = '#E5EBF0';
-      } else {
-        document.body.style.backgroundColor = '';
-        document.body.style.color = '';
-      }
-    }
-    const saved = localStorage.getItem('nz-theme');
-    applyTheme(saved === 'dark');
-    btn.addEventListener('click', () => {
-      const nowDark = !document.body.classList.contains('dark');
-      applyTheme(nowDark);
-      localStorage.setItem('nz-theme', nowDark ? 'dark' : 'light');
-    });
-    console.log('[theme] toggle wired');
+    try { localStorage.setItem('nz-theme', dark ? 'dark' : 'light'); } catch(e) {}
+  }
+  // Apply saved theme on load
+  (function() {
+    if (localStorage.getItem('nz-theme') === 'dark') toggleTheme();
   })();
 
-  // ============ Search ============
-  (function() {
-    const input = document.getElementById('nav-search');
-    if (!input) return;
-    let timer;
-    input.addEventListener('input', () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => runSearch(input.value.trim().toLowerCase()), 150);
-    });
-    function runSearch(q) {
+  // ============ Search (global function, inline oninput) ============
+  let _searchTimer;
+  function handleSearch(rawQ) {
+    clearTimeout(_searchTimer);
+    const q = (rawQ || '').trim().toLowerCase();
+    _searchTimer = setTimeout(() => {
       document.querySelectorAll('details.day').forEach(d => d.classList.remove('search-match'));
       if (!q) return;
       let first = null;
@@ -3074,8 +3063,8 @@
         }
       });
       if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  })();
+    }, 150);
+  }
 
   // ============ Today marker & day counter ============
   (function() {
@@ -3269,8 +3258,8 @@
     usd.value = (parseFloat(nzd.value || 0) * rate).toFixed(2);
   })();
 
-  // ============ PWA registration + install prompt ============
-  let deferredPrompt = null;
+  // ============ PWA registration + install (global, inline onclick) ============
+  let deferredInstallPrompt = null;
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW reg failed', err));
@@ -3278,32 +3267,36 @@
   }
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    deferredPrompt = e;
+    deferredInstallPrompt = e;
   });
 
-  (function() {
-    const cta = document.getElementById('install-cta');
-    const modal = document.getElementById('install-modal');
-    if (!cta || !modal) return;
-    cta.addEventListener('click', async (e) => {
-      e.preventDefault();
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-        deferredPrompt = null;
+  async function handleInstall(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (deferredInstallPrompt) {
+      try {
+        deferredInstallPrompt.prompt();
+        const choice = await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
         if (choice && choice.outcome === 'accepted') {
-          cta.style.display = 'none';
+          const cta = document.getElementById('install-cta');
+          if (cta) cta.style.display = 'none';
         }
-      } else {
-        modal.classList.add('open');
-      }
-    });
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) modal.classList.remove('open');
-    });
-    // hide CTA if already installed
+        return;
+      } catch(err) { /* fall through to modal */ }
+    }
+    const modal = document.getElementById('install-modal');
+    if (modal) modal.classList.add('open');
+  }
+  (function() {
+    const modal = document.getElementById('install-modal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('open');
+      });
+    }
     if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
-      cta.style.display = 'none';
+      const cta = document.getElementById('install-cta');
+      if (cta) cta.style.display = 'none';
     }
   })();
   function toggleAll(open) {
