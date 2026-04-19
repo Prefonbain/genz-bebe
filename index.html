@@ -934,6 +934,170 @@
     font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em;
   }
 
+  /* ============ PLANNING & REFERENCE ============ */
+  .planning-section { padding: 8px 24px 24px; }
+  .planning-head { text-align: center; margin-bottom: 20px; }
+  .planning-head h2 {
+    font-size: 32px; letter-spacing: -0.02em; margin: 4px 0 0;
+    background: linear-gradient(120deg, var(--alpine), var(--plum));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+  }
+  .planning-grid {
+    max-width: 1180px; margin: 0 auto;
+    display: grid; gap: 16px;
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 820px) { .planning-grid { grid-template-columns: 1fr; } }
+  .planning-box {
+    background: var(--glass-strong);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .planning-box[open] { box-shadow: var(--shadow-md); }
+  .planning-box.full { grid-column: 1 / -1; }
+  .planning-box > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid transparent;
+  }
+  .planning-box[open] > summary { border-bottom-color: var(--line); }
+  .planning-box > summary::-webkit-details-marker { display: none; }
+  .planning-box > summary::marker { display: none; }
+  .planning-summary-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .planning-icon { font-size: 20px; flex-shrink: 0; }
+  .planning-title { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.005em; }
+  .planning-sub { font-size: 11px; color: var(--ink-faint); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .planning-chev {
+    width: 14px; height: 14px; color: var(--ink-faint);
+    transition: transform 0.2s ease; flex-shrink: 0;
+  }
+  .planning-box[open] .planning-chev { transform: rotate(180deg); }
+  .planning-body { padding: 16px 20px 20px; }
+
+  /* Decisions */
+  .decision { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .decision:last-child { border-bottom: none; }
+  .decision-status {
+    font-size: 9px; font-weight: 800; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 999px;
+    white-space: nowrap;
+  }
+  .decision-status.open { background: rgba(244, 162, 97, 0.18); color: #B67A28; }
+  .decision-status.soon { background: rgba(230, 84, 144, 0.18); color: #B8326B; }
+  .decision-status.done { background: rgba(42, 157, 143, 0.18); color: #1E7D6F; }
+  .decision-text { color: var(--ink); font-weight: 500; }
+  .decision-text .sub { font-size: 11px; color: var(--ink-faint); display: block; margin-top: 2px; }
+  .decision-deadline { font-size: 11px; color: var(--ink-faint); font-weight: 600; white-space: nowrap; }
+
+  /* Essentials */
+  .essential { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .essential:last-child { border-bottom: none; }
+  .essential-name { color: var(--ink); font-weight: 600; }
+  .essential-name .sub { font-size: 11px; color: var(--ink-faint); display: block; margin-top: 1px; font-weight: 500; }
+  .essential-contact {
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--alpine);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgba(11, 163, 179, 0.1);
+    border: 1px solid rgba(11, 163, 179, 0.25);
+    white-space: nowrap;
+  }
+  .essential-contact:hover { background: var(--alpine); color: white; border-color: var(--alpine); }
+  .essential-contact.tbd {
+    color: var(--ink-faint);
+    background: rgba(148,160,172,0.1);
+    border-color: var(--line-strong);
+  }
+  .essential-group-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--alpine); font-weight: 800;
+    margin: 14px 0 4px;
+  }
+  .essential-group-label:first-child { margin-top: 0; }
+
+  /* Packing */
+  .packing-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px; font-size: 12px; color: var(--ink-soft);
+    flex-wrap: wrap; gap: 8px;
+  }
+  .packing-progress {
+    font-weight: 700; color: var(--alpine);
+  }
+  .packing-reset {
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 6px;
+    background: rgba(148,160,172,0.14); color: var(--ink-soft);
+    border: 1px solid var(--line-strong);
+    cursor: pointer; font-weight: 700;
+  }
+  .packing-reset:hover { background: var(--rose); color: white; border-color: var(--rose); }
+  .packing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 620px) { .packing-grid { grid-template-columns: 1fr; } }
+  .packing-cat {
+    font-size: 11px; font-weight: 800; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--alpine);
+    margin: 14px 0 6px; padding-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .packing-cat:first-child { margin-top: 0; }
+  .packing-subcat {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-faint);
+    margin: 8px 0 4px;
+  }
+  .packing-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 4px 0; font-size: 13px; cursor: pointer;
+    line-height: 1.4;
+  }
+  .packing-item input[type=checkbox] {
+    appearance: none; -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border: 2px solid var(--line-strong);
+    border-radius: 4px; background: white;
+    cursor: pointer; flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.15s ease;
+  }
+  .packing-item input[type=checkbox]:checked {
+    background: var(--sl); border-color: var(--sl);
+  }
+  .packing-item input[type=checkbox]:checked::after {
+    content: "✓"; color: white; font-size: 11px; font-weight: 800;
+    display: block; text-align: center; line-height: 12px;
+  }
+  .packing-item input[type=checkbox]:checked + span {
+    color: var(--ink-faint); text-decoration: line-through;
+  }
+
+  /* Map link pill */
+  .map-link {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 700;
+    color: var(--alpine); text-decoration: none;
+    padding: 2px 7px; border-radius: 999px;
+    background: rgba(11,163,179,0.1);
+    border: 1px solid rgba(11,163,179,0.25);
+    margin-left: 6px;
+    vertical-align: middle;
+    transition: all 0.15s ease;
+  }
+  .map-link:hover { background: var(--alpine); color: white; border-color: var(--alpine); }
+
   /* ============ MOBILE ============ */
   @media (max-width: 620px) {
     .wrap { padding: 0 16px; }
@@ -1260,7 +1424,7 @@
           <div class="track sl">
             <span class="section-label">Lodging</span>
             <div class="activity booked">
-              <div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40453270-christchurch-glamorous-2-bed-cbd-townhouse-with-king-bed" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">Christchurch CBD Townhouse ↗</a> <span class="activity-cost">$193.50/night</span></div>
+              <div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40453270-christchurch-glamorous-2-bed-cbd-townhouse-with-king-bed" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">Christchurch CBD Townhouse ↗</a><a href="https://maps.google.com/?q=Christchurch+CBD+New+Regent+Street" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$193.50/night</span></div>
               <div class="activity-body">Glamorous 2-bed townhouse with king bed · Marriott Homes &amp; Villas.</div>
               <div class="activity-meta"><span class="booking">Booked · M1771212940768</span></div>
             </div>
@@ -1294,7 +1458,7 @@
           <div class="track sl">
             <span class="section-label">Lodging</span>
             <div class="activity booked">
-              <div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40453270-christchurch-glamorous-2-bed-cbd-townhouse-with-king-bed" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">Christchurch CBD Townhouse ↗</a> <span class="activity-cost">$193.50</span></div>
+              <div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40453270-christchurch-glamorous-2-bed-cbd-townhouse-with-king-bed" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">Christchurch CBD Townhouse ↗</a><a href="https://maps.google.com/?q=Christchurch+CBD+New+Regent+Street" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$193.50</span></div>
               <div class="activity-meta"><span class="booking">Booked · M1771212940768</span></div>
             </div>
             <span class="section-label">Activities</span>
@@ -1341,7 +1505,7 @@
             <div class="track-head"><span class="pill sl">S&amp;L</span><h4>Tekapo</h4></div>
             <span class="section-label">Lodging</span>
             <div class="activity booked">
-              <div class="activity-title">Peppers Bluewater Resort <span class="activity-cost">$244.33/n</span></div>
+              <div class="activity-title">Peppers Bluewater Resort <a href="https://maps.google.com/?q=Peppers+Bluewater+Resort+Lake+Tekapo" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$244.33/n</span></div>
               <div class="activity-meta"><span class="booking">Booked · #364075017998</span></div>
             </div>
             <span class="section-label">Drive day · ~5 hr total with stops (~3 hr direct)</span>
@@ -1382,7 +1546,7 @@
             <div class="track-head"><span class="pill ja">J&amp;A</span><h4>Queenstown · Arrival</h4></div>
             <span class="section-label">Lodging</span>
             <div class="activity booked">
-              <div class="activity-title">Queenstown AirBnb <span class="activity-cost">$446.97/n</span></div>
+              <div class="activity-title">Queenstown AirBnb <a href="https://maps.google.com/?q=30+Wynyard+Crescent+Queenstown" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$446.97/n</span></div>
               <div class="activity-body">30 Wynyard Crescent, Queenstown.</div>
               <div class="activity-meta"><span class="booking">Reserved · HMR8T8DPCQ</span></div>
             </div>
@@ -1571,7 +1735,7 @@
           <div class="track all">
             <span class="section-label">Lodging</span>
             <div class="activity booked">
-              <div class="activity-title">Te Anau AirBnb <span class="activity-cost">$435/n</span></div>
+              <div class="activity-title">Te Anau AirBnb <a href="https://maps.google.com/?q=12+Worsley+Street+Te+Anau" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$435/n</span></div>
               <div class="activity-body">12 Worsley St, Te Anau.</div>
               <div class="activity-meta"><span class="booking">Reserved · HMKECPN95F</span></div>
             </div>
@@ -1641,7 +1805,7 @@
           <div class="track all">
             <span class="section-label">Lodging</span>
             <div class="activity booked">
-              <div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40451683-wanaka-the-lookout-lake-views" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">The Lookout · Lake Views ↗</a> <span class="activity-cost">$400/night</span></div>
+              <div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40451683-wanaka-the-lookout-lake-views" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">The Lookout · Lake Views ↗</a><a href="https://maps.google.com/?q=The+Lookout+Wanaka+Marriott+Homes+Villas" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$400/night</span></div>
               <div class="activity-body">Wanaka lake views · Marriott Homes &amp; Villas.</div>
             </div>
             <span class="section-label">Drive · Te Anau → Wanaka</span>
@@ -1752,6 +1916,178 @@
   </div>
 </section>
 
+
+<!-- ============ PLANNING & REFERENCE ============ -->
+<section class="planning-section">
+  <div class="wrap">
+    <div class="planning-head">
+      <div class="kicker" style="color:var(--ink-faint);">Planning &amp; Reference</div>
+      <h2>To-do, essentials &amp; packing</h2>
+    </div>
+
+    <div class="planning-grid">
+
+      <!-- DECISIONS -->
+      <details class="planning-box" open>
+        <summary>
+          <div class="planning-summary-left">
+            <span class="planning-icon">✅</span>
+            <div>
+              <div class="planning-title">Decisions to lock in</div>
+              <div class="planning-sub">Open items · pre-trip</div>
+            </div>
+          </div>
+          <svg class="planning-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="planning-body">
+          <div class="decision">
+            <span class="decision-status soon">Soon</span>
+            <div class="decision-text">S&amp;L flight times<span class="sub">Depart US May 14 · arrive CHC May 16 — confirm specific times</span></div>
+            <span class="decision-deadline">Pre-trip</span>
+          </div>
+          <div class="decision">
+            <span class="decision-status soon">Soon</span>
+            <div class="decision-text">J&amp;A flight details<span class="sub">Arrival day/time Queenstown May 19 — needed for pickup logistics</span></div>
+            <span class="decision-deadline">Pre-trip</span>
+          </div>
+          <div class="decision">
+            <span class="decision-status open">Open</span>
+            <div class="decision-text">Reunion dinner May 21<span class="sub">Book a Queenstown spot · Flame, Rata, or similar</span></div>
+            <span class="decision-deadline">~May 14</span>
+          </div>
+          <div class="decision">
+            <span class="decision-status open">Open</span>
+            <div class="decision-text">Pick 3 – 4 Gibbston wineries<span class="sub">Kinross · Mt Rosa · Waitiri Creek · The Church</span></div>
+            <span class="decision-deadline">~May 20</span>
+          </div>
+          <div class="decision">
+            <span class="decision-status open">Open</span>
+            <div class="decision-text">Glow-worm cave on May 24?<span class="sub">Te Anau · evening option</span></div>
+            <span class="decision-deadline">~May 20</span>
+          </div>
+          <div class="decision">
+            <span class="decision-status open">Open</span>
+            <div class="decision-text">Doubtful Sound add-on May 25?<span class="sub">Stack onto Milford day or skip</span></div>
+            <span class="decision-deadline">~May 20</span>
+          </div>
+          <div class="decision">
+            <span class="decision-status open">Open</span>
+            <div class="decision-text">Skyline Gondola + Luge — who pays?<span class="sub">$240 · Typically each couple pays own, or one covers &amp; settles</span></div>
+            <span class="decision-deadline">Day-of</span>
+          </div>
+          <div class="decision">
+            <span class="decision-status open">Open</span>
+            <div class="decision-text">Milford cruise — who pays?<span class="sub">$442 · Pre-booked; settle at venue or beforehand</span></div>
+            <span class="decision-deadline">May 25</span>
+          </div>
+          <div class="decision">
+            <span class="decision-status open">Open</span>
+            <div class="decision-text">Wanaka May 29 open day plan<span class="sub">#thatwanakatree · Puzzling World · second hike</span></div>
+            <span class="decision-deadline">On-trip</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- ESSENTIALS -->
+      <details class="planning-box" open>
+        <summary>
+          <div class="planning-summary-left">
+            <span class="planning-icon">📞</span>
+            <div>
+              <div class="planning-title">Essentials</div>
+              <div class="planning-sub">Tap to call</div>
+            </div>
+          </div>
+          <svg class="planning-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="planning-body">
+
+          <div class="essential-group-label">Emergency · NZ</div>
+          <div class="essential">
+            <div class="essential-name">Emergency (police · fire · ambulance)</div>
+            <a href="tel:111" class="essential-contact">111</a>
+          </div>
+          <div class="essential">
+            <div class="essential-name">Non-emergency police</div>
+            <a href="tel:105" class="essential-contact">105</a>
+          </div>
+          <div class="essential">
+            <div class="essential-name">Healthline (free medical advice)</div>
+            <a href="tel:0800611116" class="essential-contact">0800 611 116</a>
+          </div>
+          <div class="essential">
+            <div class="essential-name">US Embassy · Wellington</div>
+            <a href="tel:+6444626000" class="essential-contact">+64 4 462 6000</a>
+          </div>
+
+          <div class="essential-group-label">Transport</div>
+          <div class="essential">
+            <div class="essential-name">Touch Down Car Rentals<span class="sub">Booking U-01-13562</span></div>
+            <span class="essential-contact tbd">TBD</span>
+          </div>
+
+          <div class="essential-group-label">Lodging</div>
+          <div class="essential">
+            <div class="essential-name">Christchurch Townhouse<span class="sub">Marriott Homes &amp; Villas · M1771212940768</span></div>
+            <span class="essential-contact tbd">Host TBD</span>
+          </div>
+          <div class="essential">
+            <div class="essential-name">Peppers Bluewater Resort · Tekapo<span class="sub">Booking #364075017998</span></div>
+            <span class="essential-contact tbd">TBD</span>
+          </div>
+          <div class="essential">
+            <div class="essential-name">Queenstown AirBnb<span class="sub">30 Wynyard Cres · HMR8T8DPCQ</span></div>
+            <span class="essential-contact tbd">Host TBD</span>
+          </div>
+          <div class="essential">
+            <div class="essential-name">Te Anau AirBnb<span class="sub">12 Worsley St · HMKECPN95F</span></div>
+            <span class="essential-contact tbd">Host TBD</span>
+          </div>
+          <div class="essential">
+            <div class="essential-name">The Lookout Wanaka<span class="sub">Marriott Homes &amp; Villas</span></div>
+            <span class="essential-contact tbd">Host TBD</span>
+          </div>
+
+          <div class="essential-group-label">Tours · Activities</div>
+          <div class="essential">
+            <div class="essential-name">Akaroa Dolphin Cruise<span class="sub">Booking RD01XRM · May 17</span></div>
+            <span class="essential-contact tbd">TBD</span>
+          </div>
+          <div class="essential">
+            <div class="essential-name">Dark Sky Project · Tekapo<span class="sub">Booking 678860 · May 19</span></div>
+            <span class="essential-contact tbd">TBD</span>
+          </div>
+          <div class="essential">
+            <div class="essential-name">Milford Sound Boutique Cruise<span class="sub">May 25 · 10:45am</span></div>
+            <span class="essential-contact tbd">TBD</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- PACKING LIST -->
+      <details class="planning-box full">
+        <summary>
+          <div class="planning-summary-left">
+            <span class="planning-icon">🎒</span>
+            <div>
+              <div class="planning-title">Packing list</div>
+              <div class="planning-sub"><span class="packing-progress" id="packing-progress">0 / 0</span> · Saves per device</div>
+            </div>
+          </div>
+          <svg class="planning-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="planning-body">
+          <div class="packing-head">
+            <span>Checkbox state saves in your browser · share progress by loading the page on the device you packed with.</span>
+            <button class="packing-reset" onclick="resetPacking()">Reset all</button>
+          </div>
+          <div class="packing-grid" id="packing-grid"></div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
 
 <!-- ============ MONEY (costs, splits & balance) ============ -->
 <section class="money-section">
@@ -2088,6 +2424,98 @@
     }
   }
   loadForecasts();
+
+  // ============ Packing list ============
+  const PACKING_DATA = [
+    { cat: "Footwear", items: [
+      { sub: "Stephen", list: ["Hiking boots (Hoka Anacapa 2 Mid GTX)", "Walking shoes for towns", "Casual shoes for dining", "Sandals / slides (optional)"] },
+      { sub: "Lindsay", list: ["Hiking boots (waterproof, broken in)", "Walking shoes", "Casual shoes for dining", "Sandals (optional)"] }
+    ]},
+    { cat: "Clothing", items: [
+      { sub: "Base layers (per person)", list: ["4 – 5 pairs underwear", "4 – 5 pairs socks (2 – 3 wool hiking)", "2 sports bras / undershirts", "1 – 2 thermal base-layer tops", "1 thermal base-layer bottom"] },
+      { sub: "Mid layers", list: ["3 – 4 t-shirts / casual tops", "1 – 2 long-sleeve shirts", "1 fleece or light insulated jacket", "1 warm sweater or hoodie"] },
+      { sub: "Outer layers", list: ["Waterproof rain jacket (essential)", "Rain pants (recommended for Milford)", "Puffy jacket or vest (evenings, Mt Cook)"] },
+      { sub: "Bottoms", list: ["2 pairs hiking / zip-off pants", "1 pair jeans or casual pants", "1 pair shorts (for layering)", "1 pair comfy travel pants"] },
+      { sub: "Accessories", list: ["Warm beanie / hat", "Sun hat or cap", "Sunglasses", "Buff or neck gaiter", "Lightweight gloves", "Belt"] },
+      { sub: "Tekapo evening (May 19)", list: ["Stephen: button-down + chinos", "Lindsay: nice-for-photos outfit", "Both: layers for sunset at Church of the Good Shepherd"] }
+    ]},
+    { cat: "Hiking & Outdoor", items: [
+      { sub: "Daypacks & bags", list: ["Daypack 20 – 30L (Stephen)", "Daypack 20 – 30L (Lindsay)", "Dry bags / pack covers"] },
+      { sub: "Essentials", list: ["2 reusable water bottles (1L each)", "Hiking poles (optional · Ben Lomond, Rob Roy)", "Headlamps + extra batteries", "Whistle", "Offline trail maps"] },
+      { sub: "Sun & weather", list: ["Sunscreen SPF 30+ (NZ sun is intense)", "Lip balm with SPF", "Insect repellent (sandflies in Milford/Te Anau)", "Compact umbrella"] }
+    ]},
+    { cat: "Electronics & Documents", items: [
+      { sub: "Electronics", list: ["Phones + chargers", "Camera + extra batteries / cards", "Portable power bank", "Universal adapter (NZ Type I plugs)", "Laptop / tablet (if work check-in)", "Headphones", "E-readers for flights"] },
+      { sub: "Documents & money", list: ["Passports (check expiration!)", "Printed flight confirmations (May 14 & May 30)", "Printed accommodation confirmations", "Travel insurance documents", "Credit cards (Visa / MC widely accepted)", "Some NZD cash", "Driver's licenses (for rental)", "Epic sabbatical reimbursement folder"] }
+    ]},
+    { cat: "Toiletries & Personal Care", items: [
+      { sub: "Shared", list: ["Toothbrushes + toothpaste", "Shampoo / conditioner (travel size)", "Body wash / soap", "Deodorant", "Razor + shaving cream", "Hairbrush / comb", "Hair ties / clips", "Moisturizer", "Nail clippers", "Tweezers", "Cotton swabs"] },
+      { sub: "Medications & first aid", list: ["Prescription medications (extra supply)", "Pain relievers (ibuprofen, acetaminophen)", "Antihistamine", "Motion sickness meds (Milford cruise)", "Blister treatment (Moleskin, Band-Aids)", "Basic first-aid kit", "Hand sanitizer", "Tissues"] },
+      { sub: "Personal care", list: ["Contacts + solution / glasses", "Feminine hygiene products", "Specific skincare products"] }
+    ]},
+    { cat: "Miscellaneous", items: [
+      { sub: "Comfort & convenience", list: ["Reusable shopping bags (NZ charges for plastic)", "Laundry detergent packets (Wanaka laundry day)", "Ziploc bags (various sizes)", "Packable tote bag", "Travel pillow (long flights)", "Eye mask + earplugs", "Book / magazine", "Playing cards / travel games", "Notebook + pen"] },
+      { sub: "Hiking snacks", list: ["Protein bars", "Trail mix", "Electrolyte packets"] },
+      { sub: "Car essentials", list: ["Phone mount for navigation", "Car charger / USB adapter", "Cooler bag (optional)"] }
+    ]},
+    { cat: "Tips", items: [
+      { sub: "Reminders", list: ["Layer up · temps 40 – 60°F", "Waterproof everything", "Break in boots NOW (before May 16)", "Check weather pre-departure", "Do laundry in Wanaka", "Leave luggage space for souvenirs"] }
+    ]}
+  ];
+
+  function renderPacking() {
+    const grid = document.getElementById('packing-grid');
+    if (!grid) return;
+    const saved = JSON.parse(localStorage.getItem('nz-packing') || '{}');
+    // split categories across two columns: first half vs second half by index
+    const half = Math.ceil(PACKING_DATA.length / 2);
+    const colA = PACKING_DATA.slice(0, half);
+    const colB = PACKING_DATA.slice(half);
+
+    function colHtml(cats) {
+      return cats.map(cat => {
+        const subs = cat.items.map(sub => {
+          const items = sub.list.map(it => {
+            const key = cat.cat + '::' + sub.sub + '::' + it;
+            const checked = saved[key] ? 'checked' : '';
+            const id = 'pk-' + btoa(key).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20);
+            return '<label class="packing-item"><input type="checkbox" ' + checked + ' data-key="' + key.replace(/"/g, '&quot;') + '"><span>' + it + '</span></label>';
+          }).join('');
+          return '<div class="packing-subcat">' + sub.sub + '</div>' + items;
+        }).join('');
+        return '<div class="packing-cat">' + cat.cat + '</div>' + subs;
+      }).join('');
+    }
+
+    grid.innerHTML = '<div>' + colHtml(colA) + '</div><div>' + colHtml(colB) + '</div>';
+    grid.addEventListener('change', (e) => {
+      if (e.target.matches('input[type=checkbox]')) {
+        const key = e.target.dataset.key;
+        const saved = JSON.parse(localStorage.getItem('nz-packing') || '{}');
+        if (e.target.checked) saved[key] = true;
+        else delete saved[key];
+        localStorage.setItem('nz-packing', JSON.stringify(saved));
+        updatePackingProgress();
+      }
+    });
+    updatePackingProgress();
+  }
+
+  function updatePackingProgress() {
+    const total = PACKING_DATA.reduce((s, c) => s + c.items.reduce((s2, sub) => s2 + sub.list.length, 0), 0);
+    const saved = JSON.parse(localStorage.getItem('nz-packing') || '{}');
+    const done = Object.keys(saved).length;
+    const el = document.getElementById('packing-progress');
+    if (el) el.textContent = done + ' / ' + total;
+  }
+
+  function resetPacking() {
+    if (!confirm('Clear all packing checkboxes?')) return;
+    localStorage.removeItem('nz-packing');
+    renderPacking();
+  }
+
+  renderPacking();
   function toggleAll(open) {
     document.querySelectorAll('details.day').forEach(d => d.open = open);
   }
