@@ -1,0 +1,14 @@
+{
+  "name": "New Zealand 2026 · Sabbatical",
+  "short_name": "NZ 2026",
+  "description": "Stephen & Lindsay's South Island sabbatical planner",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F4EFE8",
+  "theme_color": "#0A5C7E",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

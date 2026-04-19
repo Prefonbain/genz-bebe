@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Zealand 2026 · Sabbatical Itinerary</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A5C7E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NZ 2026">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <style>
   :root {
     /* vibrant NZ palette */
@@ -934,6 +941,279 @@
     font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em;
   }
 
+  /* ============ STICKY NAV ============ */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 2px 8px rgba(14,34,48,0.04);
+  }
+  .nav-inner {
+    max-width: 1180px; margin: 0 auto; padding: 10px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .nav-brand {
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--alpine);
+    text-decoration: none;
+    white-space: nowrap;
+    background: linear-gradient(135deg, var(--alpine), var(--coral));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 4px; flex: 1; }
+  .nav-links a {
+    padding: 6px 12px; border-radius: 8px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft); text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--alpine); background: rgba(11,163,179,0.08); }
+  .nav-tools { display: flex; gap: 8px; align-items: center; }
+  .nav-search {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+    width: 180px;
+    color: var(--ink);
+    outline: none;
+    transition: all 0.15s ease;
+  }
+  .nav-search:focus { border-color: var(--lake); width: 260px; }
+  .nav-btn {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1;
+  }
+  .nav-btn:hover { background: var(--alpine); border-color: var(--alpine); }
+  @media (max-width: 720px) {
+    .nav-inner { padding: 8px 14px; gap: 10px; }
+    .nav-links { display: none; }
+    .nav-search { width: 100%; flex: 1; }
+    .nav-search:focus { width: 100%; }
+  }
+
+  /* search highlighting */
+  mark.search-hit {
+    background: rgba(244, 162, 97, 0.4);
+    color: var(--ink);
+    padding: 0 2px;
+    border-radius: 3px;
+  }
+  .day.search-match { outline: 2px solid var(--gold); }
+
+  /* "you are here" today marker */
+  .tl-cell.tl-today {
+    box-shadow: 0 0 0 3px var(--gold), 0 6px 20px rgba(244,162,97,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+    animation: today-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes today-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px var(--gold), 0 6px 20px rgba(244,162,97,0.45), inset 0 1px 0 rgba(255,255,255,0.25); }
+    50% { box-shadow: 0 0 0 5px var(--gold), 0 8px 28px rgba(244,162,97,0.6), inset 0 1px 0 rgba(255,255,255,0.25); }
+  }
+  .tl-today-badge {
+    position: absolute; top: 6px; left: 8px;
+    background: var(--gold); color: white;
+    font-size: 8px; font-weight: 800;
+    letter-spacing: 0.12em;
+    padding: 3px 6px; border-radius: 4px;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+  .day.today-card {
+    border: 2px solid var(--gold) !important;
+    box-shadow: 0 0 0 4px rgba(244,162,97,0.15), var(--shadow-md) !important;
+  }
+  .day-today-badge {
+    display: inline-block;
+    background: var(--gold); color: white;
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 0.12em;
+    padding: 2px 7px; border-radius: 999px;
+    margin-left: 6px;
+    text-transform: uppercase;
+  }
+  .trip-day-counter {
+    font-size: 11px; color: var(--gold); font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ============ CURRENCY WIDGET ============ */
+  .currency-fab {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 95;
+    background: linear-gradient(135deg, var(--alpine), var(--lake));
+    color: white;
+    border: none;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(10,92,126,0.35);
+    transition: transform 0.2s ease;
+  }
+  .currency-fab:hover { transform: scale(1.08); }
+  .currency-panel {
+    position: fixed;
+    bottom: 88px; right: 24px;
+    z-index: 95;
+    background: var(--glass-strong);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: var(--shadow-lg);
+    width: 260px;
+    display: none;
+  }
+  .currency-panel.open { display: block; }
+  .currency-title {
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 10px;
+  }
+  .currency-row {
+    display: grid; grid-template-columns: 50px 1fr; gap: 8px;
+    align-items: center; margin-bottom: 8px;
+  }
+  .currency-row label {
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.1em; color: var(--alpine);
+  }
+  .currency-row input {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 15px; font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    outline: none;
+    text-align: right;
+  }
+  .currency-row input:focus { border-color: var(--lake); }
+  .currency-rate {
+    font-size: 10px; color: var(--ink-faint);
+    letter-spacing: 0.04em; text-align: center;
+    margin-top: 10px; padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ============ DAY NOTES & SHARE ============ */
+  .day-notes {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px dashed var(--line-strong);
+  }
+  .day-notes textarea {
+    width: 100%;
+    background: rgba(255, 239, 200, 0.35);
+    border: 1px solid rgba(244, 162, 97, 0.3);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    resize: vertical;
+    min-height: 48px;
+    outline: none;
+    transition: all 0.15s ease;
+  }
+  .day-notes textarea:focus {
+    border-color: var(--gold);
+    background: rgba(255, 239, 200, 0.6);
+  }
+  .day-notes textarea::placeholder { color: var(--ink-faint); font-style: italic; }
+  .day-share {
+    margin-top: 10px; display: flex; gap: 8px;
+  }
+  .day-share-btn {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 5px 12px; border-radius: 8px;
+    background: rgba(11,163,179,0.1);
+    border: 1px solid rgba(11,163,179,0.25);
+    color: var(--alpine);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .day-share-btn:hover { background: var(--alpine); color: white; border-color: var(--alpine); }
+
+  /* ============ HERO PHOTO SWAP ============ */
+  .hero-swap {
+    position: absolute;
+    top: 16px; left: 16px;
+    z-index: 3;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+  }
+  .phase-hero:hover .hero-swap { opacity: 1; }
+  .hero-swap:hover { background: var(--alpine); border-color: var(--alpine); }
+
+  /* ============ DARK MODE ============ */
+  body.dark {
+    --bg: #0A1420;
+    --ink: #E5EBF0;
+    --ink-soft: #95A3B0;
+    --ink-faint: #5A6670;
+    --line: rgba(255,255,255,0.08);
+    --line-strong: rgba(255,255,255,0.18);
+    --glass: rgba(26, 42, 60, 0.55);
+    --glass-strong: rgba(26, 42, 60, 0.75);
+    --glass-soft: rgba(26, 42, 60, 0.4);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.25);
+    --shadow-md: 0 6px 16px rgba(0,0,0,0.4), 0 18px 40px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.5), 0 32px 80px rgba(0,0,0,0.4);
+  }
+  body.dark::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 260' preserveAspectRatio='none'><path fill='%23ffffff' fill-opacity='0.04' d='M0,260 L0,160 L80,180 L140,120 L200,150 L280,80 L340,130 L420,70 L500,140 L580,90 L660,160 L740,100 L820,150 L900,70 L980,130 L1060,90 L1140,150 L1220,110 L1300,160 L1380,120 L1440,170 L1440,260 Z'/><path fill='%23ffffff' fill-opacity='0.08' d='M0,260 L0,200 L60,220 L140,170 L220,210 L300,160 L380,200 L460,150 L540,190 L620,160 L700,210 L780,170 L860,200 L940,160 L1020,200 L1100,170 L1180,210 L1260,180 L1340,220 L1440,190 L1440,260 Z'/></svg>");
+  }
+  body.dark {
+    background-image:
+      radial-gradient(1100px 700px at 8% -5%, rgba(11, 163, 179, 0.15), transparent 55%),
+      radial-gradient(1000px 600px at 100% 10%, rgba(242, 107, 94, 0.12), transparent 55%),
+      radial-gradient(1200px 700px at 50% 100%, rgba(123, 75, 148, 0.1), transparent 55%);
+  }
+  body.dark .sticky-nav { background: rgba(10, 20, 32, 0.7); }
+  body.dark .nav-search,
+  body.dark .nav-btn,
+  body.dark .currency-row input {
+    background: rgba(255,255,255,0.05);
+    color: var(--ink);
+  }
+  body.dark .day-notes textarea {
+    background: rgba(244, 162, 97, 0.08);
+    color: var(--ink);
+  }
+  body.dark .activity { background: rgba(255,255,255,0.04); }
+  body.dark .activity.booked { background: rgba(11, 163, 179, 0.1); }
+  body.dark .track { background: rgba(255,255,255,0.03); }
+
   /* ============ PLANNING & REFERENCE ============ */
   .planning-section { padding: 8px 24px 24px; }
   .planning-head { text-align: center; margin-bottom: 20px; }
@@ -1224,7 +1504,37 @@
 </head>
 <body>
 
-<header class="hero">
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">NZ '26</a>
+    <div class="nav-links">
+      <a href="#calendar">Calendar</a>
+      <a href="#itinerary">Itinerary</a>
+      <a href="#planning">Planning</a>
+      <a href="#money">Money</a>
+    </div>
+    <div class="nav-tools">
+      <input type="search" class="nav-search" id="nav-search" placeholder="Search…" autocomplete="off">
+      <button class="nav-btn" id="theme-toggle" title="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<button class="currency-fab" id="currency-fab" title="Currency converter">💱</button>
+<div class="currency-panel" id="currency-panel">
+  <div class="currency-title">NZD ↔ USD</div>
+  <div class="currency-row">
+    <label>NZD</label>
+    <input type="number" id="cx-nzd" value="100" inputmode="decimal">
+  </div>
+  <div class="currency-row">
+    <label>USD</label>
+    <input type="number" id="cx-usd" value="57.14" inputmode="decimal">
+  </div>
+  <div class="currency-rate" id="cx-rate">1 NZD ≈ $0.571 USD · rate caches daily</div>
+</div>
+
+<header class="hero" id="top">
   <div class="kicker">Sabbatical · May 2026</div>
   <h1>New Zealand</h1>
   <p class="hero-sub">Two weeks on the <strong>South Island</strong>. Fjords, mountain passes, glacier hikes, stargazing, and lake-view wine.</p>
@@ -1251,7 +1561,7 @@
 </header>
 
 <!-- ============ TIMELINE ============ -->
-<section class="tl-section">
+<section class="tl-section" id="calendar">
   <div class="wrap">
     <div class="tl-card">
       <div class="tl-head">
@@ -1390,7 +1700,7 @@
 </div>
 
 <!-- ============ PHASE 1: CHRISTCHURCH ============ -->
-<section class="phase">
+<section class="phase" id="itinerary">
   <div class="phase-hero">
     <img src="images/christchurch.jpg" alt="Christchurch">
     <div class="phase-weather"><span class="pw-icon">🌦️</span><span class="pw-temp">57°/39°F</span><span class="pw-cond">Cool &amp; showery</span></div>
@@ -1918,7 +2228,7 @@
 
 
 <!-- ============ PLANNING & REFERENCE ============ -->
-<section class="planning-section">
+<section class="planning-section" id="planning">
   <div class="wrap">
     <div class="planning-head">
       <div class="kicker" style="color:var(--ink-faint);">Planning &amp; Reference</div>
@@ -2090,7 +2400,7 @@
 </section>
 
 <!-- ============ MONEY (costs, splits & balance) ============ -->
-<section class="money-section">
+<section class="money-section" id="money">
   <div class="wrap">
     <div class="money-head">
       <div class="kicker" style="color:var(--ink-faint);">Money</div>
@@ -2516,6 +2826,242 @@
   }
 
   renderPacking();
+
+  // ============ Theme toggle ============
+  (function() {
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    const saved = localStorage.getItem('nz-theme');
+    if (saved === 'dark') { document.body.classList.add('dark'); btn.textContent = '☀️'; }
+    btn.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark');
+      btn.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('nz-theme', isDark ? 'dark' : 'light');
+    });
+  })();
+
+  // ============ Search ============
+  (function() {
+    const input = document.getElementById('nav-search');
+    if (!input) return;
+    let timer;
+    input.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => runSearch(input.value.trim().toLowerCase()), 150);
+    });
+    function runSearch(q) {
+      document.querySelectorAll('details.day').forEach(d => d.classList.remove('search-match'));
+      if (!q) return;
+      let first = null;
+      document.querySelectorAll('details.day').forEach(d => {
+        if (d.textContent.toLowerCase().includes(q)) {
+          d.classList.add('search-match');
+          d.open = true;
+          if (!first) first = d;
+        }
+      });
+      if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  })();
+
+  // ============ Today marker & day counter ============
+  (function() {
+    const tripStart = new Date('2026-05-14T00:00:00');
+    const tripEnd = new Date('2026-05-30T23:59:59');
+    const firstDayOnIsland = new Date('2026-05-16T00:00:00');
+    const now = new Date();
+    if (now < tripStart || now > tripEnd) return;
+    if (now.getMonth() !== 4) return;
+    const day = now.getDate();
+    if (day < 14 || day > 30) return;
+
+    document.querySelectorAll('.tl-cell').forEach(c => {
+      const oc = c.getAttribute('onclick') || '';
+      if (oc.includes("'d-may" + day + "'")) {
+        c.classList.add('tl-today');
+        const badge = document.createElement('div');
+        badge.className = 'tl-today-badge';
+        badge.textContent = 'Today';
+        c.appendChild(badge);
+      }
+    });
+
+    const dayCard = document.getElementById('d-may' + day);
+    if (dayCard) {
+      dayCard.classList.add('today-card');
+      dayCard.open = true;
+      const title = dayCard.querySelector('.day-title');
+      if (title) {
+        const badge = document.createElement('span');
+        badge.className = 'day-today-badge';
+        badge.textContent = 'Today';
+        title.appendChild(badge);
+      }
+      const dayNum = Math.max(0, Math.ceil((now - firstDayOnIsland) / (1000*60*60*24))) + 1;
+      if (dayNum >= 1 && dayNum <= 15) {
+        const sub = dayCard.querySelector('.day-sub');
+        if (sub) {
+          const counter = document.createElement('div');
+          counter.className = 'trip-day-counter';
+          counter.textContent = 'Day ' + dayNum + ' of 15';
+          sub.parentElement.appendChild(counter);
+        }
+      }
+      setTimeout(() => dayCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
+    }
+  })();
+
+  // ============ Per-day notes + share ============
+  (function() {
+    document.querySelectorAll('details.day').forEach(d => {
+      const id = d.id;
+      if (!id) return;
+      const body = d.querySelector('.day-body');
+      if (!body) return;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'day-notes';
+      const label = document.createElement('span');
+      label.className = 'section-label';
+      label.textContent = '📝 My notes';
+      wrap.appendChild(label);
+
+      const ta = document.createElement('textarea');
+      ta.placeholder = 'Add a personal note for this day…';
+      ta.value = localStorage.getItem('note-' + id) || '';
+      ta.addEventListener('input', () => localStorage.setItem('note-' + id, ta.value));
+      wrap.appendChild(ta);
+
+      const shareWrap = document.createElement('div');
+      shareWrap.className = 'day-share';
+      const shareBtn = document.createElement('button');
+      shareBtn.className = 'day-share-btn';
+      shareBtn.textContent = '🔗 Copy link';
+      shareBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = location.origin + location.pathname + '#' + id;
+        const title = d.querySelector('.day-title')?.textContent?.trim() || id;
+        const text = 'NZ trip · ' + title + ' — ' + url;
+        if (navigator.share) {
+          navigator.share({ title: 'NZ 2026 · ' + title, text, url }).catch(() => {});
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(text);
+          const orig = shareBtn.textContent;
+          shareBtn.textContent = '✓ Copied!';
+          setTimeout(() => { shareBtn.textContent = orig; }, 1500);
+        }
+      });
+      shareWrap.appendChild(shareBtn);
+      wrap.appendChild(shareWrap);
+
+      body.appendChild(wrap);
+    });
+  })();
+
+  // ============ Phase hero photo swap ============
+  (function() {
+    document.querySelectorAll('.phase-hero').forEach((hero, i) => {
+      const img = hero.querySelector('img');
+      if (!img) return;
+      const saved = localStorage.getItem('hero-' + i);
+      if (saved) img.src = saved;
+
+      const btn = document.createElement('button');
+      btn.className = 'hero-swap';
+      btn.innerHTML = '📷';
+      btn.title = 'Upload your own photo (saved on this device)';
+      hero.appendChild(btn);
+
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.style.display = 'none';
+      hero.appendChild(input);
+
+      btn.addEventListener('click', (e) => { e.preventDefault(); input.click(); });
+      input.addEventListener('change', () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const tmp = new Image();
+          tmp.onload = () => {
+            const max = 1400;
+            let w = tmp.width, h = tmp.height;
+            if (w > max) { h = h * (max / w); w = max; }
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(tmp, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+            img.src = dataUrl;
+            try { localStorage.setItem('hero-' + i, dataUrl); }
+            catch(err) { console.warn('Photo too large to save', err); }
+          };
+          tmp.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+  })();
+
+  // ============ Currency converter ============
+  (function() {
+    const fab = document.getElementById('currency-fab');
+    const panel = document.getElementById('currency-panel');
+    const nzd = document.getElementById('cx-nzd');
+    const usd = document.getElementById('cx-usd');
+    const rateEl = document.getElementById('cx-rate');
+    if (!fab) return;
+
+    let rate = 0.571;
+    const cached = localStorage.getItem('nz-rate');
+    if (cached) {
+      try {
+        const obj = JSON.parse(cached);
+        if (obj.ts && (Date.now() - obj.ts) < 24*3600*1000) rate = obj.rate;
+      } catch(e) {}
+    }
+    updateRateDisplay();
+
+    fetch('https://api.exchangerate.host/latest?base=NZD&symbols=USD')
+      .then(r => r.json())
+      .then(d => {
+        if (d && d.rates && d.rates.USD) {
+          rate = d.rates.USD;
+          localStorage.setItem('nz-rate', JSON.stringify({ rate, ts: Date.now() }));
+          updateRateDisplay();
+          if (document.activeElement !== usd) usd.value = (parseFloat(nzd.value || 0) * rate).toFixed(2);
+        }
+      })
+      .catch(() => {});
+
+    function updateRateDisplay() {
+      rateEl.textContent = '1 NZD ≈ $' + rate.toFixed(3) + ' USD · caches daily';
+    }
+
+    fab.addEventListener('click', () => panel.classList.toggle('open'));
+    document.addEventListener('click', (e) => {
+      if (!panel.classList.contains('open')) return;
+      if (!panel.contains(e.target) && e.target !== fab) panel.classList.remove('open');
+    });
+
+    nzd.addEventListener('input', () => {
+      const v = parseFloat(nzd.value);
+      if (!isNaN(v)) usd.value = (v * rate).toFixed(2);
+    });
+    usd.addEventListener('input', () => {
+      const v = parseFloat(usd.value);
+      if (!isNaN(v)) nzd.value = (v / rate).toFixed(2);
+    });
+    usd.value = (parseFloat(nzd.value || 0) * rate).toFixed(2);
+  })();
+
+  // ============ PWA registration ============
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW reg failed', err));
+    });
+  }
   function toggleAll(open) {
     document.querySelectorAll('details.day').forEach(d => d.open = open);
   }

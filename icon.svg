@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A5C7E"/>
+      <stop offset="55%" stop-color="#0BA3B3"/>
+      <stop offset="100%" stop-color="#F26B5E"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M0,360 L80,340 L160,380 L240,320 L320,360 L400,310 L480,370 L512,340 L512,512 L0,512 Z" fill="#ffffff" fill-opacity="0.18"/>
+  <path d="M0,400 L100,380 L200,420 L300,380 L400,420 L512,400 L512,512 L0,512 Z" fill="#ffffff" fill-opacity="0.28"/>
+  <text x="50%" y="48%" text-anchor="middle" dominant-baseline="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="220" font-weight="800" fill="white" letter-spacing="-8">NZ</text>
+  <text x="50%" y="72%" text-anchor="middle" dominant-baseline="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="64" font-weight="700" fill="white" opacity="0.9" letter-spacing="4">2026</text>
+</svg>
