@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NZ 2026 · Money</title>
+<style>
+  :root {
+    --bg: #EAF4F6;
+    --ink: #0E2230;
+    --ink-soft: #4A5868;
+    --ink-faint: #8895A4;
+    --line: rgba(14, 34, 48, 0.08);
+    --line-strong: rgba(14, 34, 48, 0.18);
+    --glass: rgba(255, 255, 255, 0.62);
+    --glass-strong: rgba(255, 255, 255, 0.82);
+    --shadow-sm: 0 1px 2px rgba(14, 34, 48, 0.06), 0 4px 12px rgba(14, 34, 48, 0.05);
+    --shadow-md: 0 6px 16px rgba(14, 34, 48, 0.10), 0 18px 40px rgba(14, 34, 48, 0.08);
+    --alpine: #0A5C7E;
+    --lake: #0BA3B3;
+    --coral: #F26B5E;
+    --gold: #F4A261;
+    --rose: #E63946;
+    --sl: #2A9D8F;
+    --ja: #E6548F;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+    color: var(--ink);
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(1100px 700px at 8% -5%, rgba(11, 163, 179, 0.35), transparent 55%),
+      radial-gradient(1000px 600px at 100% 10%, rgba(242, 107, 94, 0.28), transparent 55%),
+      radial-gradient(1200px 700px at 50% 100%, rgba(123, 75, 148, 0.18), transparent 55%),
+      radial-gradient(800px 500px at 100% 90%, rgba(244, 162, 97, 0.22), transparent 55%);
+    background-attachment: fixed;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 260px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 260' preserveAspectRatio='none'><path fill='%230A5C7E' fill-opacity='0.08' d='M0,260 L0,160 L80,180 L140,120 L200,150 L280,80 L340,130 L420,70 L500,140 L580,90 L660,160 L740,100 L820,150 L900,70 L980,130 L1060,90 L1140,150 L1220,110 L1300,160 L1380,120 L1440,170 L1440,260 Z'/><path fill='%230A5C7E' fill-opacity='0.14' d='M0,260 L0,200 L60,220 L140,170 L220,210 L300,160 L380,200 L460,150 L540,190 L620,160 L700,210 L780,170 L860,200 L940,160 L1020,200 L1100,170 L1180,210 L1260,180 L1340,220 L1440,190 L1440,260 Z'/></svg>");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  body > * { position: relative; z-index: 1; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  .kicker {
+    font-size: 12px; letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--alpine); font-weight: 700; margin-bottom: 16px; opacity: 0.8;
+  }
+
+  /* Gate */
+  .gate-wrap {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .money-gate {
+    max-width: 520px; width: 100%;
+    background: var(--glass-strong);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 22px;
+    padding: 40px 32px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+  }
+  .money-gate-icon { font-size: 36px; margin-bottom: 12px; }
+  .money-gate h3 { margin: 0 0 8px; font-size: 22px; letter-spacing: -0.01em; }
+  .money-gate p { margin: 0 0 20px; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+  .money-gate-form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .money-gate input {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    min-width: 180px;
+    flex: 1;
+    max-width: 260px;
+  }
+  .money-gate input:focus { border-color: var(--alpine); }
+  .money-gate button {
+    background: linear-gradient(135deg, var(--alpine), var(--lake));
+    color: white; border: none; border-radius: 10px;
+    padding: 10px 22px; font-size: 13px; font-weight: 800;
+    letter-spacing: 0.06em; cursor: pointer; transition: transform 0.15s ease;
+  }
+  .money-gate button:hover { transform: translateY(-1px); }
+  .money-gate-error { margin-top: 10px; font-size: 12px; color: var(--rose); font-weight: 600; min-height: 16px; }
+  .money-gate.shake { animation: gate-shake 0.4s ease; }
+  @keyframes gate-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* Main content */
+  .money-section { padding: 48px 24px 64px; display: none; }
+  .money-head { text-align: center; margin-bottom: 32px; }
+  .money-head h1 {
+    font-size: clamp(32px, 6vw, 52px); letter-spacing: -0.02em; margin: 4px 0 0;
+    background: linear-gradient(120deg, var(--alpine), var(--coral));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; font-weight: 800;
+  }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--alpine); text-decoration: none;
+    background: rgba(10,92,126,0.08); border: 1px solid rgba(10,92,126,0.18);
+    border-radius: 999px; padding: 6px 14px; margin-bottom: 28px;
+    transition: background 0.15s;
+  }
+  .back-link:hover { background: rgba(10,92,126,0.15); }
+
+  /* Stats */
+  .money-stats {
+    max-width: 1180px; margin: 0 auto 24px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  }
+  @media (max-width: 820px) { .money-stats { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 420px) { .money-stats { grid-template-columns: 1fr; } }
+  .stat-tile {
+    background: var(--glass-strong);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 16px; padding: 16px 18px;
+    box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+  }
+  .stat-tile::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .stat-tile.sl::before { background: linear-gradient(90deg, #3BC0AE, #1E7D6F); }
+  .stat-tile.ja::before { background: linear-gradient(90deg, #F27AAB, #C13A74); }
+  .stat-tile.combined::before { background: linear-gradient(90deg, var(--alpine), var(--lake)); }
+  .stat-tile.balance::before { background: linear-gradient(90deg, var(--gold), var(--coral)); }
+  .stat-tile-label { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+  .stat-tile-val { font-size: 26px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat-tile.balance .stat-tile-val { background: linear-gradient(135deg, #1E7D6F, #C13A74); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .stat-tile-sub { font-size: 11px; color: var(--ink-soft); margin-top: 6px; font-weight: 600; display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+
+  /* Pills */
+  .pill {
+    display: inline-block; border-radius: 999px; padding: 2px 8px;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.06em;
+    text-transform: uppercase; color: white;
+  }
+  .pill.sl { background: linear-gradient(135deg, #3BC0AE, #1E7D6F); }
+  .pill.ja { background: linear-gradient(135deg, #F27AAB, #C13A74); }
+
+  /* Balance note */
+  .balance-note {
+    max-width: 1180px; margin: -8px auto 20px;
+    text-align: center; font-size: 12px; color: var(--ink-faint); line-height: 1.5;
+  }
+
+  /* Splits */
+  .splits-list {
+    max-width: 980px; margin: 0 auto;
+    background: var(--glass-strong);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 22px; padding: 18px 22px; box-shadow: var(--shadow-sm);
+  }
+  .split-row {
+    display: grid; grid-template-columns: 70px 1fr 110px 160px;
+    gap: 16px; align-items: center; padding: 12px 6px;
+    border-bottom: 1px solid var(--line); font-size: 13px;
+  }
+  .split-row:last-child { border-bottom: none; }
+  .split-row:hover { background: rgba(255,255,255,0.3); border-radius: 8px; }
+  @media (max-width: 620px) {
+    .split-row { grid-template-columns: 60px 1fr 90px; }
+    .split-delta { display: none; }
+  }
+  .split-paidby {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 5px 0;
+    border-radius: 999px; color: white; text-align: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  }
+  .split-paidby.sl { background: linear-gradient(135deg, #3BC0AE, #1E7D6F); }
+  .split-paidby.ja { background: linear-gradient(135deg, #F27AAB, #C13A74); }
+  .split-item { color: var(--ink); font-weight: 600; min-width: 0; }
+  .split-item .date { font-size: 11px; color: var(--ink-faint); font-weight: 700; display: block; letter-spacing: 0.04em; }
+  .split-item .sub { font-size: 11px; color: var(--ink-faint); font-weight: 500; display: block; margin-top: 2px; }
+  .split-total { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--ink); text-align: right; font-size: 14px; }
+  .split-delta { font-size: 11px; text-align: right; letter-spacing: 0.02em; }
+  .split-delta .owes-ja { color: #C13A74; font-weight: 700; }
+  .split-delta .owes-sl { color: #1E7D6F; font-weight: 700; }
+  .split-delta .even { color: var(--ink-faint); font-weight: 600; font-style: italic; }
+  .split-phase-header {
+    padding: 10px 14px; font-size: 10px; font-weight: 800;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--alpine);
+    background: rgba(11,163,179,0.08); border-radius: 10px; margin: 14px 0 6px;
+  }
+  .split-phase-header:first-child { margin-top: 0; }
+  .split-subtotal {
+    display: grid; grid-template-columns: 70px 1fr 110px 160px;
+    gap: 16px; align-items: center; padding: 8px 6px;
+    font-size: 12px; color: var(--ink-soft); font-weight: 700;
+    border-top: 1px dashed var(--line-strong);
+    background: rgba(255,255,255,0.15); border-radius: 6px;
+  }
+  .split-subtotal .split-total { font-size: 13px; color: var(--ink); }
+  @media (max-width: 620px) { .split-subtotal { grid-template-columns: 60px 1fr 90px; } }
+
+  /* Unresolved */
+  .unresolved-list {
+    max-width: 980px; margin: 20px auto 0;
+    background: rgba(244, 162, 97, 0.1);
+    border: 1px solid rgba(244, 162, 97, 0.3);
+    border-radius: 16px; padding: 18px 22px;
+  }
+  .unresolved-head { font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #A06A34; margin-bottom: 10px; }
+  .unresolved-list ul { margin: 0; padding-left: 20px; font-size: 13px; color: var(--ink-soft); }
+  .unresolved-list li { margin-bottom: 4px; }
+
+  .lock-btn {
+    display: block; margin: 32px auto 0;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 8px 20px; border-radius: 999px; cursor: pointer;
+    background: transparent; color: var(--ink-faint);
+    border: 1px solid var(--line-strong); transition: all 0.15s;
+  }
+  .lock-btn:hover { background: var(--rose); color: white; border-color: var(--rose); }
+</style>
+</head>
+<body>
+
+<!-- Gate -->
+<div class="gate-wrap" id="gate-wrap">
+  <div class="money-gate" id="money-gate">
+    <div class="money-gate-icon">🔒</div>
+    <h3>Money section locked</h3>
+    <p>Budget, splits, and balance are password-protected.</p>
+    <form class="money-gate-form" onsubmit="return unlock(event);">
+      <input type="password" id="money-pwd" placeholder="Password" autocomplete="off" autocapitalize="off">
+      <button type="submit">Unlock</button>
+    </form>
+    <div class="money-gate-error" id="money-gate-error"></div>
+  </div>
+</div>
+
+<!-- Money content -->
+<section class="money-section" id="money-section">
+  <div class="wrap">
+
+    <div style="text-align:center;">
+      <a class="back-link" href="index.html">← Back to itinerary</a>
+    </div>
+
+    <div class="money-head">
+      <div class="kicker">Money</div>
+      <h1>Costs, splits &amp; balance</h1>
+    </div>
+
+    <div class="money-stats">
+      <div class="stat-tile sl">
+        <div class="stat-tile-label">Stephen &amp; Lindsay</div>
+        <div class="stat-tile-val">$5,322</div>
+        <div class="stat-tile-sub">Lodging $3,247 · activities $758 · car $1,317</div>
+      </div>
+      <div class="stat-tile ja">
+        <div class="stat-tile-label">Jared &amp; Ariel</div>
+        <div class="stat-tile-val">$4,052</div>
+        <div class="stat-tile-sub">Lodging $3,038 · activities $355 · car $659</div>
+      </div>
+      <div class="stat-tile combined">
+        <div class="stat-tile-label">Combined</div>
+        <div class="stat-tile-val">$9,374</div>
+        <div class="stat-tile-sub">Total trip cost (USD)</div>
+      </div>
+      <div class="stat-tile balance">
+        <div class="stat-tile-label">Balance</div>
+        <div class="stat-tile-val">$700.48</div>
+        <div class="stat-tile-sub"><span class="pill ja">J&amp;A</span> owes <span class="pill sl">S&amp;L</span></div>
+      </div>
+    </div>
+
+    <div class="balance-note">
+      J&amp;A owes S&amp;L $1,027.71 (Wanaka) + $658.67 (car) = $1,686.38 · S&amp;L owes J&amp;A $985.90 (QT + TA lodging) · Net: <strong style="color:var(--ink);">J&amp;A owes S&amp;L $700.48</strong>
+    </div>
+
+    <div class="splits-list">
+      <div class="split-phase-header">Transport · Touch Down Car Rental — S&amp;L paid</div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 16 – 20</span>Car rental · 5 solo days<span class="sub">Before J&amp;A arrive · booking U-01-13562</span></div>
+        <div class="split-total">$658.67</div>
+        <div class="split-delta"><span class="even">No split · S&amp;L only</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 21 – 30</span>Car rental · 10 shared days<span class="sub">Shared 50/50 with J&amp;A</span></div>
+        <div class="split-total">$1,317.35</div>
+        <div class="split-delta"><span class="owes-sl">J&amp;A owes S&amp;L $658.67</span></div>
+      </div>
+      <div class="split-subtotal">
+        <span></span>
+        <span>Subtotal — Car rental split</span>
+        <span class="split-total">$658.67</span>
+        <span class="split-delta"><span class="owes-sl">J&amp;A owes S&amp;L</span></span>
+      </div>
+
+      <div class="split-phase-header">Phase 01 · Christchurch — S&amp;L only</div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 16</span>Christchurch CBD Townhouse</div>
+        <div class="split-total">$250.00</div>
+        <div class="split-delta"><span class="even">No split · S&amp;L only</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 17</span>Christchurch CBD Townhouse</div>
+        <div class="split-total">$250.00</div>
+        <div class="split-delta"><span class="even">No split · S&amp;L only</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 17</span>Akaroa Dolphin Cruise</div>
+        <div class="split-total">$148.20</div>
+        <div class="split-delta"><span class="even">No split · S&amp;L only</span></div>
+      </div>
+
+      <div class="split-phase-header">Phase 02 · Lake Tekapo — S&amp;L only</div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 18</span>Peppers Bluewater Resort</div>
+        <div class="split-total">$244.33</div>
+        <div class="split-delta"><span class="even">No split · S&amp;L only</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 19</span>Peppers Bluewater Resort</div>
+        <div class="split-total">$244.33</div>
+        <div class="split-delta"><span class="even">No split · S&amp;L only</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 19</span>Dark Sky Stargazing</div>
+        <div class="split-total">$254.65</div>
+        <div class="split-delta"><span class="even">No split · S&amp;L only</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 20</span>Peppers Bluewater Resort</div>
+        <div class="split-total">$244.33</div>
+        <div class="split-delta"><span class="even">No split · S&amp;L only</span></div>
+      </div>
+
+      <div class="split-phase-header">Phase 03 · Queenstown — J&amp;A paid lodging</div>
+      <div class="split-row">
+        <span class="split-paidby ja">J&amp;A</span>
+        <div class="split-item"><span class="date">May 19</span>Queenstown AirBnb</div>
+        <div class="split-total">$512.13</div>
+        <div class="split-delta"><span class="even">No split · J&amp;A only</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby ja">J&amp;A</span>
+        <div class="split-item"><span class="date">May 20</span>Queenstown AirBnb</div>
+        <div class="split-total">$512.13</div>
+        <div class="split-delta"><span class="even">No split · J&amp;A only</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby ja">J&amp;A</span>
+        <div class="split-item"><span class="date">May 21</span>Queenstown AirBnb<span class="sub">Shared 50/50</span></div>
+        <div class="split-total">$512.13</div>
+        <div class="split-delta"><span class="owes-ja">S&amp;L owes J&amp;A $256.07</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby ja">J&amp;A</span>
+        <div class="split-item"><span class="date">May 22</span>Queenstown AirBnb<span class="sub">Shared 50/50</span></div>
+        <div class="split-total">$512.13</div>
+        <div class="split-delta"><span class="owes-ja">S&amp;L owes J&amp;A $256.07</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby ja">J&amp;A</span>
+        <div class="split-item"><span class="date">May 23</span>Queenstown AirBnb<span class="sub">Shared 50/50</span></div>
+        <div class="split-total">$512.13</div>
+        <div class="split-delta"><span class="owes-ja">S&amp;L owes J&amp;A $256.07</span></div>
+      </div>
+      <div class="split-subtotal">
+        <span></span>
+        <span>Subtotal — Phase 03 shared split</span>
+        <span class="split-total">$768.20</span>
+        <span class="split-delta"><span class="owes-ja">S&amp;L owes J&amp;A</span></span>
+      </div>
+
+      <div class="split-phase-header">Phase 04 · Te Anau — J&amp;A paid lodging</div>
+      <div class="split-row">
+        <span class="split-paidby ja">J&amp;A</span>
+        <div class="split-item"><span class="date">May 24</span>Te Anau AirBnb<span class="sub">Shared 50/50</span></div>
+        <div class="split-total">$217.70</div>
+        <div class="split-delta"><span class="owes-ja">S&amp;L owes J&amp;A $108.85</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby ja">J&amp;A</span>
+        <div class="split-item"><span class="date">May 25</span>Te Anau AirBnb<span class="sub">Shared 50/50</span></div>
+        <div class="split-total">$217.70</div>
+        <div class="split-delta"><span class="owes-ja">S&amp;L owes J&amp;A $108.85</span></div>
+      </div>
+      <div class="split-subtotal">
+        <span></span>
+        <span>Subtotal — Phase 04 shared split</span>
+        <span class="split-total">$217.70</span>
+        <span class="split-delta"><span class="owes-ja">S&amp;L owes J&amp;A</span></span>
+      </div>
+
+      <div class="split-phase-header">Phase 05 · Wanaka — S&amp;L paid lodging</div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 26</span>The Lookout · Lake Views<span class="sub">Shared 50/50 · NZD $3,606 total</span></div>
+        <div class="split-total">$513.86</div>
+        <div class="split-delta"><span class="owes-sl">J&amp;A owes S&amp;L $256.93</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 27</span>The Lookout · Lake Views<span class="sub">Shared 50/50</span></div>
+        <div class="split-total">$513.86</div>
+        <div class="split-delta"><span class="owes-sl">J&amp;A owes S&amp;L $256.93</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 28</span>The Lookout · Lake Views<span class="sub">Shared 50/50</span></div>
+        <div class="split-total">$513.86</div>
+        <div class="split-delta"><span class="owes-sl">J&amp;A owes S&amp;L $256.93</span></div>
+      </div>
+      <div class="split-row">
+        <span class="split-paidby sl">S&amp;L</span>
+        <div class="split-item"><span class="date">May 29</span>The Lookout · Lake Views<span class="sub">Shared 50/50</span></div>
+        <div class="split-total">$513.86</div>
+        <div class="split-delta"><span class="owes-sl">J&amp;A owes S&amp;L $256.93</span></div>
+      </div>
+      <div class="split-subtotal">
+        <span></span>
+        <span>Subtotal — Phase 05 shared split</span>
+        <span class="split-total">$1,027.71</span>
+        <span class="split-delta"><span class="owes-sl">J&amp;A owes S&amp;L</span></span>
+      </div>
+    </div>
+
+    <div class="unresolved-list">
+      <div class="unresolved-head">⚠ Still to resolve</div>
+      <ul>
+        <li>Skyline Gondola + Luge ($240) — who pays at venue?</li>
+        <li>Milford Sound cruise ($470) — who pays at venue?</li>
+        <li>Gibbston wineries (May 23) — generally each couple pays their own tastings/food</li>
+      </ul>
+    </div>
+
+    <button class="lock-btn" onclick="lock()">🔒 Lock &amp; return to itinerary</button>
+
+  </div>
+</section>
+
+<script>
+  function unlock(e) {
+    if (e) e.preventDefault();
+    const input = document.getElementById('money-pwd');
+    const err = document.getElementById('money-gate-error');
+    const gate = document.getElementById('money-gate');
+    const val = (input ? input.value : '').trim().toLowerCase();
+    if (val === 'denu') {
+      document.getElementById('gate-wrap').style.display = 'none';
+      document.getElementById('money-section').style.display = 'block';
+    } else {
+      if (err) err.textContent = 'Incorrect password';
+      if (gate) {
+        gate.classList.add('shake');
+        setTimeout(() => gate.classList.remove('shake'), 400);
+      }
+      if (input) { input.value = ''; input.focus(); }
+    }
+    return false;
+  }
+
+  function lock() {
+    window.location.href = 'index.html';
+  }
+
+  document.getElementById('money-pwd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') unlock(e);
+  });
+</script>
+</body>
+</html>

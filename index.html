@@ -998,19 +998,9 @@
   }
   body.dark .money-gate input { background: rgba(255,255,255,0.06); color: #E5EBF0; }
 
-  /* Hide cost figures in itinerary until money is unlocked */
-  body:not(.money-unlocked) .day-cost {
-    color: transparent !important;
-    background: rgba(180,180,180,0.18) !important;
-    border-color: rgba(180,180,180,0.2) !important;
-    user-select: none;
-    pointer-events: none;
-  }
-  body:not(.money-unlocked) .activity-cost {
-    color: transparent !important;
-    user-select: none;
-    pointer-events: none;
-  }
+  /* Cost figures always hidden on the main page — see money.html */
+  .day-cost { display: none !important; }
+  .activity-cost { display: none !important; }
 
   .money-lock-btn {
     font-size: 10px; font-weight: 800; letter-spacing: 0.08em;
@@ -2640,28 +2630,6 @@
     </div>
 
     <div id="money-content" style="display:none;">
-      <div class="money-stats">
-      <div class="stat-tile sl">
-        <div class="stat-tile-label">Stephen &amp; Lindsay</div>
-        <div class="stat-tile-val">$5,322</div>
-        <div class="stat-tile-sub">Lodging $3,247 · activities $758 · car $1,317</div>
-      </div>
-      <div class="stat-tile ja">
-        <div class="stat-tile-label">Jared &amp; Ariel</div>
-        <div class="stat-tile-val">$4,052</div>
-        <div class="stat-tile-sub">Lodging $3,038 · activities $355 · car $659</div>
-      </div>
-      <div class="stat-tile combined">
-        <div class="stat-tile-label">Combined</div>
-        <div class="stat-tile-val">$9,374</div>
-        <div class="stat-tile-sub">Total trip cost (USD)</div>
-      </div>
-      <div class="stat-tile balance">
-        <div class="stat-tile-label">Balance</div>
-        <div class="stat-tile-val">$700.48</div>
-        <div class="stat-tile-sub"><span class="pill ja">J&amp;A</span> owes <span class="pill sl">S&amp;L</span></div>
-      </div>
-    </div>
 
     <div class="money-balance-note" style="max-width:1180px;margin:-8px auto 20px;text-align:center;font-size:12px;color:var(--ink-faint);line-height:1.5;">
       J&amp;A owes S&amp;L $1,027.71 (Wanaka) + $658.67 (car) = $1,686.38 · S&amp;L owes J&amp;A $985.90 (QT + TA lodging) · Net: <strong style="color:var(--ink);">J&amp;A owes S&amp;L $700.48</strong>
@@ -3124,30 +3092,7 @@
 
   renderPacking();
 
-  // ============ Money lock gate (password: Denu · obfuscated base64) ============
-  const MONEY_PWD_HASH = 'RGVudQ==';
-  function unlockMoney(remember) {
-    const gate = document.getElementById('money-gate');
-    const content = document.getElementById('money-content');
-    if (gate) gate.style.display = 'none';
-    if (content) content.style.display = '';
-    document.body.classList.add('money-unlocked');
-    if (remember) {
-      try { localStorage.setItem('nz-money-unlock', '1'); } catch(e) {}
-    }
-  }
-  function lockMoney() {
-    const gate = document.getElementById('money-gate');
-    const content = document.getElementById('money-content');
-    if (gate) gate.style.display = '';
-    if (content) content.style.display = 'none';
-    document.body.classList.remove('money-unlocked');
-    try { localStorage.removeItem('nz-money-unlock'); } catch(e) {}
-    const input = document.getElementById('money-pwd');
-    if (input) input.value = '';
-    const err = document.getElementById('money-gate-error');
-    if (err) err.textContent = '';
-  }
+  // ============ Money gate — correct password redirects to money.html ============
   function handleMoneyUnlock(e) {
     if (e && e.preventDefault) e.preventDefault();
     const input = document.getElementById('money-pwd');
@@ -3155,8 +3100,7 @@
     const gate = document.getElementById('money-gate');
     const val = (input ? input.value : '').trim().toLowerCase();
     if (val === 'denu') {
-      if (err) err.textContent = '';
-      unlockMoney(true);
+      window.location.href = 'money.html';
     } else {
       if (err) err.textContent = 'Incorrect password';
       if (gate) {
@@ -3167,10 +3111,6 @@
     }
     return false;
   }
-  // Always start locked — clear any saved unlock state on load
-  (function() {
-    try { localStorage.removeItem('nz-money-unlock'); } catch(e) {}
-  })();
 
   // ============ Theme toggle (global function, inline onclick) ============
   function toggleTheme() {
