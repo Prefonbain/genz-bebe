@@ -999,9 +999,15 @@
   body.dark .money-gate input { background: rgba(255,255,255,0.06); color: #E5EBF0; }
 
   /* Hide cost figures in itinerary until money is unlocked */
-  body:not(.money-unlocked) .day-cost,
+  body:not(.money-unlocked) .day-cost {
+    color: transparent !important;
+    background: rgba(180,180,180,0.18) !important;
+    border-color: rgba(180,180,180,0.2) !important;
+    user-select: none;
+    pointer-events: none;
+  }
   body:not(.money-unlocked) .activity-cost {
-    filter: blur(6px);
+    color: transparent !important;
     user-select: none;
     pointer-events: none;
   }
