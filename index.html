@@ -1679,66 +1679,6 @@
     box-shadow: 0 0 0 2px var(--sl), 0 4px 20px rgba(42,157,143,0.3), var(--shadow-md) !important;
   }
 
-  /* ============ ROUTE MAP ============ */
-  .route-section {
-    padding: 12px 24px 32px;
-  }
-  .route-head {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .route-head .kicker { color: var(--alpine); }
-  .route-head h2 {
-    font-size: 32px; letter-spacing: -0.02em; margin: 4px 0 0;
-    background: linear-gradient(120deg, var(--alpine), var(--lake));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 800;
-  }
-  .route-map-card {
-    max-width: 500px; margin: 0 auto;
-    background: var(--glass-strong);
-    backdrop-filter: blur(28px) saturate(200%);
-    -webkit-backdrop-filter: blur(28px) saturate(200%);
-    border: 1px solid rgba(255,255,255,0.8);
-    border-radius: 24px;
-    padding: 20px;
-    box-shadow: var(--shadow-lg);
-    display: flex;
-    justify-content: center;
-  }
-  .route-map-card svg { display: block; width: 100%; max-width: 320px; }
-  .route-stop {
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  .route-stop:hover { transform: scale(1.2); transform-origin: center; }
-  .route-stop circle { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-  @keyframes map-pulse {
-    0%, 100% { r: 10; opacity: 1; }
-    50% { r: 13; opacity: 0.7; }
-  }
-  .route-stop .pulse-ring {
-    animation: map-pulse-ring 2s ease infinite;
-    fill: none;
-    stroke-width: 2;
-    opacity: 0.5;
-  }
-  @keyframes map-pulse-ring {
-    0% { r: 10; opacity: 0.6; }
-    100% { r: 18; opacity: 0; }
-  }
-  @keyframes dash-travel {
-    to { stroke-dashoffset: -36; }
-  }
-  .route-line-animated {
-    animation: dash-travel 1.2s linear infinite;
-  }
-  body.dark .route-map-card {
-    background: rgba(26,42,60,0.82);
-    border-color: rgba(255,255,255,0.1);
-  }
 
   /* ============ LOCAL FLAVOR CARDS ============ */
   .flavor-strip {
@@ -1952,68 +1892,6 @@
     .chev { display: none; }
   }
 
-  /* ============ MAP + CALENDAR SIDE BY SIDE ============ */
-  .map-cal-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 20px;
-    align-items: start;
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-  .map-cal-row .route-section { padding-left: 0; padding-right: 0; }
-  .map-cal-row .tl-section { padding-left: 0; padding-right: 0; }
-  .map-cal-row .tl-section .wrap { padding: 0; }
-  .route-map-iframe {
-    width: 100%;
-    height: 480px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.6);
-    box-shadow: var(--shadow-lg);
-    display: block;
-  }
-  body.dark .route-map-iframe { border-color: rgba(255,255,255,0.1); }
-  .route-stops-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
-    justify-content: center;
-  }
-  .route-stop-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--glass-strong);
-    border: 1px solid rgba(255,255,255,0.7);
-    border-radius: 999px;
-    padding: 5px 12px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: var(--shadow-sm);
-  }
-  .route-stop-pill:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
-  .route-stop-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .route-stop-num {
-    font-size: 10px;
-    opacity: 0.6;
-    font-weight: 600;
-  }
-  body.dark .route-stop-pill { background: rgba(26,42,60,0.82); border-color: rgba(255,255,255,0.1); }
-  @media (max-width: 900px) {
-    .map-cal-row {
-      grid-template-columns: 1fr;
-      padding: 0 16px;
-    }
-    #leaflet-map { height: 360px; }
-  }
 </style>
 </head>
 <body>
@@ -2083,44 +1961,6 @@
     <div class="stat"><div class="stat-num">5</div><div class="stat-label">Base towns</div></div>
   </div>
 </header>
-
-<!-- ============ ROUTE MAP + CALENDAR (side by side) ============ -->
-<div class="map-cal-row">
-<section class="route-section" id="route">
-  <div class="route-head">
-    <div class="kicker">genz bebe · the route</div>
-    <h2>The Route</h2>
-  </div>
-  <iframe
-    class="route-map-iframe"
-    src="https://www.openstreetmap.org/export/embed.html?bbox=165.8%2C-46.6%2C173.5%2C-43.0&amp;layer=mapnik&amp;marker=-43.5321%2C172.6362"
-    title="South Island New Zealand route map"
-    loading="lazy"
-    referrerpolicy="no-referrer">
-  </iframe>
-  <div class="route-stops-legend">
-    <div class="route-stop-pill" onclick="document.getElementById('itinerary').scrollIntoView({behavior:'smooth'})">
-      <div class="route-stop-dot" style="background:#E63946"></div>
-      <span class="route-stop-num">1</span> Christchurch <span style="opacity:0.5;font-weight:400">May 16–17</span>
-    </div>
-    <div class="route-stop-pill" onclick="document.getElementById('d-may18').scrollIntoView({behavior:'smooth'});document.getElementById('d-may18').open=true">
-      <div class="route-stop-dot" style="background:#F4A261"></div>
-      <span class="route-stop-num">2</span> Lake Tekapo <span style="opacity:0.5;font-weight:400">May 18–20</span>
-    </div>
-    <div class="route-stop-pill" onclick="document.getElementById('d-may21').scrollIntoView({behavior:'smooth'});document.getElementById('d-may21').open=true">
-      <div class="route-stop-dot" style="background:#0BA3B3"></div>
-      <span class="route-stop-num">3</span> Queenstown <span style="opacity:0.5;font-weight:400">May 21–23</span>
-    </div>
-    <div class="route-stop-pill" onclick="document.getElementById('d-may24').scrollIntoView({behavior:'smooth'});document.getElementById('d-may24').open=true">
-      <div class="route-stop-dot" style="background:#1D3557"></div>
-      <span class="route-stop-num">4</span> Te Anau <span style="opacity:0.5;font-weight:400">May 24–25</span>
-    </div>
-    <div class="route-stop-pill" onclick="document.getElementById('d-may26').scrollIntoView({behavior:'smooth'});document.getElementById('d-may26').open=true">
-      <div class="route-stop-dot" style="background:#7B4B94"></div>
-      <span class="route-stop-num">5</span> Wanaka <span style="opacity:0.5;font-weight:400">May 26–30</span>
-    </div>
-  </div>
-</section>
 
 <!-- ============ TIMELINE ============ -->
 <section class="tl-section" id="calendar">
@@ -2230,7 +2070,6 @@
     </div>
   </div>
 </section>
-</div><!-- /map-cal-row -->
 
 <!-- ============ LIVE FORECAST ============ -->
 <section class="forecast-section">
