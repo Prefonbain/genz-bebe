@@ -1167,6 +1167,19 @@
     transition: all 0.15s ease;
   }
   .nav-links a:hover { color: var(--alpine); background: rgba(11,163,179,0.08); }
+  .nav-links a.nav-splits-btn {
+    background: linear-gradient(135deg, #1E7D6F, #C13A74);
+    color: white !important;
+    border-radius: 999px;
+    padding: 6px 14px;
+    letter-spacing: 0.08em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .nav-links a.nav-splits-btn:hover {
+    background: linear-gradient(135deg, #165f54, #9e2b57);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
   .nav-tools { display: flex; gap: 8px; align-items: center; }
   .nav-search {
     background: rgba(255,255,255,0.7);
@@ -1738,7 +1751,7 @@
       <a href="#calendar">Calendar</a>
       <a href="#itinerary">Itinerary</a>
       <a href="#planning">Planning</a>
-      <a href="#money">Money</a>
+      <a href="money.html" class="nav-splits-btn">🔒 Splits</a>
     </div>
     <div class="nav-tools">
       <input type="search" class="nav-search" id="nav-search" placeholder="Search…" autocomplete="off" oninput="handleSearch(this.value)">
