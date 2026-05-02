@@ -1965,26 +1965,48 @@
   .map-cal-row .route-section { padding-left: 0; padding-right: 0; }
   .map-cal-row .tl-section { padding-left: 0; padding-right: 0; }
   .map-cal-row .tl-section .wrap { padding: 0; }
-  #leaflet-map {
-    height: 500px;
+  .route-map-iframe {
+    width: 100%;
+    height: 480px;
     border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
     border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: var(--shadow-lg);
+    display: block;
   }
-  body.dark #leaflet-map { border-color: rgba(255,255,255,0.1); }
-  .leaflet-popup-content-wrapper {
-    border-radius: 12px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    font-size: 13px !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.18) !important;
+  body.dark .route-map-iframe { border-color: rgba(255,255,255,0.1); }
+  .route-stops-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
   }
-  .leaflet-popup-content { margin: 10px 14px !important; }
-  .leaflet-popup-tip { background: white !important; }
-  .lf-popup-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
-  .lf-popup-dates { color: #666; font-size: 12px; margin-bottom: 6px; }
-  .lf-popup-link { color: #0A5C7E; text-decoration: none; font-weight: 600; font-size: 12px; }
-  .lf-popup-link:hover { text-decoration: underline; }
+  .route-stop-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--glass-strong);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: var(--shadow-sm);
+  }
+  .route-stop-pill:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .route-stop-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .route-stop-num {
+    font-size: 10px;
+    opacity: 0.6;
+    font-weight: 600;
+  }
+  body.dark .route-stop-pill { background: rgba(26,42,60,0.82); border-color: rgba(255,255,255,0.1); }
   @media (max-width: 900px) {
     .map-cal-row {
       grid-template-columns: 1fr;
@@ -1993,8 +2015,6 @@
     #leaflet-map { height: 360px; }
   }
 </style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -2071,7 +2091,35 @@
     <div class="kicker">genz bebe · the route</div>
     <h2>The Route</h2>
   </div>
-  <div id="leaflet-map"></div>
+  <iframe
+    class="route-map-iframe"
+    src="https://www.openstreetmap.org/export/embed.html?bbox=165.8%2C-46.6%2C173.5%2C-43.0&amp;layer=mapnik&amp;marker=-43.5321%2C172.6362"
+    title="South Island New Zealand route map"
+    loading="lazy"
+    referrerpolicy="no-referrer">
+  </iframe>
+  <div class="route-stops-legend">
+    <div class="route-stop-pill" onclick="document.getElementById('itinerary').scrollIntoView({behavior:'smooth'})">
+      <div class="route-stop-dot" style="background:#E63946"></div>
+      <span class="route-stop-num">1</span> Christchurch <span style="opacity:0.5;font-weight:400">May 16–17</span>
+    </div>
+    <div class="route-stop-pill" onclick="document.getElementById('d-may18').scrollIntoView({behavior:'smooth'});document.getElementById('d-may18').open=true">
+      <div class="route-stop-dot" style="background:#F4A261"></div>
+      <span class="route-stop-num">2</span> Lake Tekapo <span style="opacity:0.5;font-weight:400">May 18–20</span>
+    </div>
+    <div class="route-stop-pill" onclick="document.getElementById('d-may21').scrollIntoView({behavior:'smooth'});document.getElementById('d-may21').open=true">
+      <div class="route-stop-dot" style="background:#0BA3B3"></div>
+      <span class="route-stop-num">3</span> Queenstown <span style="opacity:0.5;font-weight:400">May 21–23</span>
+    </div>
+    <div class="route-stop-pill" onclick="document.getElementById('d-may24').scrollIntoView({behavior:'smooth'});document.getElementById('d-may24').open=true">
+      <div class="route-stop-dot" style="background:#1D3557"></div>
+      <span class="route-stop-num">4</span> Te Anau <span style="opacity:0.5;font-weight:400">May 24–25</span>
+    </div>
+    <div class="route-stop-pill" onclick="document.getElementById('d-may26').scrollIntoView({behavior:'smooth'});document.getElementById('d-may26').open=true">
+      <div class="route-stop-dot" style="background:#7B4B94"></div>
+      <span class="route-stop-num">5</span> Wanaka <span style="opacity:0.5;font-weight:400">May 26–30</span>
+    </div>
+  </div>
 </section>
 
 <!-- ============ TIMELINE ============ -->
@@ -2217,7 +2265,7 @@
 <!-- ============ PHASE 1: CHRISTCHURCH ============ -->
 <section class="phase" id="itinerary">
   <div class="phase-hero">
-    <img src="christchurch.jpg" alt="Christchurch">
+    <img src="images/christchurch.jpg" alt="Christchurch">
     <div class="phase-weather"><span class="pw-icon">🌦️</span><span class="pw-temp">57°/39°F</span><span class="pw-cond">Cool &amp; showery</span></div>
     <div class="phase-hero-overlay">
       <div class="phase-hero-kicker">Phase 01 · May 16 – 17</div>
@@ -2311,7 +2359,7 @@
 <!-- ============ PHASE 2: PARALLEL PATHS ============ -->
 <section class="phase">
   <div class="phase-hero">
-    <img src="tekapo.jpg" alt="Lake Tekapo">
+    <img src="images/tekapo.jpg" alt="Lake Tekapo">
     <div class="phase-weather"><span class="pw-icon">⛅</span><span class="pw-temp">46°/30°F</span><span class="pw-cond">Clear &amp; cold</span></div>
     <div class="phase-hero-overlay">
       <div class="phase-hero-kicker">Phase 02 · May 18 – 20</div>
@@ -2440,7 +2488,7 @@
 <!-- ============ PHASE 3: QUEENSTOWN ============ -->
 <section class="phase">
   <div class="phase-hero">
-    <img src="queenstown.jpg" alt="Queenstown">
+    <img src="images/queenstown.jpg" alt="Queenstown">
     <div class="phase-weather"><span class="pw-icon">🌦️</span><span class="pw-temp">50°/34°F</span><span class="pw-cond">Mixed</span></div>
     <div class="phase-hero-overlay">
       <div class="phase-hero-kicker">Phase 03 · May 21 – 23</div>
@@ -2558,7 +2606,7 @@
 <!-- ============ PHASE 4: FIORDLAND ============ -->
 <section class="phase">
   <div class="phase-hero">
-    <img src="milford.jpg" alt="Milford Sound">
+    <img src="images/milford.jpg" alt="Milford Sound">
     <div class="phase-weather"><span class="pw-icon">🌧️</span><span class="pw-temp">52°/36°F</span><span class="pw-cond">Wet · bring layers</span></div>
     <div class="phase-hero-overlay">
       <div class="phase-hero-kicker">Phase 04 · May 24 – 25</div>
@@ -2637,7 +2685,7 @@
 <!-- ============ PHASE 5: WANAKA ============ -->
 <section class="phase">
   <div class="phase-hero">
-    <img src="wanaka.jpg" alt="Lake Wanaka">
+    <img src="images/wanaka.jpg" alt="Lake Wanaka">
     <div class="phase-weather"><span class="pw-icon">⛅</span><span class="pw-temp">52°/32°F</span><span class="pw-cond">Crisp autumn</span></div>
     <div class="phase-hero-overlay">
       <div class="phase-hero-kicker">Phase 05 · May 26 – 30</div>
@@ -3710,52 +3758,6 @@
   document.addEventListener('DOMContentLoaded', setupPhotoDrop);
   if (document.readyState !== 'loading') setupPhotoDrop();
 
-  // ============ LEAFLET ROUTE MAP ============
-  function initRouteMap() {
-    if (!document.getElementById('leaflet-map') || typeof L === 'undefined') return;
-
-    const stops = [
-      { name: 'Christchurch', short: 'CHC', lat: -43.5321, lng: 172.6362, color: '#E63946', dates: 'May 16–17', anchor: 'itinerary' },
-      { name: 'Lake Tekapo', short: 'TKPO', lat: -43.8889, lng: 170.4782, color: '#F4A261', dates: 'May 18–20', anchor: 'd-may18' },
-      { name: 'Queenstown', short: 'QT', lat: -45.0312, lng: 168.6626, color: '#0BA3B3', dates: 'May 21–23', anchor: 'd-may21' },
-      { name: 'Te Anau', short: 'TA', lat: -45.4132, lng: 167.7197, color: '#1D3557', dates: 'May 24–25', anchor: 'd-may24' },
-      { name: 'Wanaka', short: 'WNK', lat: -44.7032, lng: 169.1319, color: '#7B4B94', dates: 'May 26–30', anchor: 'd-may26' },
-    ];
-
-    const map = L.map('leaflet-map', { zoomControl: true, scrollWheelZoom: false }).setView([-44.5, 169.8], 7);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 18
-    }).addTo(map);
-
-    // Draw route polyline
-    const coords = stops.map(s => [s.lat, s.lng]);
-    L.polyline(coords, { color: '#0A5C7E', weight: 3, opacity: 0.7, dashArray: '8 6' }).addTo(map);
-
-    // Add numbered markers
-    stops.forEach((stop, i) => {
-      const icon = L.divIcon({
-        className: '',
-        html: `<div style="background:${stop.color};color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);font-family:-apple-system,sans-serif">${i+1}</div>`,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-        popupAnchor: [0, -20]
-      });
-
-      const popup = `<div class="lf-popup-name" style="color:${stop.color}">${stop.name}</div>
-        <div class="lf-popup-dates">${stop.dates}</div>
-        <a class="lf-popup-link" href="#" onclick="document.getElementById('${stop.anchor}').scrollIntoView({behavior:'smooth'});document.getElementById('${stop.anchor}').open=true;return false;">View days ↓</a>`;
-
-      L.marker([stop.lat, stop.lng], { icon }).addTo(map).bindPopup(popup);
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initRouteMap);
-  } else {
-    initRouteMap();
-  }
 </script>
 
 </body>
