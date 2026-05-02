@@ -547,7 +547,7 @@
     cursor: pointer;
     padding: 14px 18px;
     display: grid;
-    grid-template-columns: 68px 1fr auto auto;
+    grid-template-columns: 68px 1fr auto auto auto;
     gap: 14px;
     align-items: center;
   }
@@ -590,7 +590,7 @@
   .day[open] .chev { transform: rotate(180deg); }
 
   @media (max-width: 620px) {
-    .day-summary { grid-template-columns: 60px 1fr auto; gap: 10px; padding: 12px 14px; }
+    .day-summary { grid-template-columns: 60px 1fr auto auto; gap: 10px; padding: 12px 14px; }
     .day-cost { display: none; }
     .day-sub { display: none; }
   }
@@ -1618,6 +1618,217 @@
   }
   .map-link:hover { background: var(--alpine); color: white; border-color: var(--alpine); }
 
+  /* ============ TRIP PROGRESS BAR ============ */
+  .trip-progress-bar-wrap {
+    position: sticky;
+    top: 53px; /* approx nav height */
+    z-index: 99;
+    background: var(--glass-strong);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 2px 8px rgba(14,34,48,0.04);
+  }
+  .trip-progress-inner {
+    max-width: 1180px; margin: 0 auto;
+    padding: 6px 24px 8px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .trip-progress-label {
+    font-size: 11px; font-weight: 700;
+    color: var(--ink-soft); letter-spacing: 0.06em;
+    text-align: center;
+  }
+  .trip-progress-track {
+    height: 6px;
+    background: var(--line-strong);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .trip-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--lake), var(--sl));
+    border-radius: 999px;
+    transition: width 0.5s ease;
+  }
+  body.dark .trip-progress-bar-wrap {
+    background: rgba(10, 20, 32, 0.85);
+    border-bottom-color: rgba(255,255,255,0.06);
+  }
+
+  /* ============ TODAY BADGE (day card) ============ */
+  .today-badge {
+    background: linear-gradient(135deg, var(--sl), var(--lake));
+    color: white;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    margin-right: 6px;
+    animation: pulse-badge 2s ease infinite;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  @keyframes pulse-badge {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+  }
+  .day.today-glow {
+    box-shadow: 0 0 0 2px var(--sl), 0 4px 20px rgba(42,157,143,0.3), var(--shadow-md) !important;
+  }
+
+  /* ============ ROUTE MAP ============ */
+  .route-section {
+    padding: 12px 24px 32px;
+  }
+  .route-head {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .route-head .kicker { color: var(--alpine); }
+  .route-head h2 {
+    font-size: 32px; letter-spacing: -0.02em; margin: 4px 0 0;
+    background: linear-gradient(120deg, var(--alpine), var(--lake));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+  }
+  .route-map-card {
+    max-width: 500px; margin: 0 auto;
+    background: var(--glass-strong);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    justify-content: center;
+  }
+  .route-map-card svg { display: block; width: 100%; max-width: 320px; }
+  .route-stop {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  .route-stop:hover { transform: scale(1.2); transform-origin: center; }
+  .route-stop circle { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+  @keyframes map-pulse {
+    0%, 100% { r: 10; opacity: 1; }
+    50% { r: 13; opacity: 0.7; }
+  }
+  .route-stop .pulse-ring {
+    animation: map-pulse-ring 2s ease infinite;
+    fill: none;
+    stroke-width: 2;
+    opacity: 0.5;
+  }
+  @keyframes map-pulse-ring {
+    0% { r: 10; opacity: 0.6; }
+    100% { r: 18; opacity: 0; }
+  }
+  @keyframes dash-travel {
+    to { stroke-dashoffset: -36; }
+  }
+  .route-line-animated {
+    animation: dash-travel 1.2s linear infinite;
+  }
+  body.dark .route-map-card {
+    background: rgba(26,42,60,0.82);
+    border-color: rgba(255,255,255,0.1);
+  }
+
+  /* ============ LOCAL FLAVOR CARDS ============ */
+  .flavor-strip {
+    max-width: 1180px; margin: 0 auto 8px;
+    display: flex; gap: 10px; flex-wrap: wrap;
+    padding: 10px 14px;
+    background: var(--glass-strong);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+  }
+  .flavor-item {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 11px; color: var(--ink-soft);
+    flex: 1 1 180px; min-width: 0;
+    background: rgba(255,255,255,0.4);
+    border-radius: 10px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+  .flavor-emoji { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .flavor-text strong { display: block; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--alpine); margin-bottom: 2px; }
+  body.dark .flavor-strip { background: rgba(26,42,60,0.7); border-color: rgba(255,255,255,0.08); }
+  body.dark .flavor-item { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.06); }
+  @media (max-width: 620px) {
+    .flavor-strip { gap: 8px; padding: 8px 10px; }
+    .flavor-item { flex: 1 1 140px; }
+  }
+
+  /* ============ PHOTO DROP ============ */
+  .photo-camera-btn {
+    background: none;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 3px 6px;
+    color: var(--ink-faint);
+    transition: all 0.15s ease;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .photo-camera-btn:hover { background: var(--alpine); border-color: var(--alpine); color: white; }
+  .day-photo-wrap {
+    margin-bottom: 12px;
+    position: relative;
+    display: inline-block;
+  }
+  .day-photo-thumb {
+    width: 120px; height: 90px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.8);
+    box-shadow: var(--shadow-sm);
+    display: block;
+  }
+  .day-photo-remove {
+    position: absolute; top: -6px; right: -6px;
+    background: var(--rose); color: white;
+    border: none; border-radius: 50%;
+    width: 18px; height: 18px;
+    font-size: 10px; font-weight: 800;
+    cursor: pointer; line-height: 18px; text-align: center;
+    padding: 0;
+  }
+
+  /* ============ CINEMATIC PHASE BANNERS ============ */
+  @media (hover: hover) {
+    .phase-hero img {
+      background-attachment: fixed;
+    }
+  }
+  .phase-hero {
+    height: 240px;
+  }
+  .phase-hero-overlay {
+    background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.65) 80%, rgba(10,20,40,0.82) 100%);
+  }
+  .phase-hero-title {
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6), 0 4px 24px rgba(0,0,0,0.4);
+  }
+  .phase-hero-kicker {
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+  .phase-hero-meta {
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+
   /* ============ MOBILE ============ */
   @media (max-width: 620px) {
     .wrap { padding: 0 16px; }
@@ -1760,6 +1971,16 @@
   </div>
 </nav>
 
+<!-- ============ TRIP PROGRESS BAR ============ -->
+<div class="trip-progress-bar-wrap" id="trip-progress-bar">
+  <div class="trip-progress-inner">
+    <div class="trip-progress-label" id="trip-progress-label">Loading…</div>
+    <div class="trip-progress-track">
+      <div class="trip-progress-fill" id="trip-progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
 <button class="currency-fab" id="currency-fab" title="Currency converter">💱</button>
 <div class="currency-panel" id="currency-panel">
   <div class="currency-title">NZD ↔ USD</div>
@@ -1799,6 +2020,73 @@
     <div class="stat"><div class="stat-num">5</div><div class="stat-label">Base towns</div></div>
   </div>
 </header>
+
+<!-- ============ ROUTE MAP ============ -->
+<section class="route-section" id="route">
+  <div class="route-head">
+    <div class="kicker">genz bebe · the route</div>
+    <h2>The Route</h2>
+  </div>
+  <div class="route-map-card">
+    <svg viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg" aria-label="South Island route map">
+      <!-- South Island outline -->
+      <path d="M 228,18 C 248,14 262,22 268,38 C 274,54 272,72 272,92 C 272,112 268,132 270,152 C 272,168 278,180 280,192 C 272,196 264,194 258,196 C 266,206 274,218 270,228 C 262,236 248,234 238,230 C 222,226 202,234 188,248 C 174,262 160,276 148,292 C 136,308 124,320 110,330 C 96,338 82,342 70,336 C 58,330 52,318 52,306 C 52,292 56,278 58,264 C 60,250 58,238 56,226 C 54,212 54,198 58,186 C 62,172 68,160 72,148 C 76,134 80,120 88,108 C 96,96 106,84 118,74 C 130,64 144,54 158,46 C 172,38 188,28 204,22 C 216,18 222,18 228,18 Z"
+        fill="rgba(10,92,126,0.12)" stroke="rgba(10,92,126,0.35)" stroke-width="1.5" stroke-linejoin="round"/>
+
+      <!-- Animated route line: CHC → Tekapo → QT → TA → Wanaka -->
+      <polyline points="248,168 175,196 112,244 78,262 122,228"
+        fill="none"
+        stroke="rgba(10,92,126,0.25)"
+        stroke-width="2"
+        stroke-dasharray="6 3"/>
+      <polyline points="248,168 175,196 112,244 78,262 122,228"
+        class="route-line-animated"
+        fill="none"
+        stroke="var(--alpine)"
+        stroke-width="2"
+        stroke-dasharray="6 3"
+        stroke-dashoffset="0"/>
+
+      <!-- Stop: Christchurch -->
+      <g class="route-stop" onclick="document.getElementById('itinerary').scrollIntoView({behavior:'smooth'})" title="Christchurch">
+        <circle cx="248" cy="168" r="16" fill="none" stroke="#E63946" stroke-width="1.5" opacity="0.35" class="pulse-ring"/>
+        <circle cx="248" cy="168" r="10" fill="#E63946"/>
+        <text x="248" y="154" text-anchor="middle" font-size="9" font-weight="800" fill="#E63946" font-family="-apple-system,sans-serif" letter-spacing="0.02em">CHC</text>
+      </g>
+
+      <!-- Stop: Lake Tekapo -->
+      <g class="route-stop" onclick="document.getElementById('d-may18').scrollIntoView({behavior:'smooth'});document.getElementById('d-may18').open=true;" title="Lake Tekapo">
+        <circle cx="175" cy="196" r="16" fill="none" stroke="#F4A261" stroke-width="1.5" opacity="0.35" class="pulse-ring" style="animation-delay:0.4s"/>
+        <circle cx="175" cy="196" r="10" fill="#F4A261"/>
+        <text x="175" y="182" text-anchor="middle" font-size="9" font-weight="800" fill="#F4A261" font-family="-apple-system,sans-serif" letter-spacing="0.02em">TKPO</text>
+      </g>
+
+      <!-- Stop: Wanaka (between QT and Tekapo visually) -->
+      <g class="route-stop" onclick="document.getElementById('d-may26').scrollIntoView({behavior:'smooth'});document.getElementById('d-may26').open=true;" title="Wanaka">
+        <circle cx="122" cy="228" r="16" fill="none" stroke="#7B4B94" stroke-width="1.5" opacity="0.35" class="pulse-ring" style="animation-delay:1.6s"/>
+        <circle cx="122" cy="228" r="10" fill="#7B4B94"/>
+        <text x="137" y="226" text-anchor="start" font-size="9" font-weight="800" fill="#7B4B94" font-family="-apple-system,sans-serif" letter-spacing="0.02em">WNK</text>
+      </g>
+
+      <!-- Stop: Queenstown -->
+      <g class="route-stop" onclick="document.getElementById('d-may21').scrollIntoView({behavior:'smooth'});document.getElementById('d-may21').open=true;" title="Queenstown">
+        <circle cx="112" cy="244" r="16" fill="none" stroke="#0BA3B3" stroke-width="1.5" opacity="0.35" class="pulse-ring" style="animation-delay:0.8s"/>
+        <circle cx="112" cy="244" r="10" fill="#0BA3B3"/>
+        <text x="97" y="261" text-anchor="middle" font-size="9" font-weight="800" fill="#0BA3B3" font-family="-apple-system,sans-serif" letter-spacing="0.02em">QT</text>
+      </g>
+
+      <!-- Stop: Te Anau -->
+      <g class="route-stop" onclick="document.getElementById('d-may24').scrollIntoView({behavior:'smooth'});document.getElementById('d-may24').open=true;" title="Te Anau">
+        <circle cx="78" cy="262" r="16" fill="none" stroke="#1D3557" stroke-width="1.5" opacity="0.35" class="pulse-ring" style="animation-delay:1.2s"/>
+        <circle cx="78" cy="262" r="10" fill="#1D3557"/>
+        <text x="78" y="280" text-anchor="middle" font-size="9" font-weight="800" fill="#1D3557" font-family="-apple-system,sans-serif" letter-spacing="0.02em">TA</text>
+      </g>
+
+      <!-- North label -->
+      <text x="240" y="30" text-anchor="middle" font-size="8" fill="rgba(10,92,126,0.5)" font-family="-apple-system,sans-serif" font-weight="700">▲ N</text>
+    </svg>
+  </div>
+</section>
 
 <!-- ============ TIMELINE ============ -->
 <section class="tl-section" id="calendar">
@@ -1951,6 +2239,13 @@
     </div>
   </div>
 
+  <div class="flavor-strip">
+    <div class="flavor-item"><span class="flavor-emoji">🚗</span><div class="flavor-text"><strong>Drive</strong>International arrival — no previous leg</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🍽</span><div class="flavor-text"><strong>Must try</strong>Flat white at Mojo Coffee · Riverside Market food hall</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🗣</span><div class="flavor-text"><strong>Kiwi</strong><em>"sweet as"</em> = that's great</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">✨</span><div class="flavor-text"><strong>Vibe</strong>Garden city rebuilt · trams, botanic gardens, the arts</div></div>
+  </div>
+
   <div style="max-width:1180px;margin:0 auto 14px;padding:12px 18px;background:var(--glass-strong);backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:14px;font-size:12px;color:var(--ink-soft);display:flex;gap:20px;flex-wrap:wrap;align-items:center;box-shadow:var(--shadow-sm);">
     <strong style="color:var(--alpine);letter-spacing:0.08em;font-size:11px;text-transform:uppercase;">S&amp;L transit</strong>
     <span>✈️ <strong>May 14:</strong> Depart US <em>(time TBD)</em></span>
@@ -2037,6 +2332,14 @@
       <div class="phase-hero-meta">S&amp;L in Tekapo · J&amp;A arrive Queenstown · converging May 21</div>
     </div>
   </div>
+
+  <div class="flavor-strip">
+    <div class="flavor-item"><span class="flavor-emoji">🚗</span><div class="flavor-text"><strong>Drive</strong>~3.5 hrs from Christchurch via SH1/SH8</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🍽</span><div class="flavor-text"><strong>Must try</strong>Mackenzie Highland Pork Pie · Kohan Japanese (lakeside)</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🗣</span><div class="flavor-text"><strong>Kiwi</strong><em>"tramping"</em> = hiking</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">✨</span><div class="flavor-text"><strong>Vibe</strong>Turquoise lake, Church of the Good Shepherd, southern hemisphere's darkest skies</div></div>
+  </div>
+
   <div class="days">
 
     <details class="day" id="d-may18">
@@ -2158,6 +2461,14 @@
       <div class="phase-hero-meta">Reunion on the lake · shared AirBnb · 3 nights all four</div>
     </div>
   </div>
+
+  <div class="flavor-strip">
+    <div class="flavor-item"><span class="flavor-emoji">🚗</span><div class="flavor-text"><strong>Drive</strong>~4 hrs from Tekapo via SH8/SH6</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🍽</span><div class="flavor-text"><strong>Must try</strong>Fergburger (open late, legendary) · Central Otago Pinot Noir</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🗣</span><div class="flavor-text"><strong>Kiwi</strong><em>"chur bro"</em> = cheers mate</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">✨</span><div class="flavor-text"><strong>Vibe</strong>Adventure capital with a serious wine list</div></div>
+  </div>
+
   <div class="days">
 
     <details class="day" id="d-may21">
@@ -2268,6 +2579,14 @@
       <div class="phase-hero-meta">Milford Sound anchor day · gateway to the fjords</div>
     </div>
   </div>
+
+  <div class="flavor-strip">
+    <div class="flavor-item"><span class="flavor-emoji">🚗</span><div class="flavor-text"><strong>Drive</strong>~2 hrs from Queenstown via SH6/SH94</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🍽</span><div class="flavor-text"><strong>Must try</strong>Real Meals Takeaways · bring your own snacks for Milford</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🗣</span><div class="flavor-text"><strong>Kiwi</strong><em>"munted"</em> = broken / wrecked</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">✨</span><div class="flavor-text"><strong>Vibe</strong>Last outpost before the wilderness · Milford is genuinely otherworldly</div></div>
+  </div>
+
   <div class="days">
 
     <details class="day" id="d-may24">
@@ -2339,6 +2658,14 @@
       <div class="phase-hero-meta">Slower pace · big hikes · lake-view wine</div>
     </div>
   </div>
+
+  <div class="flavor-strip">
+    <div class="flavor-item"><span class="flavor-emoji">🚗</span><div class="flavor-text"><strong>Drive</strong>~1.5 hrs from Queenstown via Cardrona Pass</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🍽</span><div class="flavor-text"><strong>Must try</strong>Francesca's Italian Kitchen · Rippon Winery on the lake</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">🗣</span><div class="flavor-text"><strong>Kiwi</strong><em>"she'll be right"</em> = it'll be fine</div></div>
+    <div class="flavor-item"><span class="flavor-emoji">✨</span><div class="flavor-text"><strong>Vibe</strong>Queenstown's chill older sibling · That Tree · Roy's Peak · actual quiet</div></div>
+  </div>
+
   <div class="days">
 
     <details class="day" id="d-may26">
@@ -3213,6 +3540,189 @@
     document.getElementById('bt-ja').style.display = which === 'ja' ? '' : 'none';
     document.getElementById('bt-combined').style.display = which === 'combined' ? '' : 'none';
   }
+
+  // ============ TRIP PROGRESS BAR ============
+  (function() {
+    const TRIP_START = new Date('2026-05-16T00:00:00');
+    const TRIP_END   = new Date('2026-05-30T23:59:59');
+    const TOTAL_DAYS = 16; // May 16 through May 30 inclusive
+    const PHASE_MAP = {
+      16: 'Christchurch', 17: 'Christchurch',
+      18: 'Lake Tekapo', 19: 'Lake Tekapo', 20: 'Lake Tekapo',
+      21: 'Queenstown', 22: 'Queenstown', 23: 'Queenstown',
+      24: 'Te Anau', 25: 'Te Anau',
+      26: 'Wanaka', 27: 'Wanaka', 28: 'Wanaka', 29: 'Wanaka', 30: 'fly home'
+    };
+
+    const labelEl = document.getElementById('trip-progress-label');
+    const fillEl  = document.getElementById('trip-progress-fill');
+    if (!labelEl || !fillEl) return;
+
+    const now = new Date();
+
+    if (now < TRIP_START) {
+      const daysUntil = Math.ceil((TRIP_START - now) / (1000*60*60*24));
+      labelEl.textContent = '✈ ' + daysUntil + ' day' + (daysUntil === 1 ? '' : 's') + ' until touchdown in CHC';
+      fillEl.style.width = '0%';
+    } else if (now > TRIP_END) {
+      labelEl.textContent = 'The bebe era was real 🐑✨';
+      fillEl.style.width = '100%';
+    } else {
+      const dayNum = Math.floor((now - TRIP_START) / (1000*60*60*24)) + 1;
+      const pct = Math.min(100, Math.round((dayNum / TOTAL_DAYS) * 100));
+      const mday = now.getDate();
+      const location = PHASE_MAP[mday] || 'New Zealand';
+      labelEl.textContent = 'Day ' + dayNum + ' of ' + TOTAL_DAYS + ' · ' + location;
+      fillEl.style.width = pct + '%';
+    }
+  })();
+
+  // ============ "RIGHT NOW" TODAY CARD ============
+  (function() {
+    const TRIP_START = new Date('2026-05-16T00:00:00');
+    const TRIP_END   = new Date('2026-05-30T23:59:59');
+    const now = new Date();
+    if (now < TRIP_START || now > TRIP_END) return;
+
+    // Build date string matching id format e.g. d-may16
+    const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    const mo = months[now.getMonth()];
+    const dy = now.getDate();
+    const dayId = 'd-' + mo + dy;
+    const dayCard = document.getElementById(dayId);
+    if (!dayCard) return;
+
+    // Add today-badge before the day-cost span in summary
+    const summary = dayCard.querySelector('.day-summary');
+    if (summary) {
+      const whoGroup = summary.querySelector('.who-group');
+      if (whoGroup) {
+        const badge = document.createElement('span');
+        badge.className = 'today-badge';
+        badge.textContent = '📍 Today';
+        summary.insertBefore(badge, whoGroup);
+      }
+    }
+
+    // Force open + glow
+    dayCard.open = true;
+    dayCard.classList.add('today-glow');
+
+    // Smooth scroll after short delay
+    setTimeout(() => {
+      dayCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 500);
+  })();
+
+  // ============ PHOTO DROP ============
+  function setupPhotoDrop() {
+    document.querySelectorAll('details.day').forEach(function(dayEl) {
+      const id = dayEl.id;
+      if (!id) return;
+
+      // Derive date key from id: d-may16 → 2026-05-16
+      const match = id.match(/^d-([a-z]+)(\d+)$/);
+      if (!match) return;
+      const monthNames = {jan:'01',feb:'02',mar:'03',apr:'04',may:'05',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12'};
+      const mo = monthNames[match[1]];
+      if (!mo) return;
+      const day = match[2].padStart(2,'0');
+      const dateKey = 'photo-2026-' + mo + '-' + day;
+
+      const summary = dayEl.querySelector('.day-summary');
+      const body    = dayEl.querySelector('.day-body');
+      if (!summary || !body) return;
+
+      // Camera button — placed at far right of summary after who-group
+      const camBtn = document.createElement('button');
+      camBtn.className = 'photo-camera-btn';
+      camBtn.title = 'Add a trip photo for this day';
+      camBtn.textContent = '📷';
+      camBtn.setAttribute('aria-label', 'Add photo');
+      summary.appendChild(camBtn);
+
+      // Hidden file input
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+      fileInput.style.display = 'none';
+      dayEl.appendChild(fileInput);
+
+      // Photo display container (prepended to body)
+      let photoWrap = null;
+
+      function showPhoto(dataUrl) {
+        if (photoWrap) photoWrap.remove();
+        photoWrap = document.createElement('div');
+        photoWrap.className = 'day-photo-wrap';
+
+        const img = document.createElement('img');
+        img.className = 'day-photo-thumb';
+        img.src = dataUrl;
+        img.alt = 'Trip photo';
+        photoWrap.appendChild(img);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'day-photo-remove';
+        removeBtn.textContent = '×';
+        removeBtn.title = 'Remove photo';
+        removeBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          localStorage.removeItem(dateKey);
+          photoWrap.remove();
+          photoWrap = null;
+        });
+        photoWrap.appendChild(removeBtn);
+
+        // Insert at top of day body
+        body.insertBefore(photoWrap, body.firstChild);
+      }
+
+      // Load existing photo
+      const saved = localStorage.getItem(dateKey);
+      if (saved) showPhoto(saved);
+
+      // Camera button click
+      camBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.click();
+      });
+
+      // File selected
+      fileInput.addEventListener('change', function() {
+        const file = fileInput.files && fileInput.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function() {
+          // Resize before storing
+          const tmp = new Image();
+          tmp.onload = function() {
+            const MAX = 800;
+            let w = tmp.width, h = tmp.height;
+            if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+            if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(tmp, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+            try { localStorage.setItem(dateKey, dataUrl); } catch(err) { console.warn('Photo too large', err); }
+            showPhoto(dataUrl);
+            // Open the card if not already
+            dayEl.open = true;
+          };
+          tmp.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+        // Reset so same file can be re-selected
+        fileInput.value = '';
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupPhotoDrop);
+  // Also call immediately in case DOM is already ready
+  if (document.readyState !== 'loading') setupPhotoDrop();
 </script>
 
 </body>
