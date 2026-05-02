@@ -1618,6 +1618,26 @@
   }
   .map-link:hover { background: var(--alpine); color: white; border-color: var(--alpine); }
 
+  /* ============ TODAY SECTION ============ */
+  .today-section { padding: 8px 0 28px; }
+  .today-card-outer {
+    background: var(--glass-strong);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.85);
+    border-radius: 24px;
+    padding: 28px 28px 20px;
+    box-shadow: var(--shadow-lg);
+  }
+  body.dark .today-card-outer { background: rgba(26,42,60,0.85); border-color: rgba(255,255,255,0.1); }
+  .today-section .kicker { color: var(--alpine); font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+  .today-section h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 16px; }
+  .today-content-clone { }
+  .today-content-clone details { border: none !important; box-shadow: none !important; background: transparent !important; }
+  .today-pre-trip { text-align: center; padding: 16px 0 8px; }
+  .today-pre-trip .tminus { font-size: 64px; font-weight: 900; color: var(--alpine); line-height: 1; }
+  .today-pre-trip .tminus-label { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
+
   /* ============ TRIP PROGRESS BAR ============ */
   .trip-progress-bar-wrap {
     position: sticky;
@@ -1767,6 +1787,107 @@
   }
   .phase-hero-meta {
     text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+
+  /* ============ DRIVE LEGS ============ */
+  .drive-leg {
+    padding: 0 24px;
+    margin: -8px 0;
+  }
+  .drive-leg-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    background: var(--glass-strong);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 14px;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-sm);
+  }
+  body.dark .drive-leg-inner { background: rgba(26,42,60,0.6); border-color: rgba(255,255,255,0.08); }
+  .drive-from, .drive-to { font-weight: 700; font-size: 13px; }
+  .drive-arrow { color: var(--alpine); font-size: 16px; }
+  .drive-meta { font-size: 12px; color: var(--ink-soft); flex: 1; }
+  .drive-map-link { font-size: 11px; font-weight: 700; color: var(--alpine); text-decoration: none; white-space: nowrap; }
+  .drive-map-link:hover { text-decoration: underline; }
+
+  /* ============ PHASE WISHLISTS ============ */
+  .phase-wishlist {
+    max-width: 1180px;
+    margin: 12px auto 4px;
+    padding: 0 24px;
+  }
+  .phase-wishlist details {
+    background: var(--glass-strong);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.75);
+    border-radius: 18px;
+    padding: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  body.dark .phase-wishlist details { background: rgba(26,42,60,0.7); border-color: rgba(255,255,255,0.1); }
+  .phase-wishlist summary {
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+  }
+  .phase-wishlist summary::-webkit-details-marker { display: none; }
+  .phase-wishlist summary::marker { display: none; }
+  .phase-wishlist-body { padding: 4px 18px 14px; }
+  .wish-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .wish-item:last-child { border-bottom: none; }
+  .wish-item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; accent-color: var(--alpine); width: 15px; height: 15px; }
+  .wish-item input[type=checkbox]:checked + .wish-label { text-decoration: line-through; color: var(--ink-soft); }
+  .wish-label { line-height: 1.4; }
+  .wish-label strong { display: block; font-weight: 700; }
+  .wish-label span { color: var(--ink-soft); font-size: 12px; }
+  .wish-section-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 10px 0 4px;
+  }
+  .wish-generated { background: rgba(255,213,79,0.08); border-radius: 8px; padding: 6px 8px; margin-top: 6px; }
+  .wish-generated .wish-section-label { color: #9A7F00; }
+
+  /* ============ PACKING FILTER ============ */
+  .packing-filter { display: flex; gap: 8px; margin-bottom: 14px; }
+  .packing-filter-btn {
+    padding: 5px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: all 0.15s;
+  }
+  .packing-filter-btn.active {
+    background: var(--alpine);
+    border-color: var(--alpine);
+    color: white;
   }
 
   /* ============ MOBILE ============ */
@@ -1961,6 +2082,16 @@
     <div class="stat"><div class="stat-num">5</div><div class="stat-label">Base towns</div></div>
   </div>
 </header>
+
+<section class="today-section" id="today">
+  <div class="wrap">
+    <div class="today-card-outer">
+      <div class="kicker">genz bebe · right now</div>
+      <h2 id="today-heading">–</h2>
+      <div id="today-content"></div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ TIMELINE ============ -->
 <section class="tl-section" id="calendar">
@@ -2193,7 +2324,36 @@
     </details>
 
   </div>
+
+  <div class="phase-wishlist">
+    <details>
+      <summary>🍽 Wishlist &amp; ideas</summary>
+      <div class="phase-wishlist-body">
+        <div class="wish-section-label">Must try</div>
+        <label class="wish-item"><input type="checkbox" data-wkey="chc-0"><span class="wish-label"><strong>Pedro's House of Lamb</strong><span>Local institution · slow-roasted lamb · book ahead</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="chc-1"><span class="wish-label"><strong>Pomeroy's Old Brewery Inn</strong><span>Craft beer + gastropub · great for first night</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="chc-2"><span class="wish-label"><strong>Little High Eatery</strong><span>Food hall · multiple vendors · good for quick lunch</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="chc-3"><span class="wish-label"><strong>Dolphin watching at Akaroa</strong><span>1 hr drive · Hector's dolphins · half-day trip</span></span></label>
+        <div class="wish-generated">
+          <div class="wish-section-label">✨ Also worth considering</div>
+          <label class="wish-item"><input type="checkbox" data-wkey="chc-4"><span class="wish-label"><strong>Christchurch Botanic Gardens</strong><span>Free · beautiful autumn foliage in May · punting on the Avon</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="chc-5"><span class="wish-label"><strong>Canterbury Museum</strong><span>Free · excellent Māori taonga collection</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="chc-6"><span class="wish-label"><strong>New Regent Street</strong><span>Pastel Spanish Mission streetscape · coffee &amp; window shopping</span></span></label>
+        </div>
+      </div>
+    </details>
+  </div>
 </section>
+
+<div class="drive-leg">
+  <div class="drive-leg-inner">
+    <span class="drive-from">Christchurch</span>
+    <span class="drive-arrow">→</span>
+    <span class="drive-to">Lake Tekapo</span>
+    <span class="drive-meta">🚗 225 km · ~2.5 hrs · SH1 then SH79 via Geraldine</span>
+    <a class="drive-map-link" href="https://maps.google.com/maps/dir/Christchurch+New+Zealand/Lake+Tekapo+New+Zealand" target="_blank" rel="noopener">Open in Maps ↗</a>
+  </div>
+</div>
 
 <!-- ============ PHASE 2: PARALLEL PATHS ============ -->
 <section class="phase">
@@ -2322,7 +2482,35 @@
     </details>
 
   </div>
+
+  <div class="phase-wishlist">
+    <details>
+      <summary>🍽 Wishlist &amp; ideas</summary>
+      <div class="phase-wishlist-body">
+        <div class="wish-section-label">Must try</div>
+        <label class="wish-item"><input type="checkbox" data-wkey="tkpo-0"><span class="wish-label"><strong>Mackenzie Alpine Stargazing</strong><span>International Dark Sky Reserve · book the guided tour at Lake Tekapo Observatory</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="tkpo-1"><span class="wish-label"><strong>Tekapo Springs hot pools</strong><span>Outdoor heated pools overlooking the lake · sunset session is magical</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="tkpo-2"><span class="wish-label"><strong>Church of the Good Shepherd at sunrise</strong><span>Iconic shot · go before 8am to beat tour groups</span></span></label>
+        <div class="wish-generated">
+          <div class="wish-section-label">✨ Also worth considering</div>
+          <label class="wish-item"><input type="checkbox" data-wkey="tkpo-3"><span class="wish-label"><strong>Mt John Summit walk</strong><span>45-min hike · 360° views of three lakes · free</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="tkpo-4"><span class="wish-label"><strong>Kohan Japanese Restaurant</strong><span>Best dinner in Tekapo · lakeside · Japanese-NZ fusion</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="tkpo-5"><span class="wish-label"><strong>Mackenzie Country Inn</strong><span>Cozy bar with lake view · good for après-hike drinks</span></span></label>
+        </div>
+      </div>
+    </details>
+  </div>
 </section>
+
+<div class="drive-leg">
+  <div class="drive-leg-inner">
+    <span class="drive-from">Lake Tekapo</span>
+    <span class="drive-arrow">→</span>
+    <span class="drive-to">Queenstown</span>
+    <span class="drive-meta">🚗 260 km · ~3 hrs · SH8 via Omarama &amp; Lindis Pass</span>
+    <a class="drive-map-link" href="https://maps.google.com/maps/dir/Lake+Tekapo+New+Zealand/Queenstown+New+Zealand" target="_blank" rel="noopener">Open in Maps ↗</a>
+  </div>
+</div>
 
 <!-- ============ PHASE 3: QUEENSTOWN ============ -->
 <section class="phase">
@@ -2440,7 +2628,36 @@
     </details>
 
   </div>
+
+  <div class="phase-wishlist">
+    <details>
+      <summary>🍽 Wishlist &amp; ideas</summary>
+      <div class="phase-wishlist-body">
+        <div class="wish-section-label">Must try</div>
+        <label class="wish-item"><input type="checkbox" data-wkey="qt-0"><span class="wish-label"><strong>Fergburger</strong><span>Legendary burger joint · always a queue but worth it · go at odd hours</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="qt-1"><span class="wish-label"><strong>Skyline Gondola + Luge</strong><span>Best views of the Remarkables · multiple luge runs</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="qt-2"><span class="wish-label"><strong>Gibbston Valley wineries</strong><span>Kinross · Mt Rosa · Waitiri Creek · The Church · plan a half-day tasting circuit</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="qt-3"><span class="wish-label"><strong>Rata Restaurant</strong><span>Chef Josh Emmett · upscale NZ cuisine · book well ahead</span></span></label>
+        <div class="wish-generated">
+          <div class="wish-section-label">✨ Also worth considering</div>
+          <label class="wish-item"><input type="checkbox" data-wkey="qt-4"><span class="wish-label"><strong>Arrowtown walk + Provisions</strong><span>Historic gold-rush village 20 min from QT · great cafe breakfast</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="qt-5"><span class="wish-label"><strong>Sherwood Hotel bar</strong><span>Farm-to-table cocktails · cool crowd · good for sunset drinks</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="qt-6"><span class="wish-label"><strong>Shotover Jet</strong><span>Jet boat through the canyon · very Gen Z energy</span></span></label>
+        </div>
+      </div>
+    </details>
+  </div>
 </section>
+
+<div class="drive-leg">
+  <div class="drive-leg-inner">
+    <span class="drive-from">Queenstown</span>
+    <span class="drive-arrow">→</span>
+    <span class="drive-to">Te Anau</span>
+    <span class="drive-meta">🚗 170 km · ~2 hrs · SH6 via Kingston</span>
+    <a class="drive-map-link" href="https://maps.google.com/maps/dir/Queenstown+New+Zealand/Te+Anau+New+Zealand" target="_blank" rel="noopener">Open in Maps ↗</a>
+  </div>
+</div>
 
 <!-- ============ PHASE 4: FIORDLAND ============ -->
 <section class="phase">
@@ -2512,14 +2729,41 @@
               <div class="activity-body">1 hr 45 min on water · 10:45am departure · ~1:45 drive from Te Anau — leave early.</div>
               <div class="activity-meta"><span class="booking">Booked · #346437283</span></div>
             </div>
-            <div class="activity idea"><div class="activity-title">Doubtful Sound?</div><div class="activity-body">Decide day-of whether to stack alongside.</div></div>
           </div>
         </div>
       </div>
     </details>
 
   </div>
+
+  <div class="phase-wishlist">
+    <details>
+      <summary>🍽 Wishlist &amp; ideas</summary>
+      <div class="phase-wishlist-body">
+        <div class="wish-section-label">Must try</div>
+        <label class="wish-item"><input type="checkbox" data-wkey="ta-0"><span class="wish-label"><strong>Te Anau Glow Worm Caves</strong><span>Evening boat tour into illuminated cave system · book at Real NZ</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="ta-1"><span class="wish-label"><strong>Milford Sound at dawn</strong><span>Drive the Homer Tunnel before 8am · mist on the peaks · fewer coaches</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="ta-2"><span class="wish-label"><strong>The Fat Duck Te Anau</strong><span>Best dinner in town · fish &amp; chips + local craft beer</span></span></label>
+        <div class="wish-generated">
+          <div class="wish-section-label">✨ Also worth considering</div>
+          <label class="wish-item"><input type="checkbox" data-wkey="ta-3"><span class="wish-label"><strong>Milford Track Sandfly Point viewpoint</strong><span>Free · access from the cruise wharf · stunning valley view</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="ta-4"><span class="wish-label"><strong>Kepler Track Day Walk</strong><span>Control Gates to Brod Bay · flat lakeside · 2 hrs return</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="ta-5"><span class="wish-label"><strong>Bring your own snacks for Milford</strong><span>Nothing good to eat at the sound itself · pack sandwiches from Te Anau</span></span></label>
+        </div>
+      </div>
+    </details>
+  </div>
 </section>
+
+<div class="drive-leg">
+  <div class="drive-leg-inner">
+    <span class="drive-from">Te Anau</span>
+    <span class="drive-arrow">→</span>
+    <span class="drive-to">Wanaka</span>
+    <span class="drive-meta">🚗 240 km · ~2.5 hrs · SH6 via Queenstown</span>
+    <a class="drive-map-link" href="https://maps.google.com/maps/dir/Te+Anau+New+Zealand/Wanaka+New+Zealand" target="_blank" rel="noopener">Open in Maps ↗</a>
+  </div>
+</div>
 
 <!-- ============ PHASE 5: WANAKA ============ -->
 <section class="phase">
@@ -2667,6 +2911,25 @@
     </details>
 
   </div>
+
+  <div class="phase-wishlist">
+    <details>
+      <summary>🍽 Wishlist &amp; ideas</summary>
+      <div class="phase-wishlist-body">
+        <div class="wish-section-label">Must try</div>
+        <label class="wish-item"><input type="checkbox" data-wkey="wk-0"><span class="wish-label"><strong>#thatwanakatree</strong><span>The lone willow in the lake · iconic shot · 5 min walk from town</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="wk-1"><span class="wish-label"><strong>Roys Peak Track</strong><span>Hard 4–5 hr hike · 1,200m elevation · most photographed ridge in NZ · start early</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="wk-2"><span class="wish-label"><strong>Bistro Gentil</strong><span>Best dinner in Wanaka · French-NZ · book ahead</span></span></label>
+        <label class="wish-item"><input type="checkbox" data-wkey="wk-3"><span class="wish-label"><strong>Puzzling World</strong><span>Quirky optical illusions + maze · great rainy day fallback</span></span></label>
+        <div class="wish-generated">
+          <div class="wish-section-label">✨ Also worth considering</div>
+          <label class="wish-item"><input type="checkbox" data-wkey="wk-4"><span class="wish-label"><strong>Cinema Paradiso</strong><span>Boutique cinema in armchairs · intermission with homemade cookies · book online</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="wk-5"><span class="wish-label"><strong>Rippon Winery</strong><span>Biodynamic vineyard on the lakeshore · cellar door opens 11am</span></span></label>
+          <label class="wish-item"><input type="checkbox" data-wkey="wk-6"><span class="wish-label"><strong>Wanaka Farmers Market (Sat)</strong><span>Saturdays 8am · local honey, cheese, pies · only if you're there on a Saturday</span></span></label>
+        </div>
+      </div>
+    </details>
+  </div>
 </section>
 
 
@@ -2720,18 +2983,8 @@
           </div>
           <div class="decision">
             <span class="decision-status open">Open</span>
-            <div class="decision-text">Doubtful Sound add-on May 25?<span class="sub">Stack onto Milford day or skip</span></div>
-            <span class="decision-deadline">~May 20</span>
-          </div>
-          <div class="decision">
-            <span class="decision-status open">Open</span>
             <div class="decision-text">Skyline Gondola + Luge — who pays?<span class="sub">$240 · Typically each couple pays own, or one covers &amp; settles</span></div>
             <span class="decision-deadline">Day-of</span>
-          </div>
-          <div class="decision">
-            <span class="decision-status open">Open</span>
-            <div class="decision-text">Milford cruise — who pays?<span class="sub">$442 · Pre-booked; settle at venue or beforehand</span></div>
-            <span class="decision-deadline">May 25</span>
           </div>
           <div class="decision">
             <span class="decision-status open">Open</span>
@@ -2816,6 +3069,11 @@
             <span>Checkbox state saves in your browser · share progress by loading the page on the device you packed with.</span>
             <button class="packing-reset" onclick="resetPacking()">Reset all</button>
           </div>
+          <div class="packing-filter" id="packing-filter">
+            <button class="packing-filter-btn active" data-who="all" onclick="filterPacking('all')">All</button>
+            <button class="packing-filter-btn" data-who="sl" onclick="filterPacking('sl')">S&amp;L</button>
+            <button class="packing-filter-btn" data-who="ja" onclick="filterPacking('ja')">J&amp;A</button>
+          </div>
           <div class="packing-grid" id="packing-grid"></div>
         </div>
       </details>
@@ -2885,7 +3143,7 @@
 </section>
 
 <footer>
-  Last synced from planning sheet · <span id="today"></span>
+  Last synced from planning sheet · <span id="footer-today"></span>
 </footer>
 
 <script>
@@ -2895,7 +3153,7 @@
     const diff = Math.max(0, Math.ceil((start - now) / (1000 * 60 * 60 * 24)));
     const el = document.getElementById('countdown');
     if (el) el.textContent = diff;
-    const today = document.getElementById('today');
+    const today = document.getElementById('footer-today');
     if (today) today.textContent = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   })();
 
@@ -3017,12 +3275,21 @@
   loadForecasts();
 
   // ============ Packing list ============
+  let currentPackingFilter = 'all';
+  function filterPacking(who) {
+    currentPackingFilter = who;
+    document.querySelectorAll('.packing-filter-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.who === who);
+    });
+    renderPacking();
+  }
+
   const PACKING_DATA = [
-    { cat: "Footwear", items: [
+    { cat: "Footwear", who: "all", items: [
       { sub: "Stephen", list: ["Hiking boots (Hoka Anacapa 2 Mid GTX)", "Walking shoes for towns", "Casual shoes for dining", "Sandals / slides (optional)"] },
       { sub: "Lindsay", list: ["Hiking boots (waterproof, broken in)", "Walking shoes", "Casual shoes for dining", "Sandals (optional)"] }
     ]},
-    { cat: "Clothing", items: [
+    { cat: "Clothing", who: "all", items: [
       { sub: "Base layers (per person)", list: ["4 – 5 pairs underwear", "4 – 5 pairs socks (2 – 3 wool hiking)", "2 sports bras / undershirts", "1 – 2 thermal base-layer tops", "1 thermal base-layer bottom"] },
       { sub: "Mid layers", list: ["3 – 4 t-shirts / casual tops", "1 – 2 long-sleeve shirts", "1 fleece or light insulated jacket", "1 warm sweater or hoodie"] },
       { sub: "Outer layers", list: ["Waterproof rain jacket (essential)", "Rain pants (recommended for Milford)", "Puffy jacket or vest (evenings, Mt Cook)"] },
@@ -3030,38 +3297,79 @@
       { sub: "Accessories", list: ["Warm beanie / hat", "Sun hat or cap", "Sunglasses", "Buff or neck gaiter", "Lightweight gloves", "Belt"] },
       { sub: "Tekapo evening (May 19)", list: ["Stephen: button-down + chinos", "Lindsay: nice-for-photos outfit", "Both: layers for sunset at Church of the Good Shepherd"] }
     ]},
-    { cat: "Hiking & Outdoor", items: [
+    { cat: "Hiking & Outdoor", who: "all", items: [
       { sub: "Daypacks & bags", list: ["Daypack 20 – 30L (Stephen)", "Daypack 20 – 30L (Lindsay)", "Dry bags / pack covers"] },
       { sub: "Essentials", list: ["2 reusable water bottles (1L each)", "Hiking poles (optional · Ben Lomond, Rob Roy)", "Headlamps + extra batteries", "Whistle", "Offline trail maps"] },
       { sub: "Sun & weather", list: ["Sunscreen SPF 30+ (NZ sun is intense)", "Lip balm with SPF", "Insect repellent (sandflies in Milford/Te Anau)", "Compact umbrella"] }
     ]},
-    { cat: "Electronics & Documents", items: [
+    { cat: "Electronics & Documents", who: "all", items: [
       { sub: "Electronics", list: ["Phones + chargers", "Camera + extra batteries / cards", "Portable power bank", "Universal adapter (NZ Type I plugs)", "Laptop / tablet (if work check-in)", "Headphones", "E-readers for flights"] },
       { sub: "Documents & money", list: ["Passports (check expiration!)", "Printed flight confirmations (May 14 & May 30)", "Printed accommodation confirmations", "Travel insurance documents", "Credit cards (Visa / MC widely accepted)", "Some NZD cash", "Driver's licenses (for rental)", "Epic sabbatical reimbursement folder"] }
     ]},
-    { cat: "Toiletries & Personal Care", items: [
+    { cat: "Toiletries & Personal Care", who: "all", items: [
       { sub: "Shared", list: ["Toothbrushes + toothpaste", "Shampoo / conditioner (travel size)", "Body wash / soap", "Deodorant", "Razor + shaving cream", "Hairbrush / comb", "Hair ties / clips", "Moisturizer", "Nail clippers", "Tweezers", "Cotton swabs"] },
       { sub: "Medications & first aid", list: ["Prescription medications (extra supply)", "Pain relievers (ibuprofen, acetaminophen)", "Antihistamine", "Motion sickness meds (Milford cruise)", "Blister treatment (Moleskin, Band-Aids)", "Basic first-aid kit", "Hand sanitizer", "Tissues"] },
       { sub: "Personal care", list: ["Contacts + solution / glasses", "Feminine hygiene products", "Specific skincare products"] }
     ]},
-    { cat: "Miscellaneous", items: [
+    { cat: "Miscellaneous", who: "all", items: [
       { sub: "Comfort & convenience", list: ["Reusable shopping bags (NZ charges for plastic)", "Laundry detergent packets (Wanaka laundry day)", "Ziploc bags (various sizes)", "Packable tote bag", "Travel pillow (long flights)", "Eye mask + earplugs", "Book / magazine", "Playing cards / travel games", "Notebook + pen"] },
       { sub: "Hiking snacks", list: ["Protein bars", "Trail mix", "Electrolyte packets"] },
       { sub: "Car essentials", list: ["Phone mount for navigation", "Car charger / USB adapter", "Cooler bag (optional)"] }
     ]},
-    { cat: "Tips", items: [
+    { cat: "Tips", who: "all", items: [
       { sub: "Reminders", list: ["Layer up · temps 40 – 60°F", "Waterproof everything", "Break in boots NOW (before May 16)", "Check weather pre-departure", "Do laundry in Wanaka", "Leave luggage space for souvenirs"] }
-    ]}
+    ]},
+    {
+      cat: "S&L checklist", who: "sl",
+      items: [
+        { sub: "Bookings to have handy", list: [
+          "CHC Marriott Townhouse — Booking M1771212940768",
+          "Wanaka Lookout — Booking M1771211356591",
+          "Car rental — confirmation & driver's license",
+          "Peppers Bluewater (Tekapo) — #364075017998",
+          "Te Anau AirBnb — HMKECPN95F"
+        ]},
+        { sub: "Trip admin", list: [
+          "Travel insurance cards & policy numbers",
+          "NZD cash for incidentals (sandfly spray, tips)",
+          "International phone plan activated",
+          "Offline Google Maps downloaded for South Island"
+        ]}
+      ]
+    },
+    {
+      cat: "J&A checklist", who: "ja",
+      items: [
+        { sub: "Bookings to have handy", list: [
+          "QT AirBnb — HMR8T8DPCQ · 30 Wynyard Crescent",
+          "Queenstown arrival flight details",
+          "Milford Boutique Cruise — confirm ticket email"
+        ]},
+        { sub: "Trip admin", list: [
+          "Travel insurance cards & policy numbers",
+          "NZD cash for incidentals",
+          "International phone plan activated",
+          "Offline Google Maps downloaded for South Island",
+          "S&L pickup logistics — share ETA on arrival day"
+        ]}
+      ]
+    }
   ];
 
   function renderPacking() {
     const grid = document.getElementById('packing-grid');
     if (!grid) return;
     const saved = JSON.parse(localStorage.getItem('nz-packing') || '{}');
-    // split categories across two columns: first half vs second half by index
-    const half = Math.ceil(PACKING_DATA.length / 2);
-    const colA = PACKING_DATA.slice(0, half);
-    const colB = PACKING_DATA.slice(half);
+
+    // Filter categories by currentPackingFilter
+    const visibleCats = PACKING_DATA.filter(cat => {
+      if (currentPackingFilter === 'all') return true;
+      return !cat.who || cat.who === 'all' || cat.who === currentPackingFilter;
+    });
+
+    const half = Math.ceil(visibleCats.length / 2);
+    const colA = visibleCats.slice(0, half);
+    const colB = visibleCats.slice(half);
 
     function colHtml(cats) {
       return cats.map(cat => {
@@ -3069,7 +3377,6 @@
           const items = sub.list.map(it => {
             const key = cat.cat + '::' + sub.sub + '::' + it;
             const checked = saved[key] ? 'checked' : '';
-            const id = 'pk-' + btoa(key).replace(/[^a-zA-Z0-9]/g, '').slice(0, 20);
             return '<label class="packing-item"><input type="checkbox" ' + checked + ' data-key="' + key.replace(/"/g, '&quot;') + '"><span>' + it + '</span></label>';
           }).join('');
           return '<div class="packing-subcat">' + sub.sub + '</div>' + items;
@@ -3093,9 +3400,18 @@
   }
 
   function updatePackingProgress() {
-    const total = PACKING_DATA.reduce((s, c) => s + c.items.reduce((s2, sub) => s2 + sub.list.length, 0), 0);
+    const visibleCats = PACKING_DATA.filter(cat => {
+      if (currentPackingFilter === 'all') return true;
+      return !cat.who || cat.who === 'all' || cat.who === currentPackingFilter;
+    });
+    const total = visibleCats.reduce((s, c) => s + c.items.reduce((s2, sub) => s2 + sub.list.length, 0), 0);
     const saved = JSON.parse(localStorage.getItem('nz-packing') || '{}');
-    const done = Object.keys(saved).length;
+    const done = Object.keys(saved).filter(k => {
+      const cat = PACKING_DATA.find(c => k.startsWith(c.cat + '::'));
+      if (!cat) return false;
+      if (currentPackingFilter === 'all') return true;
+      return !cat.who || cat.who === 'all' || cat.who === currentPackingFilter;
+    }).length;
     const el = document.getElementById('packing-progress');
     if (el) el.textContent = done + ' / ' + total;
   }
@@ -3596,6 +3912,71 @@
 
   document.addEventListener('DOMContentLoaded', setupPhotoDrop);
   if (document.readyState !== 'loading') setupPhotoDrop();
+
+  // ============ WISHLIST PERSISTENCE ============
+  function saveWish(key, checked) {
+    const wishes = JSON.parse(localStorage.getItem('nz-wishes') || '{}');
+    wishes[key] = checked;
+    localStorage.setItem('nz-wishes', JSON.stringify(wishes));
+  }
+  function initWishlists() {
+    const wishes = JSON.parse(localStorage.getItem('nz-wishes') || '{}');
+    document.querySelectorAll('.wish-item input[type=checkbox]').forEach(cb => {
+      const key = cb.dataset.wkey;
+      if (key && wishes[key] !== undefined) cb.checked = wishes[key];
+      cb.addEventListener('change', () => saveWish(key, cb.checked));
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initWishlists);
+  if (document.readyState !== 'loading') initWishlists();
+
+  // ============ TODAY CARD ============
+  function initTodayCard() {
+    const heading = document.getElementById('today-heading');
+    const content = document.getElementById('today-content');
+    if (!heading || !content) return;
+
+    const now = new Date();
+    const nzOffset = 12 * 60; // NZST UTC+12
+    const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+    const nzDate = new Date(utcMs + nzOffset * 60000);
+    const nzMonth = nzDate.getMonth() + 1; // 1-indexed
+    const nzDay = nzDate.getDate();
+    const nzYear = nzDate.getFullYear();
+
+    const tripStart = new Date('2026-05-16T00:00:00+12:00');
+    const tripEnd = new Date('2026-05-30T23:59:59+12:00');
+
+    if (nzDate < tripStart) {
+      const daysOut = Math.ceil((tripStart - nzDate) / (1000 * 60 * 60 * 24));
+      heading.textContent = 'T-minus ' + daysOut + (daysOut === 1 ? ' day' : ' days');
+      content.innerHTML = '<div class="today-pre-trip"><div class="tminus">' + daysOut + '</div><div class="tminus-label">days until touchdown in Christchurch · genz bebe era incoming</div></div>';
+    } else if (nzDate > tripEnd) {
+      heading.textContent = 'Trip complete 🐑';
+      content.innerHTML = '<div class="today-pre-trip"><div class="tminus-label" style="font-size:18px;padding:16px 0">Two weeks on the South Island · memories forever · ka kite anō 🌿</div></div>';
+    } else if (nzYear === 2026 && nzMonth === 5 && nzDay >= 16 && nzDay <= 30) {
+      const dayId = 'd-may' + nzDay;
+      const dayEl = document.getElementById(dayId);
+      if (dayEl) {
+        const dow = nzDate.toLocaleDateString('en-US', { weekday: 'long' });
+        heading.textContent = dow + ', May ' + nzDay;
+        const clone = dayEl.cloneNode(true);
+        clone.open = true;
+        clone.id = 'today-clone-' + nzDay;
+        const cloneSummary = clone.querySelector('summary');
+        if (cloneSummary) cloneSummary.style.cursor = 'default';
+        const wrapper = document.createElement('div');
+        wrapper.className = 'today-content-clone';
+        wrapper.appendChild(clone);
+        content.appendChild(wrapper);
+      } else {
+        heading.textContent = 'May ' + nzDay + ' · travel day';
+        content.innerHTML = '<div class="today-pre-trip"><div class="tminus-label">In transit ✈️</div></div>';
+      }
+    }
+  }
+  document.addEventListener('DOMContentLoaded', initTodayCard);
+  if (document.readyState !== 'loading') initTodayCard();
 
 </script>
 
