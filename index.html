@@ -3161,11 +3161,9 @@
     }
     return false;
   }
-  // Apply saved unlock state on load
+  // Always start locked — clear any saved unlock state on load
   (function() {
-    try {
-      if (localStorage.getItem('nz-money-unlock') === '1') unlockMoney(false);
-    } catch(e) {}
+    try { localStorage.removeItem('nz-money-unlock'); } catch(e) {}
   })();
 
   // ============ Theme toggle (global function, inline onclick) ============
