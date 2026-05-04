@@ -316,6 +316,18 @@
   .tl-cell.dateline:hover { transform: none; }
   .tl-cell.dateline .tl-cell-date { text-decoration: line-through; opacity: 0.8; }
 
+  /* Today highlight on calendar */
+  .tl-cell.tl-today {
+    box-shadow: 0 0 0 3px white, 0 0 0 6px rgba(255,255,255,0.55), 0 8px 24px rgba(0,0,0,0.22);
+    transform: scale(1.06);
+    z-index: 3;
+    position: relative;
+  }
+  .tl-cell.tl-today:hover { transform: scale(1.09); }
+  .tl-cell.tl-today .tl-cell-date {
+    font-size: 26px;
+  }
+
   /* split day: diagonal two-tone (S&L side top-left / J&A side bottom-right) */
   .tl-cell.split-tk-qt {
     background: linear-gradient(135deg, #FFB87A 0%, #E08440 45%, #2BC5D2 55%, #087A86 100%);
@@ -4136,6 +4148,25 @@
 
   document.addEventListener('DOMContentLoaded', setupPhotoDrop);
   if (document.readyState !== 'loading') setupPhotoDrop();
+
+  // ============ CALENDAR TODAY HIGHLIGHT ============
+  function highlightTodayCell() {
+    const nzOffset = 12 * 60;
+    const utcMs = Date.now() + new Date().getTimezoneOffset() * 60000;
+    const nzDate = new Date(utcMs + nzOffset * 60000);
+    const year = nzDate.getFullYear();
+    const month = nzDate.getMonth() + 1;
+    const day = nzDate.getDate();
+    if (year !== 2026 || month !== 5 || day < 14 || day > 30) return;
+    document.querySelectorAll('.tl-cell').forEach(function(cell) {
+      const dateEl = cell.querySelector('.tl-cell-date');
+      if (dateEl && parseInt(dateEl.textContent.trim(), 10) === day) {
+        cell.classList.add('tl-today');
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', highlightTodayCell);
+  if (document.readyState !== 'loading') highlightTodayCell();
 
   // ============ WISHLIST PERSISTENCE ============
   function saveWish(key, checked) {
