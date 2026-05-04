@@ -2004,14 +2004,205 @@
   }
 
   @media print {
-    body { background: white; }
-    body::before { display: none; }
-    .day { break-inside: avoid; border: 1px solid #aaa !important; box-shadow: none !important; }
-    .hero { padding: 20px 0; }
-    .controls { display: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { background: white !important; color: black !important; font-size: 11px; }
+    body::before { display: none !important; }
+
+    /* Hide non-essential sections */
+    .sticky-nav, .trip-progress-bar-wrap, .phase-indicator, .fab-today,
+    .forecast-section, .wildlife-section, .spotify-section,
+    .controls, .packing-filter, .phase-wishlist,
+    .flavor-strip, .drive-leg, .today-section { display: none !important; }
+
+    /* Hero — compact */
+    .hero { padding: 12px 0 8px !important; background: none !important; }
+    .hero h1 { font-size: 28px !important; margin: 4px 0 !important; }
+    .hero-sub { font-size: 11px !important; margin: 0 0 6px !important; }
+    .hero-clock { display: none !important; }
+    .hero-stats { gap: 12px !important; margin-top: 6px !important; }
+    .stat-num { font-size: 20px !important; }
+    .stat-label { font-size: 9px !important; }
+    .kicker { font-size: 9px !important; }
+
+    /* Phase headers */
+    .phase-hero { height: 60px !important; }
+    .phase-hero img { object-fit: cover; height: 60px !important; }
+    .phase-hero-title { font-size: 16px !important; }
+    .phase-hero-kicker { font-size: 9px !important; }
+    .phase-hero-meta { display: none; }
+    .phase-hero-overlay { padding: 8px 14px !important; }
+
+    /* Day cards — always expanded */
+    .day { break-inside: avoid; border: 1px solid #ddd !important; box-shadow: none !important; margin-bottom: 4px !important; }
     .day-body { display: block !important; }
-    .chev { display: none; }
+    .chev, .who-group { display: none !important; }
+    .day-cost { display: none !important; }
+    .activity-cost { display: none !important; }
+
+    /* Planning section — essentials only */
+    .planning-box { break-inside: avoid; box-shadow: none !important; border: 1px solid #ddd !important; }
+    .planning-body { display: block !important; }
+    .planning-box:not(:first-child) { display: none !important; }
+
+    /* Page breaks */
+    .phase { break-before: auto; }
+    .phase:first-of-type { break-before: avoid; }
+    .planning-section { break-before: page; }
+
+    /* Tl-section / calendar */
+    .tl-section { break-before: page; }
+    .tl-card { box-shadow: none !important; border: 1px solid #ddd !important; }
   }
+
+  /* ============ WILDLIFE ============ */
+  .wildlife-section { padding: 8px 0 28px; }
+  .wildlife-card {
+    background: var(--glass-strong);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.85);
+    border-radius: 24px;
+    padding: 24px 24px 20px;
+    box-shadow: var(--shadow-lg);
+  }
+  body.dark .wildlife-card { background: rgba(26,42,60,0.85); border-color: rgba(255,255,255,0.1); }
+  .wildlife-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .wildlife-head .kicker { color: var(--alpine); font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+  .wildlife-head h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0; }
+  .wildlife-reset {
+    font-size: 11px; font-weight: 700; padding: 4px 12px;
+    border: 1.5px solid var(--line); border-radius: 999px;
+    background: transparent; cursor: pointer; color: var(--ink-soft);
+    transition: all 0.15s;
+  }
+  .wildlife-reset:hover { background: var(--rose); color: white; border-color: var(--rose); }
+  .wildlife-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .wildlife-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 10px;
+    background: rgba(255,255,255,0.5);
+    border: 1.5px solid rgba(255,255,255,0.7);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    user-select: none;
+  }
+  body.dark .wildlife-item { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+  .wildlife-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .wildlife-item.spotted {
+    background: linear-gradient(135deg, rgba(10,92,126,0.15), rgba(27,185,130,0.15));
+    border-color: var(--alpine);
+  }
+  .wildlife-item.spotted .wildlife-emoji { filter: none; }
+  .wildlife-item.spotted .wildlife-name { color: var(--alpine); font-weight: 800; }
+  .wildlife-emoji { font-size: 32px; line-height: 1; transition: transform 0.3s; }
+  .wildlife-item.spotted .wildlife-emoji { transform: scale(1.2); }
+  .wildlife-name { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .wildlife-where { font-size: 10px; color: var(--ink-soft); }
+  .wildlife-check { font-size: 10px; color: var(--alpine); font-weight: 800; opacity: 0; transition: opacity 0.2s; }
+  .wildlife-item.spotted .wildlife-check { opacity: 1; }
+
+  /* ============ FAB TODAY ============ */
+  .fab-today {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 999;
+    background: linear-gradient(135deg, var(--lake), var(--alpine));
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(10,92,126,0.4);
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
+    letter-spacing: 0.02em;
+  }
+  .fab-today:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 6px 28px rgba(10,92,126,0.5); }
+  @keyframes fab-pulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(10,92,126,0.4); }
+    50% { box-shadow: 0 4px 28px rgba(10,92,126,0.7), 0 0 0 6px rgba(10,92,126,0.1); }
+  }
+  .fab-today.active { animation: fab-pulse 2s ease infinite; }
+  @media (max-width: 620px) {
+    .fab-today { bottom: 16px; right: 16px; padding: 10px 16px; font-size: 12px; }
+  }
+
+  /* ============ PHASE INDICATOR ============ */
+  .phase-indicator {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
+    background: rgba(10, 30, 50, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: white;
+    border-radius: 999px;
+    padding: 5px 14px 5px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    pointer-events: none;
+    transition: opacity 0.3s;
+    letter-spacing: 0.01em;
+  }
+  .phase-indicator-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--alpine);
+    flex-shrink: 0;
+  }
+
+  /* ============ SPOTIFY ============ */
+  .spotify-section { padding: 8px 0 28px; }
+  .spotify-card {
+    background: var(--glass-strong);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.85);
+    border-radius: 24px;
+    padding: 24px 24px 20px;
+    box-shadow: var(--shadow-lg);
+  }
+  body.dark .spotify-card { background: rgba(26,42,60,0.85); border-color: rgba(255,255,255,0.1); }
+  .spotify-card .kicker { color: var(--alpine); font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+  .spotify-card h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 16px; }
+  .spotify-embed-wrap iframe { width: 100%; border-radius: 16px; border: none; }
+  .spotify-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; padding: 32px 16px;
+    background: rgba(30,210,90,0.06);
+    border: 2px dashed rgba(30,210,90,0.25);
+    border-radius: 16px;
+    text-align: center;
+  }
+  .spotify-placeholder-icon { font-size: 36px; }
+  .spotify-placeholder-text { font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+
+  /* ============ PRINT BUTTON ============ */
+  .nav-print-btn { font-size: 12px; opacity: 0.6; }
+  .nav-print-btn:hover { opacity: 1; }
+  @media print { .nav-print-btn { display: none !important; } }
 
 </style>
 </head>
@@ -2025,6 +2216,7 @@
       <a href="#itinerary">Itinerary</a>
       <a href="#planning">Planning</a>
       <a href="money.html" class="nav-splits-btn">🧾 The Tab</a>
+      <a href="#" onclick="window.print();return false;" class="nav-print-btn">🖨 Print</a>
     </div>
     <div class="nav-tools">
       <input type="search" class="nav-search" id="nav-search" placeholder="Search…" autocomplete="off" oninput="handleSearch(this.value)">
@@ -2032,6 +2224,12 @@
     </div>
   </div>
 </nav>
+
+<!-- ============ PHASE INDICATOR ============ -->
+<div class="phase-indicator" id="phase-indicator" style="display:none">
+  <span class="phase-indicator-dot"></span>
+  <span class="phase-indicator-text" id="phase-indicator-text">–</span>
+</div>
 
 <!-- ============ TRIP PROGRESS BAR ============ -->
 <div class="trip-progress-bar-wrap" id="trip-progress-bar">
@@ -2080,8 +2278,30 @@
     <div class="stat"><div class="stat-num" id="countdown">–</div><div class="stat-label">Days to go</div></div>
     <div class="stat"><div class="stat-num">16</div><div class="stat-label">Nights on island</div></div>
     <div class="stat"><div class="stat-num">5</div><div class="stat-label">Base towns</div></div>
+    <div class="stat"><div class="stat-num">~1,095</div><div class="stat-label">km to drive</div></div>
+    <div class="stat"><div class="stat-num">2</div><div class="stat-label">glaciers</div></div>
+    <div class="stat"><div class="stat-num">1</div><div class="stat-label">fjord</div></div>
+    <div class="stat"><div class="stat-num">4+</div><div class="stat-label">wineries</div></div>
   </div>
 </header>
+
+<!-- ============ WILDLIFE BUCKET LIST ============ -->
+<section class="wildlife-section">
+  <div class="wrap">
+    <div class="wildlife-card">
+      <div class="wildlife-head">
+        <div>
+          <div class="kicker">genz bebe · spot the locals</div>
+          <h2>Wildlife bucket list 🐦</h2>
+        </div>
+        <button class="wildlife-reset" onclick="resetWildlife()">Reset</button>
+      </div>
+      <div class="wildlife-grid" id="wildlife-grid">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="today-section" id="today">
   <div class="wrap">
@@ -2932,6 +3152,22 @@
   </div>
 </section>
 
+
+<!-- ============ TRIP PLAYLIST ============ -->
+<section class="spotify-section">
+  <div class="wrap">
+    <div class="spotify-card">
+      <div class="kicker">genz bebe · the soundtrack</div>
+      <h2>Trip playlist 🎵</h2>
+      <div class="spotify-embed-wrap" id="spotify-embed-wrap">
+        <div class="spotify-placeholder">
+          <div class="spotify-placeholder-icon">🎵</div>
+          <div class="spotify-placeholder-text">Playlist coming soon · add your Spotify link to unlock</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ PLANNING & REFERENCE ============ -->
 <section class="planning-section" id="planning">
@@ -3977,7 +4213,137 @@
   document.addEventListener('DOMContentLoaded', initTodayCard);
   if (document.readyState !== 'loading') initTodayCard();
 
+  // ============ WILDLIFE ============
+  const WILDLIFE = [
+    { emoji: '🦜', name: 'Kea', where: 'Alpine passes', key: 'kea' },
+    { emoji: '🐧', name: 'Little Blue Penguin', where: 'Coastal areas', key: 'penguin' },
+    { emoji: '🐬', name: "Hector's Dolphin", where: 'Akaroa / CHC coast', key: 'dolphin' },
+    { emoji: '🦭', name: 'NZ Fur Seal', where: 'Rocky coastlines', key: 'seal' },
+    { emoji: '🦅', name: 'Kārearea (Falcon)', where: 'Open country', key: 'falcon' },
+    { emoji: '🦆', name: 'Paradise Duck', where: 'Lakes & rivers', key: 'duck' },
+    { emoji: '🦎', name: 'Tuatara', where: 'Sanctuaries', key: 'tuatara' },
+    { emoji: '🐦', name: 'Pūkeko', where: 'Wetlands & roadsides', key: 'pukeko' },
+    { emoji: '🦋', name: 'Monarch Butterfly', where: 'Gardens & bush', key: 'butterfly' },
+    { emoji: '🐑', name: 'Merino Sheep', where: 'Everywhere, tbh', key: 'sheep' },
+    { emoji: '🐄', name: 'Highland Cattle', where: 'Mackenzie Basin', key: 'cattle' },
+    { emoji: '🦔', name: 'Hedgehog', where: 'Dusk · roadsides', key: 'hedgehog' },
+  ];
+
+  function renderWildlife() {
+    const grid = document.getElementById('wildlife-grid');
+    if (!grid) return;
+    const spotted = JSON.parse(localStorage.getItem('nz-wildlife') || '{}');
+    grid.innerHTML = WILDLIFE.map(w => {
+      const cls = spotted[w.key] ? 'wildlife-item spotted' : 'wildlife-item';
+      return `<div class="${cls}" onclick="toggleWildlife('${w.key}')">
+        <div class="wildlife-emoji">${w.emoji}</div>
+        <div class="wildlife-name">${w.name}</div>
+        <div class="wildlife-where">${w.where}</div>
+        <div class="wildlife-check">✓ spotted!</div>
+      </div>`;
+    }).join('');
+  }
+  function toggleWildlife(key) {
+    const spotted = JSON.parse(localStorage.getItem('nz-wildlife') || '{}');
+    spotted[key] = !spotted[key];
+    localStorage.setItem('nz-wildlife', JSON.stringify(spotted));
+    renderWildlife();
+  }
+  function resetWildlife() {
+    if (!confirm('Clear all wildlife sightings?')) return;
+    localStorage.removeItem('nz-wildlife');
+    renderWildlife();
+  }
+  document.addEventListener('DOMContentLoaded', renderWildlife);
+  if (document.readyState !== 'loading') renderWildlife();
+
+  // ============ JUMP TO TODAY FAB ============
+  function jumpToToday() {
+    const todaySection = document.getElementById('today');
+    if (todaySection) {
+      todaySection.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    const nzOffset = 12 * 60;
+    const utcMs = Date.now() + new Date().getTimezoneOffset() * 60000;
+    const nzDate = new Date(utcMs + nzOffset * 60000);
+    const day = nzDate.getDate();
+    const el = document.getElementById('d-may' + day);
+    if (el) { el.scrollIntoView({ behavior: 'smooth' }); el.open = true; }
+  }
+
+  function initFab() {
+    const fab = document.getElementById('fab-today');
+    if (!fab) return;
+    const tripStart = new Date('2026-05-16T00:00:00+12:00');
+    const tripEnd = new Date('2026-05-31T00:00:00+12:00');
+    const now = new Date();
+    if (now >= tripStart && now <= tripEnd) {
+      fab.style.display = 'block';
+      fab.classList.add('active');
+    } else if (now >= tripStart) {
+      // After trip — show without pulse
+      fab.style.display = 'block';
+    }
+    // Also show FAB while previewing (dev mode): uncomment below
+    // fab.style.display = 'block';
+  }
+  document.addEventListener('DOMContentLoaded', initFab);
+  if (document.readyState !== 'loading') initFab();
+
+  // ============ PHASE INDICATOR ============
+  function initPhaseIndicator() {
+    const indicator = document.getElementById('phase-indicator');
+    const indicatorText = document.getElementById('phase-indicator-text');
+    if (!indicator || !indicatorText) return;
+
+    const phases = [
+      { id: 'itinerary', label: '📍 Christchurch', color: '#E63946' },
+      { selector: 'img[src="images/tekapo.jpg"]', label: '📍 Lake Tekapo', color: '#F4A261' },
+      { selector: 'img[src="images/queenstown.jpg"]', label: '📍 Queenstown', color: '#0BA3B3' },
+      { selector: 'img[src="images/milford.jpg"]', label: '📍 Te Anau · Milford', color: '#1D3557' },
+      { selector: 'img[src="images/wanaka.jpg"]', label: '📍 Wanaka', color: '#7B4B94' },
+    ];
+
+    const phaseEls = phases.map(p => {
+      if (p.id) return document.getElementById(p.id);
+      const img = document.querySelector(p.selector);
+      return img ? img.closest('section') : null;
+    }).filter(Boolean);
+
+    const fullPhases = phaseEls.map((el, i) => ({ el, label: phases[i].label, color: phases[i].color }));
+
+    let visible = false;
+    function onScroll() {
+      const windowH = window.innerHeight;
+
+      let current = null;
+      for (let i = fullPhases.length - 1; i >= 0; i--) {
+        const rect = fullPhases[i].el.getBoundingClientRect();
+        if (rect.top < windowH * 0.5) { current = fullPhases[i]; break; }
+      }
+
+      if (current) {
+        indicatorText.textContent = current.label;
+        indicator.querySelector('.phase-indicator-dot').style.background = current.color;
+        if (!visible) { indicator.style.display = 'flex'; visible = true; }
+      } else {
+        if (visible) { indicator.style.display = 'none'; visible = false; }
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+  document.addEventListener('DOMContentLoaded', initPhaseIndicator);
+  if (document.readyState !== 'loading') initPhaseIndicator();
+
 </script>
+
+<!-- ============ JUMP TO TODAY FAB ============ -->
+<button class="fab-today" id="fab-today" onclick="jumpToToday()" title="Jump to today" aria-label="Jump to today" style="display:none">
+  📍 Today
+</button>
 
 </body>
 </html>
