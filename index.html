@@ -2258,7 +2258,7 @@
 <header class="hero" id="top">
   <div class="kicker">genz bebe · sabbatical era · may 2026</div>
   <h1>New Zealand</h1>
-  <p class="hero-sub">Two weeks on the <strong>South Island</strong>. Fjords, mountain passes, glacier hikes, stargazing, and lake-view wine. No cap, it's giving main character energy.</p>
+  <p class="hero-sub">Two weeks on the <strong>South Island</strong>. Fjords, mountain passes, glacier hikes, stargazing, and lake-view wine.</p>
 
   <div class="hero-clock" title="Live time in your local zone vs New Zealand">
     <div class="clock-col">
@@ -2277,31 +2277,9 @@
   <div class="hero-stats">
     <div class="stat"><div class="stat-num" id="countdown">–</div><div class="stat-label">Days to go</div></div>
     <div class="stat"><div class="stat-num">16</div><div class="stat-label">Nights on island</div></div>
-    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Base towns</div></div>
     <div class="stat"><div class="stat-num">~1,095</div><div class="stat-label">km to drive</div></div>
-    <div class="stat"><div class="stat-num">2</div><div class="stat-label">glaciers</div></div>
-    <div class="stat"><div class="stat-num">1</div><div class="stat-label">fjord</div></div>
-    <div class="stat"><div class="stat-num">4+</div><div class="stat-label">wineries</div></div>
   </div>
 </header>
-
-<!-- ============ WILDLIFE BUCKET LIST ============ -->
-<section class="wildlife-section">
-  <div class="wrap">
-    <div class="wildlife-card">
-      <div class="wildlife-head">
-        <div>
-          <div class="kicker">genz bebe · spot the locals</div>
-          <h2>Wildlife bucket list 🐦</h2>
-        </div>
-        <button class="wildlife-reset" onclick="resetWildlife()">Reset</button>
-      </div>
-      <div class="wildlife-grid" id="wildlife-grid">
-        <!-- rendered by JS -->
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="today-section" id="today">
   <div class="wrap">
@@ -3161,6 +3139,24 @@
       <h2>Trip playlist 🎵</h2>
       <div class="spotify-embed-wrap" id="spotify-embed-wrap">
         <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1FwNCQ0SjjPsMW?utm_source=generator&theme=0" height="380" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WILDLIFE BUCKET LIST ============ -->
+<section class="wildlife-section">
+  <div class="wrap">
+    <div class="wildlife-card">
+      <div class="wildlife-head">
+        <div>
+          <div class="kicker">genz bebe · spot the locals</div>
+          <h2>Wildlife bucket list 🐦</h2>
+        </div>
+        <button class="wildlife-reset" onclick="resetWildlife()">Reset</button>
+      </div>
+      <div class="wildlife-grid" id="wildlife-grid">
+        <!-- rendered by JS -->
       </div>
     </div>
   </div>
@@ -4182,10 +4178,10 @@
     if (nzDate < tripStart) {
       const daysOut = Math.ceil((tripStart - nzDate) / (1000 * 60 * 60 * 24));
       heading.textContent = 'T-minus ' + daysOut + (daysOut === 1 ? ' day' : ' days');
-      content.innerHTML = '<div class="today-pre-trip"><div class="tminus">' + daysOut + '</div><div class="tminus-label">days until touchdown in Christchurch · genz bebe era incoming</div></div>';
+      content.innerHTML = '<div class="today-pre-trip"><div class="tminus">' + daysOut + '</div><div class="tminus-label">days until Christchurch</div></div>';
     } else if (nzDate > tripEnd) {
       heading.textContent = 'Trip complete 🐑';
-      content.innerHTML = '<div class="today-pre-trip"><div class="tminus-label" style="font-size:18px;padding:16px 0">Two weeks on the South Island · memories forever · ka kite anō 🌿</div></div>';
+      content.innerHTML = '<div class="today-pre-trip"><div class="tminus-label" style="font-size:18px;padding:16px 0">Two weeks on the South Island. Ka kite anō 🌿</div></div>';
     } else if (nzYear === 2026 && nzMonth === 5 && nzDay >= 16 && nzDay <= 30) {
       const dayId = 'd-may' + nzDay;
       const dayEl = document.getElementById(dayId);
