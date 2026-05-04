@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Tab · genz bebe</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
   :root {
     --bg: #EAF4F6;
     --ink: #0E2230;
@@ -24,18 +25,19 @@
     --sl: #2A9D8F;
     --ja: #E6548F;
   }
+
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: var(--ink);
     background-color: var(--bg);
     background-image:
-      radial-gradient(1100px 700px at 8% -5%, rgba(11, 163, 179, 0.35), transparent 55%),
-      radial-gradient(1000px 600px at 100% 10%, rgba(242, 107, 94, 0.28), transparent 55%),
-      radial-gradient(1200px 700px at 50% 100%, rgba(123, 75, 148, 0.18), transparent 55%),
-      radial-gradient(800px 500px at 100% 90%, rgba(244, 162, 97, 0.22), transparent 55%);
+      radial-gradient(1100px 700px at 8% -5%, rgba(11, 163, 179, 0.18), transparent 55%),
+      radial-gradient(1000px 600px at 100% 10%, rgba(242, 107, 94, 0.14), transparent 55%),
+      radial-gradient(1200px 700px at 50% 100%, rgba(123, 75, 148, 0.10), transparent 55%),
+      radial-gradient(800px 500px at 100% 90%, rgba(244, 162, 97, 0.12), transparent 55%);
     background-attachment: fixed;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -389,6 +391,37 @@
     border: 1px solid var(--line-strong); transition: all 0.15s;
   }
   .lock-btn:hover { background: var(--rose); color: white; border-color: var(--rose); }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 620px) {
+    .money-section { padding: 28px 12px 40px; }
+    .receipt-wrap { padding: 20px 14px 28px; }
+    .receipt-title { letter-spacing: 0.18em; }
+    .balance-note {
+      padding: 0 4px;
+      font-size: 11px !important;
+      line-height: 1.7;
+    }
+    .receipt-net { font-size: 13px; padding: 12px 8px; }
+    .splits-list { padding: 12px 12px; border-radius: 14px; }
+    .split-phase-header { font-size: 9px; padding: 8px 10px; letter-spacing: 0.12em !important; }
+    .unresolved-list { padding: 14px 14px; }
+    .stat-tile { padding: 12px 14px; }
+    .stat-tile-val { font-size: 22px; }
+    .stat-tile-sub { font-size: 10px; }
+    .back-link { font-size: 11px; padding: 5px 12px; }
+  }
+
+  @media (max-width: 440px) {
+    .receipt-title { letter-spacing: 0.1em; font-size: clamp(20px, 7vw, 36px); }
+    .split-row { grid-template-columns: 48px 1fr 78px; gap: 8px; padding: 10px 2px; font-size: 12px; }
+    .split-subtotal { grid-template-columns: 48px 1fr 78px; gap: 8px; }
+    .split-paidby { font-size: 9px; padding: 4px 0; }
+    .split-item .date { font-size: 10px; }
+    .split-item .sub { font-size: 10px; }
+    .split-total { font-size: 12px; }
+    .receipt-wrap { padding: 16px 12px 22px; }
+  }
 </style>
 </head>
 <body>
@@ -446,7 +479,8 @@
     </div>
 
     <div class="balance-note">
-      J&amp;A owes S&amp;L $1,027.71 (Wanaka) + $658.67 (car) = $1,686.38 · S&amp;L owes J&amp;A $985.90 (QT + TA) + $235.00 (Milford) = $1,220.90
+      J&amp;A → S&amp;L: $1,027.71 (Wanaka) + $658.67 (car) = $1,686.38<br>
+      S&amp;L → J&amp;A: $768.20 (QT) + $217.70 (Te Anau) + $235.00 (Milford) = $1,220.90
     </div>
 
     <div class="receipt-net">NET: J&amp;A OWES S&amp;L <strong>$465.48</strong></div>
