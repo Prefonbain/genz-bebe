@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NZ 2026 · Trip Itinerary · genz bebe</title>
+<style>
+  /* ── Base ─────────────────────────────────────────────── */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 10pt; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.5;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Layout ───────────────────────────────────────────── */
+  .page { max-width: 7.5in; margin: 0 auto; padding: 0.5in 0.6in; }
+
+  /* ── Cover ────────────────────────────────────────────── */
+  .cover {
+    text-align: center;
+    padding: 0.6in 0 0.5in;
+    border-bottom: 3px solid #0A5C7E;
+    margin-bottom: 28pt;
+  }
+  .cover-kicker {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 8pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #0BA3B3;
+    margin-bottom: 10pt;
+  }
+  .cover h1 {
+    font-size: 28pt;
+    font-weight: normal;
+    letter-spacing: -0.02em;
+    color: #0A5C7E;
+    margin-bottom: 6pt;
+  }
+  .cover-sub {
+    font-size: 11pt;
+    color: #555;
+    margin-bottom: 18pt;
+  }
+  .cover-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32pt;
+    margin-top: 14pt;
+    flex-wrap: wrap;
+  }
+  .cover-stat { text-align: center; }
+  .cover-stat-val {
+    font-size: 20pt;
+    font-weight: bold;
+    color: #0A5C7E;
+    display: block;
+    line-height: 1;
+  }
+  .cover-stat-lbl {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7.5pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    display: block;
+    margin-top: 3pt;
+  }
+
+  /* ── Quick-ref bookings table ─────────────────────────── */
+  .bookings-section {
+    margin-bottom: 28pt;
+    page-break-inside: avoid;
+  }
+  .section-title {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7.5pt;
+    font-weight: bold;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #0A5C7E;
+    border-bottom: 1.5pt solid #0A5C7E;
+    padding-bottom: 4pt;
+    margin-bottom: 10pt;
+  }
+  table.bookings {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+  }
+  table.bookings th {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555;
+    text-align: left;
+    padding: 4pt 6pt;
+    border-bottom: 1pt solid #ccc;
+  }
+  table.bookings td {
+    padding: 5pt 6pt;
+    border-bottom: 0.5pt solid #e8e8e8;
+    vertical-align: top;
+  }
+  table.bookings tr:last-child td { border-bottom: none; }
+  .ref { font-family: "Courier New", monospace; font-size: 8pt; color: #333; }
+  .tag {
+    display: inline-block;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 6.5pt;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    border-radius: 2pt;
+    padding: 1pt 4pt;
+  }
+  .tag.sl { background: #2A9D8F; }
+  .tag.ja { background: #C13A74; }
+  .tag.all { background: #0A5C7E; }
+
+  /* ── Phase header ─────────────────────────────────────── */
+  .phase-header {
+    margin: 0 -0.6in;
+    padding: 12pt 0.6in 10pt;
+    background: #0A5C7E;
+    color: #fff;
+    page-break-before: always;
+  }
+  .phase-header:first-of-type { page-break-before: avoid; }
+  .phase-kicker {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7pt;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 3pt;
+  }
+  .phase-header h2 {
+    font-size: 18pt;
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: 2pt;
+  }
+  .phase-meta {
+    font-size: 8.5pt;
+    opacity: 0.8;
+  }
+  .phase-drive {
+    margin: 0 -0.6in;
+    padding: 7pt 0.6in;
+    background: #f0f7f9;
+    border-top: 1pt solid #c8dde6;
+    border-bottom: 1pt solid #c8dde6;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 8pt;
+    color: #0A5C7E;
+  }
+  .phase-drive strong { font-weight: bold; }
+
+  /* ── Day card ─────────────────────────────────────────── */
+  .day {
+    margin-bottom: 18pt;
+    page-break-inside: avoid;
+  }
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10pt;
+    border-bottom: 1pt solid #ddd;
+    padding-bottom: 5pt;
+    margin-bottom: 8pt;
+  }
+  .day-num {
+    font-size: 20pt;
+    font-weight: bold;
+    color: #0A5C7E;
+    line-height: 1;
+    min-width: 28pt;
+  }
+  .day-dow {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    min-width: 20pt;
+  }
+  .day-title {
+    font-size: 11pt;
+    font-weight: bold;
+    flex: 1;
+  }
+  .day-sub {
+    font-size: 8.5pt;
+    color: #555;
+    font-style: italic;
+    margin-left: 58pt;
+    margin-top: -3pt;
+    margin-bottom: 6pt;
+  }
+
+  /* ── Tracks (split S&L / J&A) ─────────────────────────── */
+  .tracks {
+    display: flex;
+    gap: 16pt;
+  }
+  .tracks.single .track { flex: 1; }
+  .tracks.split .track { flex: 1; }
+  .track {
+    flex: 1;
+  }
+  .track-head {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7.5pt;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 5pt;
+    display: flex;
+    align-items: center;
+    gap: 5pt;
+  }
+  .track-divider {
+    width: 0.5pt;
+    background: #ddd;
+    flex-shrink: 0;
+  }
+
+  /* ── Activities ───────────────────────────────────────── */
+  .section-lbl {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 6.5pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin: 6pt 0 3pt;
+  }
+  .activity {
+    padding: 4pt 6pt;
+    margin-bottom: 3pt;
+    border-left: 2pt solid transparent;
+    border-radius: 1pt;
+    font-size: 9pt;
+  }
+  .activity.booked {
+    border-left-color: #2A9D8F;
+    background: #f4fbf9;
+  }
+  .activity.idea {
+    border-left-color: #ddd;
+    color: #444;
+  }
+  .activity-name {
+    font-weight: bold;
+  }
+  .activity.idea .activity-name {
+    font-weight: normal;
+  }
+  .activity-body {
+    font-size: 8pt;
+    color: #666;
+    margin-top: 1pt;
+  }
+  .activity-cost {
+    font-size: 8pt;
+    color: #2A9D8F;
+    font-weight: bold;
+    margin-left: 4pt;
+  }
+  .booking-ref {
+    font-family: "Courier New", monospace;
+    font-size: 7.5pt;
+    color: #2A9D8F;
+    margin-top: 1pt;
+    display: block;
+  }
+
+  /* ── Settlement summary ───────────────────────────────── */
+  .settlement {
+    page-break-inside: avoid;
+    margin-top: 28pt;
+  }
+  .settlement-net {
+    text-align: center;
+    padding: 10pt 16pt;
+    border: 2pt solid #0A5C7E;
+    border-radius: 4pt;
+    font-size: 11pt;
+    font-weight: bold;
+    color: #0A5C7E;
+    margin-bottom: 12pt;
+  }
+  table.splits {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+  }
+  table.splits th {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 6.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555;
+    padding: 4pt 6pt;
+    border-bottom: 1pt solid #ccc;
+    text-align: left;
+  }
+  table.splits td {
+    padding: 4pt 6pt;
+    border-bottom: 0.5pt solid #eee;
+    vertical-align: top;
+  }
+  table.splits tr.phase-row td {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #0BA3B3;
+    background: #f0f7f9;
+    padding: 3pt 6pt;
+    border-bottom: none;
+  }
+  table.splits tr.subtotal td {
+    font-weight: bold;
+    border-top: 1pt dashed #ccc;
+    border-bottom: 1pt dashed #ccc;
+    background: #fafafa;
+  }
+  table.splits tr.total-row td {
+    font-weight: bold;
+    font-size: 9.5pt;
+    border-top: 1.5pt solid #0A5C7E;
+    color: #0A5C7E;
+  }
+  .owes-sl { color: #2A9D8F; font-weight: bold; }
+  .owes-ja { color: #C13A74; font-weight: bold; }
+  .split-even { color: #999; font-style: italic; }
+  .amount { font-family: "Courier New", monospace; text-align: right; }
+
+  /* ── Emergency contacts strip ─────────────────────────── */
+  .contacts {
+    margin-top: 20pt;
+    padding: 10pt 12pt;
+    background: #fff8ee;
+    border: 1pt solid #F4A261;
+    border-radius: 3pt;
+    font-size: 8.5pt;
+    page-break-inside: avoid;
+  }
+  .contacts-title {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #A06A34;
+    font-weight: bold;
+    margin-bottom: 6pt;
+  }
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8pt;
+  }
+  .contact-item strong { display: block; font-size: 8pt; }
+  .contact-item span { color: #555; }
+
+  /* ── Footer ───────────────────────────────────────────── */
+  .print-footer {
+    text-align: center;
+    margin-top: 24pt;
+    padding-top: 10pt;
+    border-top: 0.5pt solid #ddd;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7.5pt;
+    color: #aaa;
+    page-break-inside: avoid;
+  }
+
+  /* ── Print overrides ──────────────────────────────────── */
+  @page {
+    size: letter;
+    margin: 0.65in 0.7in;
+  }
+  @media print {
+    body { font-size: 9.5pt; }
+    .page { padding: 0; max-width: 100%; }
+    .phase-header { margin: 0 -0.7in; padding-left: 0.7in; padding-right: 0.7in; }
+    .phase-drive { margin: 0 -0.7in; padding-left: 0.7in; padding-right: 0.7in; }
+    .no-print { display: none !important; }
+    a[href]::after { content: none !important; }
+    .day { page-break-inside: avoid; }
+    .phase-header { page-break-before: always; }
+    .phase-header:first-of-type { page-break-before: avoid; }
+  }
+
+  /* ── Screen-only nav ──────────────────────────────────── */
+  .screen-nav {
+    background: #0A5C7E;
+    color: white;
+    text-align: center;
+    padding: 10pt 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 9pt;
+  }
+  .screen-nav a {
+    color: #9DE8F0;
+    text-decoration: underline;
+    margin: 0 8pt;
+  }
+  .print-btn {
+    display: inline-block;
+    background: #2A9D8F;
+    color: white;
+    border: none;
+    padding: 6pt 16pt;
+    border-radius: 3pt;
+    cursor: pointer;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 9pt;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-left: 12pt;
+  }
+  @media print { .screen-nav { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="screen-nav no-print">
+  <a href="index.html">← Back to trip planner</a>
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- ════ COVER ════════════════════════════════════════════ -->
+  <div class="cover">
+    <div class="cover-kicker">genz bebe · nz '26</div>
+    <h1>New Zealand</h1>
+    <div class="cover-sub">South Island · May 16 – 30, 2026</div>
+    <div class="cover-stats">
+      <div class="cover-stat">
+        <span class="cover-stat-val">15</span>
+        <span class="cover-stat-lbl">Days on island</span>
+      </div>
+      <div class="cover-stat">
+        <span class="cover-stat-val">5</span>
+        <span class="cover-stat-lbl">Cities</span>
+      </div>
+      <div class="cover-stat">
+        <span class="cover-stat-val">~1,095 km</span>
+        <span class="cover-stat-lbl">To drive</span>
+      </div>
+      <div class="cover-stat">
+        <span class="cover-stat-val">4</span>
+        <span class="cover-stat-lbl">Travelers</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ CONFIRMED BOOKINGS ════════════════════════════════ -->
+  <div class="bookings-section">
+    <div class="section-title">Confirmed Bookings — Quick Reference</div>
+    <table class="bookings">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>What</th>
+          <th>Reference</th>
+          <th>Cost</th>
+          <th>Who</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>May 16–17</td>
+          <td>CHC CBD Townhouse · Christchurch</td>
+          <td>—</td>
+          <td>$250/n</td>
+          <td><span class="tag sl">S&L</span></td>
+        </tr>
+        <tr>
+          <td>May 17</td>
+          <td>Akaroa Dolphin Cruise</td>
+          <td class="ref">RD01XRM</td>
+          <td>$148.20</td>
+          <td><span class="tag sl">S&L</span></td>
+        </tr>
+        <tr>
+          <td>May 18–20</td>
+          <td>Peppers Bluewater Resort · Lake Tekapo</td>
+          <td class="ref">#364075017998</td>
+          <td>$244.33/n</td>
+          <td><span class="tag sl">S&L</span></td>
+        </tr>
+        <tr>
+          <td>May 19</td>
+          <td>Mackenzie High Country Wildlife Tour · 10:00am</td>
+          <td class="ref">MHC-19MAY-4471</td>
+          <td>$198.00</td>
+          <td><span class="tag sl">S&L</span></td>
+        </tr>
+        <tr>
+          <td>May 19</td>
+          <td>Dark Sky Stargazing · 8:30pm</td>
+          <td class="ref">678860</td>
+          <td>$254.65</td>
+          <td><span class="tag sl">S&L</span></td>
+        </tr>
+        <tr>
+          <td>May 19–25</td>
+          <td>Queenstown AirBnb · 30 Wynyard Crescent</td>
+          <td class="ref">HMR8T8DPCQ</td>
+          <td>$512.13/n</td>
+          <td><span class="tag ja">J&A</span></td>
+        </tr>
+        <tr>
+          <td>May 24–25</td>
+          <td>Te Anau AirBnb · 12 Worsley St</td>
+          <td class="ref">HMKECPN95F</td>
+          <td>$217.70/n</td>
+          <td><span class="tag all">All</span></td>
+        </tr>
+        <tr>
+          <td>May 25</td>
+          <td>Milford Sound Boutique Cruise · 10:45am <em style="font-size:7.5pt;color:#888;">(leave Te Anau by 9am)</em></td>
+          <td class="ref">#346437283</td>
+          <td>$470 split</td>
+          <td><span class="tag all">All</span></td>
+        </tr>
+        <tr>
+          <td>May 26–30</td>
+          <td>The Lookout · Lake Views · Wanaka</td>
+          <td class="ref">M1771211356591</td>
+          <td>$514/n split</td>
+          <td><span class="tag all">All</span></td>
+        </tr>
+        <tr>
+          <td>May 16–30</td>
+          <td>Touch Down Car Rental</td>
+          <td class="ref">U-01-13562</td>
+          <td>~$1,154 USD</td>
+          <td><span class="tag sl">S&L</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ════ PHASE 1: CHRISTCHURCH ══════════════════════════════ -->
+  <div class="phase-header">
+    <div class="phase-kicker">Phase 01 · May 16 – 17 · S&amp;L only</div>
+    <h2>Christchurch</h2>
+    <div class="phase-meta">CHC CBD Townhouse · garden city · Akaroa day trip · 54°/36°F</div>
+  </div>
+
+  <!-- May 16 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">16</span>
+      <span class="day-dow">Sat</span>
+      <span class="day-title">Arrive Christchurch</span>
+      <span class="tag sl">S&L</span>
+    </div>
+    <div class="day-sub">Arrive from Auckland · check in · decompress</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">CHC CBD Townhouse <span class="activity-cost">$250</span></span>
+          <span class="booking-ref">✓ Booked</span>
+        </div>
+        <div class="section-lbl">Day plan</div>
+        <div class="activity idea">
+          <span class="activity-name">Explore city centre · Hagley Park · Botanic Gardens</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">Cathedral Square · Cardboard Cathedral</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">New Regent Street for dinner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 17 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">17</span>
+      <span class="day-dow">Sun</span>
+      <span class="day-title">Akaroa day trip</span>
+      <span class="tag sl">S&L</span>
+    </div>
+    <div class="day-sub">Banks Peninsula · dolphin cruise · scenic harbour drive</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">CHC CBD Townhouse <span class="activity-cost">$250</span></span>
+        </div>
+        <div class="section-lbl">Activities</div>
+        <div class="activity booked">
+          <span class="activity-name">Akaroa Dolphin Cruise <span class="activity-cost">$148.20</span></span>
+          <span class="activity-body">Hector's dolphins · scenic harbour</span>
+          <span class="booking-ref">✓ Booked · RD01XRM</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">Summit Road scenic drive · crater rim views</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">French village street · Akaroa bakeries</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════ PHASE 2: LAKE TEKAPO ══════════════════════════════ -->
+  <div class="phase-drive">
+    🚗 &nbsp;<strong>CHC → Tekapo:</strong> &nbsp;225 km · ~2.5 hrs direct (SH1/SH8) · allow 4–5 hrs with stops
+  </div>
+  <div class="phase-header">
+    <div class="phase-kicker">Phase 02 · May 18 – 20 · S&amp;L only</div>
+    <h2>Lake Tekapo</h2>
+    <div class="phase-meta">Peppers Bluewater Resort · stargazing · alpine walks · 50°/28°F</div>
+  </div>
+
+  <!-- May 18 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">18</span>
+      <span class="day-dow">Mon</span>
+      <span class="day-title">Drive day to Lake Tekapo</span>
+      <span class="tag sl">S&L</span>
+    </div>
+    <div class="day-sub">Castle Hill · Geraldine lunch · arrive ~14:30</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">Peppers Bluewater Resort <span class="activity-cost">$244.33</span></span>
+          <span class="booking-ref">✓ Booked · #364075017998</span>
+        </div>
+        <div class="section-lbl">Drive stops</div>
+        <div class="activity idea">
+          <span class="activity-name">Castle Hill</span>
+          <span class="activity-body">Leave CHC ~0800 · 1.5 hr with detours</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">SH73 → SH77/72 scenic loop · lunch in Geraldine</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">Lakefront walk · arrive Tekapo ~14:30</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 19 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">19</span>
+      <span class="day-dow">Tue</span>
+      <span class="day-title">Wildlife tour · stargazing · J&amp;A arrive Queenstown</span>
+    </div>
+    <div class="day-sub">Dark Sky Project 8:30pm · J&amp;A settle in Queenstown</div>
+    <div class="tracks split">
+      <div class="track">
+        <div class="track-head"><span class="tag sl">S&L</span> Lake Tekapo</div>
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">Peppers Bluewater <span class="activity-cost">$244.33</span></span>
+        </div>
+        <div class="section-lbl">Activities</div>
+        <div class="activity booked">
+          <span class="activity-name">Mackenzie High Country Wildlife Tour <span class="activity-cost">$198.00</span></span>
+          <span class="activity-body">10:00am · 2.5 hrs · alpine birds, chamois &amp; tahr</span>
+          <span class="booking-ref">✓ Booked · MHC-19MAY-4471</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">Lake Alexandrina walk · Mt John Summit</span>
+          <span class="activity-body">Cafe Astro at top (10am – 3pm)</span>
+        </div>
+        <div class="activity booked">
+          <span class="activity-name">Dark Sky Stargazing <span class="activity-cost">$254.65</span></span>
+          <span class="activity-body">8:30pm start · cleanest southern sky</span>
+          <span class="booking-ref">✓ Booked · 678860</span>
+        </div>
+      </div>
+      <div class="track-divider"></div>
+      <div class="track">
+        <div class="track-head"><span class="tag ja">J&A</span> Queenstown · Arrival</div>
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">Queenstown AirBnb · 30 Wynyard Cres <span class="activity-cost">$512.13/n</span></span>
+          <span class="booking-ref">✓ Reserved · HMR8T8DPCQ</span>
+        </div>
+        <div class="section-lbl">Settle in</div>
+        <div class="activity idea">
+          <span class="activity-name">Relax · groceries · gentle evening</span>
+          <span class="activity-body">Jet-lag day — easy does it</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 20 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">20</span>
+      <span class="day-dow">Wed</span>
+      <span class="day-title">Mt Cook day · Queenstown exploring</span>
+    </div>
+    <div class="day-sub">S&L: Hooker Valley hike · J&A: Bob's Peak, breweries</div>
+    <div class="tracks split">
+      <div class="track">
+        <div class="track-head"><span class="tag sl">S&L</span> Tekapo → Mt Cook</div>
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">Peppers Bluewater <span class="activity-cost">$244.33</span></span>
+        </div>
+        <div class="section-lbl">Day plan</div>
+        <div class="activity idea">
+          <span class="activity-name">Mt Cook · Hooker Valley Track</span>
+          <span class="activity-body">1.5 hr drive · full track 3–4 hr · alt: Sefton View 1.5 hr if closed</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">Lunch · Old Mountaineers' Cafe</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">Tasman Glacier detour · Tekapo Springs evening soak</span>
+        </div>
+      </div>
+      <div class="track-divider"></div>
+      <div class="track">
+        <div class="track-head"><span class="tag ja">J&A</span> Queenstown</div>
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">Queenstown AirBnb <span class="activity-cost">$512.13</span></span>
+        </div>
+        <div class="section-lbl">Activities</div>
+        <div class="activity idea"><span class="activity-name">Bob's Peak / Ben Lomond hike</span></div>
+        <div class="activity idea"><span class="activity-name">Altitude Brewing</span></div>
+        <div class="activity idea"><span class="activity-name">Dinner · Flame or Rata</span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════ PHASE 3: QUEENSTOWN ════════════════════════════════ -->
+  <div class="phase-drive">
+    🚗 &nbsp;<strong>Tekapo → Queenstown:</strong> &nbsp;260 km · ~3 hrs · SH8 via Omarama &amp; Lindis Pass
+  </div>
+  <div class="phase-header">
+    <div class="phase-kicker">Phase 03 · May 21 – 23 · All four together</div>
+    <h2>Queenstown · Together</h2>
+    <div class="phase-meta">Shared AirBnb · reunion dinner · wineries · gondola · 50°/34°F mixed</div>
+  </div>
+
+  <!-- May 21 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">21</span>
+      <span class="day-dow">Thu</span>
+      <span class="day-title">Everyone converges</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">S&L scenic drive south · dinner reunion</div>
+    <div class="tracks split">
+      <div class="track">
+        <div class="track-head"><span class="tag sl">S&L</span> Tekapo → Queenstown drive</div>
+        <div class="section-lbl">Drive stops (~5–6 hrs with stops)</div>
+        <div class="activity idea"><span class="activity-name">Breakfast · High Country Salmon (near Twizel)</span></div>
+        <div class="activity idea"><span class="activity-name">Omarama Clay Cliffs · Lindis Pass photo stop</span></div>
+        <div class="activity idea"><span class="activity-name">Lunch · Cromwell · Grain &amp; Seed or Pinot Junction</span></div>
+      </div>
+      <div class="track-divider"></div>
+      <div class="track">
+        <div class="track-head"><span class="tag ja">J&A</span> Pre-reunion</div>
+        <div class="activity idea"><span class="activity-name">Bennett Bluff Viewpoint (~25 min from QT)</span></div>
+      </div>
+    </div>
+    <div class="section-lbl" style="margin-top:8pt;">All · Evening</div>
+    <div class="activity booked">
+      <span class="activity-name">Shared AirBnb · 30 Wynyard Cres <span class="activity-cost">$512.13 shared</span></span>
+      <span class="booking-ref">✓ Reserved · HMR8T8DPCQ</span>
+    </div>
+  </div>
+
+  <!-- May 22 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">22</span>
+      <span class="day-dow">Fri</span>
+      <span class="day-title">Skyline &amp; Canyon Brewing</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">Gondola, luge, brewery walk</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked"><span class="activity-name">Shared AirBnb <span class="activity-cost">$512.13</span></span></div>
+        <div class="section-lbl">Activities</div>
+        <div class="activity idea">
+          <span class="activity-name">Skyline Gondola + Luge <span class="activity-cost">~$240 · pay at venue</span></span>
+          <span class="activity-body">Best views of Lake Wakatipu · multiple luge runs</span>
+        </div>
+        <div class="activity idea"><span class="activity-name">Canyon Brewing · Oxenbridge Tunnel Track</span></div>
+        <div class="activity idea"><span class="activity-name">Fergburger — legendary · go at odd hours</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 23 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">23</span>
+      <span class="day-dow">Sat</span>
+      <span class="day-title">Gibbston wine trail</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">Afternoon winery circuit · most close 5–6pm · 30 min from QT</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked"><span class="activity-name">Shared AirBnb <span class="activity-cost">$512.13</span></span></div>
+        <div class="section-lbl">Gibbston River Trail wineries</div>
+        <div class="activity idea"><span class="activity-name">Kinross · kinross.nz</span></div>
+        <div class="activity idea"><span class="activity-name">Mt Rosa · mtrosa.co.nz</span></div>
+        <div class="activity idea"><span class="activity-name">Waitiri Creek</span></div>
+        <div class="activity idea"><span class="activity-name">The Church · Cellar Door &amp; Cafe · food option mid-tour</span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════ PHASE 4: TE ANAU & FIORDLAND ════════════════════════ -->
+  <div class="phase-drive">
+    🚗 &nbsp;<strong>Queenstown → Te Anau:</strong> &nbsp;170 km · ~2 hrs · SH6 via Kingston
+  </div>
+  <div class="phase-header">
+    <div class="phase-kicker">Phase 04 · May 24 – 25 · All four together</div>
+    <h2>Te Anau &amp; Fiordland</h2>
+    <div class="phase-meta">Milford Sound anchor day · gateway to the fjords · 52°/36°F — bring layers, expect rain</div>
+  </div>
+
+  <!-- May 24 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">24</span>
+      <span class="day-dow">Sun</span>
+      <span class="day-title">Drive to Te Anau</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">Gateway to Fiordland · quiet arrival night</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">Te Anau AirBnb · 12 Worsley St <span class="activity-cost">$217.70/n</span></span>
+          <span class="booking-ref">✓ Reserved · HMKECPN95F</span>
+        </div>
+        <div class="section-lbl">Drive · ~2 hr 15 min via SH6/SH94</div>
+        <div class="activity idea"><span class="activity-name">Straightforward · 170 km · no major stops needed</span></div>
+        <div class="activity idea"><span class="activity-name">Evening: Te Anau Glow-Worm Caves (optional if energy allows)</span></div>
+        <div class="activity idea"><span class="activity-name">Dinner: The Fat Duck Te Anau — best in town</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 25 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">25</span>
+      <span class="day-dow">Mon</span>
+      <span class="day-title">Milford Sound cruise</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">Headline day · boutique small-boat cruise · depart Te Anau by 9am</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked"><span class="activity-name">Te Anau AirBnb <span class="activity-cost">$217.70</span></span></div>
+        <div class="section-lbl">Activities</div>
+        <div class="activity booked">
+          <span class="activity-name">Milford Sound · Boutique Cruise <span class="activity-cost">$470 (50/50)</span></span>
+          <span class="activity-body">10:45am departure · 1 hr 45 min on water · ~1:45 drive from Te Anau · leave by 9am · pack snacks (nothing good at the Sound)</span>
+          <span class="booking-ref">✓ Booked · #346437283</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">Homer Tunnel · Mirror Lakes on drive in</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════ PHASE 5: WANAKA ════════════════════════════════════ -->
+  <div class="phase-drive">
+    🚗 &nbsp;<strong>Te Anau → Wanaka:</strong> &nbsp;240 km · ~2.5 hrs · SH6 via Queenstown area
+  </div>
+  <div class="phase-header">
+    <div class="phase-kicker">Phase 05 · May 26 – 30 · All four together</div>
+    <h2>Wanaka · Alpine Finale</h2>
+    <div class="phase-meta">The Lookout · lake views · big hikes · Rippon winery · 52°/32°F crisp autumn</div>
+  </div>
+
+  <!-- May 26 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">26</span>
+      <span class="day-dow">Tue</span>
+      <span class="day-title">Travel to Wanaka · settle in</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">Easy arrival day · lakefront walk · open evening</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked">
+          <span class="activity-name">The Lookout · Lake Views · 4 nights <span class="activity-cost">~$514/n · 50/50 split</span></span>
+          <span class="booking-ref">✓ Booked · M1771211356591</span>
+        </div>
+        <div class="section-lbl">Drive · ~3:45 via Kingston/SH6 · goes through QT area</div>
+        <div class="activity idea"><span class="activity-name">Kingston or Cromwell stop · then lakefront walk on arrival</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 27 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">27</span>
+      <span class="day-dow">Wed</span>
+      <span class="day-title">Rob Roy Glacier hike</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">10 km · ~4 hr round-trip · leave 7am · trailhead 1 hr from town</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked"><span class="activity-name">The Lookout <span class="activity-cost">$514</span></span></div>
+        <div class="section-lbl">Activities</div>
+        <div class="activity idea">
+          <span class="activity-name">Rob Roy Glacier Track · back by 2pm</span>
+          <span class="activity-body">10 km / 6 mi · ~4 hr · spectacular glacier views</span>
+        </div>
+        <div class="activity idea">
+          <span class="activity-name">Alt: Roy's Peak · 16 km · NZ's most famous ridge view · start very early</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 28 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">28</span>
+      <span class="day-dow">Thu</span>
+      <span class="day-title">Rippon &amp; lake day</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">Wine with a view · slower pace day</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked"><span class="activity-name">The Lookout <span class="activity-cost">$514</span></span></div>
+        <div class="section-lbl">Activities</div>
+        <div class="activity idea">
+          <span class="activity-name">Rippon Vineyard · opens 11am · biodynamic · best lake view of any winery</span>
+        </div>
+        <div class="activity idea"><span class="activity-name">#thatwanakatree · lakefront walk · town explore</span></div>
+        <div class="activity idea"><span class="activity-name">Dinner: Bistro Gentil · French-NZ · book ahead</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 29 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">29</span>
+      <span class="day-dow">Fri</span>
+      <span class="day-title">Open Wanaka day</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">Buffer day · hold for whatever hasn't been done · farewell dinner</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Lodging</div>
+        <div class="activity booked"><span class="activity-name">The Lookout <span class="activity-cost">$514</span></span></div>
+        <div class="section-lbl">Contenders</div>
+        <div class="activity idea"><span class="activity-name">Puzzling World — great rainy-day fallback</span></div>
+        <div class="activity idea"><span class="activity-name">Roy's Peak (if not done May 27)</span></div>
+        <div class="activity idea"><span class="activity-name">Cinema Paradiso · boutique cinema in armchairs · intermission cookies</span></div>
+        <div class="activity idea"><span class="activity-name">Wanaka Farmers Market (Saturday · 8am)</span></div>
+        <div class="activity idea"><span class="activity-name">Farewell dinner · Francesca's Italian Kitchen</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- May 30 -->
+  <div class="day">
+    <div class="day-header">
+      <span class="day-num">30</span>
+      <span class="day-dow">Sat</span>
+      <span class="day-title">Travel home</span>
+      <span class="tag all">All</span>
+    </div>
+    <div class="day-sub">Drive Wanaka → Queenstown airport · the long goodbye</div>
+    <div class="tracks single">
+      <div class="track">
+        <div class="section-lbl">Travel</div>
+        <div class="activity idea">
+          <span class="activity-name">Depart Wanaka → ZQN airport</span>
+          <span class="activity-body">Crown Range pass if weather clear · SH6 if not · ~1:15 either way</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════ SETTLEMENT SUMMARY ═════════════════════════════════ -->
+  <div class="settlement">
+    <div class="section-title">Settlement Summary</div>
+    <div class="settlement-net">NET: J&amp;A owes S&amp;L &nbsp;&nbsp; $191.48</div>
+    <table class="splits">
+      <thead>
+        <tr>
+          <th>Paid by</th>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Split</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="phase-row"><td colspan="4">Car Rental · Touch Down</td></tr>
+        <tr>
+          <td><span class="tag sl">S&L</span></td>
+          <td>Solo 5 days (May 16–20) · ~NZD $658.67</td>
+          <td class="amount">$384.66</td>
+          <td class="split-even">S&L only</td>
+        </tr>
+        <tr>
+          <td><span class="tag sl">S&L</span></td>
+          <td>Shared 10 days (May 21–30) · ~NZD $1,317.35</td>
+          <td class="amount">$769.33</td>
+          <td class="owes-sl">J&A owes $384.67</td>
+        </tr>
+        <tr class="phase-row"><td colspan="4">Queenstown · J&A paid lodging</td></tr>
+        <tr>
+          <td><span class="tag ja">J&A</span></td>
+          <td>AirBnb May 19–20 (J&A only, 2 nights)</td>
+          <td class="amount">$1,024.26</td>
+          <td class="split-even">J&A only</td>
+        </tr>
+        <tr>
+          <td><span class="tag ja">J&A</span></td>
+          <td>AirBnb May 21–23 (shared, 3 nights)</td>
+          <td class="amount">$1,536.39</td>
+          <td class="owes-ja">S&L owes $768.20</td>
+        </tr>
+        <tr class="phase-row"><td colspan="4">Te Anau · J&A paid lodging</td></tr>
+        <tr>
+          <td><span class="tag ja">J&A</span></td>
+          <td>AirBnb 2 nights · 12 Worsley St</td>
+          <td class="amount">$435.40</td>
+          <td class="owes-ja">S&L owes $217.70</td>
+        </tr>
+        <tr>
+          <td><span class="tag ja">J&A</span></td>
+          <td>Milford Sound Boutique Cruise</td>
+          <td class="amount">$470.00</td>
+          <td class="owes-ja">S&L owes $235.00</td>
+        </tr>
+        <tr class="phase-row"><td colspan="4">Wanaka · S&L paid lodging</td></tr>
+        <tr>
+          <td><span class="tag sl">S&L</span></td>
+          <td>The Lookout · 4 nights (May 26–29)</td>
+          <td class="amount">$2,055.44</td>
+          <td class="owes-sl">J&A owes $1,027.71</td>
+        </tr>
+        <tr class="subtotal">
+          <td colspan="2">J&A → S&L: $1,027.71 (Wanaka) + $384.67 (car) = $1,412.38</td>
+          <td colspan="2">S&L → J&A: $768.20 (QT) + $217.70 (Te Anau) + $235.00 (Milford) = $1,220.90</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="2">NET BALANCE</td>
+          <td class="amount owes-sl">$191.48</td>
+          <td class="owes-sl">J&A owes S&L</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════ EMERGENCY INFO ══════════════════════════════════════ -->
+  <div class="contacts">
+    <div class="contacts-title">⚠ Emergency &amp; Key Contacts</div>
+    <div class="contacts-grid">
+      <div class="contact-item">
+        <strong>NZ Emergency</strong>
+        <span>111 (police / fire / ambulance)</span>
+      </div>
+      <div class="contact-item">
+        <strong>NZ Non-Emergency Police</strong>
+        <span>105</span>
+      </div>
+      <div class="contact-item">
+        <strong>US Embassy Wellington</strong>
+        <span>+64 4 462-6000</span>
+      </div>
+      <div class="contact-item">
+        <strong>Touch Down Car Rental</strong>
+        <span>Booking U-01-13562</span>
+      </div>
+      <div class="contact-item">
+        <strong>Milford Cruise</strong>
+        <span>Ref #346437283 · 10:45am May 25</span>
+      </div>
+      <div class="contact-item">
+        <strong>NZ visitor info</strong>
+        <span>newzealand.com · 0800 100 200</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="print-footer">
+    genz bebe · nz '26 · printed from prefonbain.github.io/genz-bebe
+  </div>
+
+</div>
+</body>
+</html>
