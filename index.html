@@ -4002,9 +4002,11 @@
         if (e.target === modal) modal.classList.remove('open');
       });
     }
-    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
-      const cta = document.getElementById('install-cta');
-      if (cta) cta.style.display = 'none';
+    // Show install banner on mobile unless already installed or dismissed
+    const standalone = window.matchMedia('(display-mode: standalone)').matches
+                    || window.navigator.standalone === true;
+    if (!standalone && !sessionStorage.getItem('install-dismissed')) {
+      showInstallBanner();
     }
   })();
   function toggleAll(open) {
