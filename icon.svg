@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <clipPath id="shape">
+      <rect width="512" height="512" rx="115"/>
+    </clipPath>
+    <!-- Sky: warm coral/gold top-left → rich teal → deep navy bottom-right -->
+    <linearGradient id="sky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#E6548F"/>
+      <stop offset="28%"  stop-color="#F4A261"/>
+      <stop offset="58%"  stop-color="#0BA3B3"/>
+      <stop offset="100%" stop-color="#0A3F5C"/>
+    </linearGradient>
+    <!-- Lake surface -->
+    <linearGradient id="lake" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#0BA3B3" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#062A40" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+
+  <g clip-path="url(#shape)">
+    <!-- Background gradient fill -->
+    <rect width="512" height="512" fill="url(#sky)"/>
+
+    <!-- Subtle stars -->
+    <circle cx="72"  cy="52"  r="3.5" fill="white" opacity="0.65"/>
+    <circle cx="148" cy="34"  r="2.5" fill="white" opacity="0.5"/>
+    <circle cx="230" cy="48"  r="2"   fill="white" opacity="0.45"/>
+    <circle cx="320" cy="30"  r="3"   fill="white" opacity="0.55"/>
+    <circle cx="418" cy="52"  r="2.5" fill="white" opacity="0.5"/>
+    <circle cx="470" cy="36"  r="2"   fill="white" opacity="0.4"/>
+    <circle cx="38"  cy="110" r="2"   fill="white" opacity="0.3"/>
+
+    <!-- Back mountain range (hazy) -->
+    <path d="M-10,350 L55,205 L110,270 L175,150 L235,240 L295,170 L360,255 L418,165 L478,230 L522,195 L522,358 L-10,358 Z"
+          fill="white" fill-opacity="0.20"/>
+
+    <!-- Front mountain range (crisp) -->
+    <path d="M-10,415 L75,248 L138,318 L210,168 L282,300 L344,205 L412,315 L468,218 L522,290 L522,415 Z"
+          fill="white" fill-opacity="0.92"/>
+
+    <!-- Snow highlights on main peaks -->
+    <path d="M210,168 L228,208 L192,208 Z" fill="white"/>
+    <path d="M75,248  L90,278  L60,278 Z"  fill="white"/>
+    <path d="M344,205 L360,238 L328,238 Z" fill="white"/>
+
+    <!-- Lake -->
+    <rect x="0" y="415" width="512" height="97" fill="url(#lake)"/>
+
+    <!-- Soft mountain reflection in lake -->
+    <path d="M-10,415 L75,445 L138,428 L210,460 L282,432 L344,452 L412,435 L468,450 L522,438 L522,512 L-10,512 Z"
+          fill="white" fill-opacity="0.10"/>
+
+    <!-- "NZ '26" label -->
+    <text x="256" y="469"
+          text-anchor="middle" dominant-baseline="middle"
+          font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif"
+          font-size="56" font-weight="900"
+          fill="white" opacity="0.96" letter-spacing="2">NZ '26</text>
+  </g>
+</svg>
