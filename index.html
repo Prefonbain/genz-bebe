@@ -1144,6 +1144,33 @@
   }
   .install-modal-close:hover { background: var(--lake); }
 
+  /* Mobile install banner */
+  #install-banner {
+    display: none;
+    background: linear-gradient(90deg, var(--alpine) 0%, var(--lake) 100%);
+    color: white;
+    padding: 10px 14px 10px 16px;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 90;
+  }
+  #install-banner.visible { display: flex; }
+  @media (min-width: 768px) { #install-banner { display: none !important; } }
+  .ib-text { flex: 1; line-height: 1.35; }
+  .ib-btn {
+    background: white; color: var(--alpine);
+    border: none; border-radius: 8px;
+    padding: 6px 14px; font-size: 12px; font-weight: 800;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  }
+  .ib-dismiss {
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    font-size: 20px; line-height: 1; cursor: pointer;
+    padding: 0 2px; flex-shrink: 0;
+  }
+
   footer {
     padding: 32px 24px 48px; text-align: center;
     font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em;
@@ -2242,6 +2269,14 @@
     </div>
   </div>
 </nav>
+
+<!-- ============ MOBILE INSTALL BANNER ============ -->
+<div id="install-banner">
+  <span style="font-size:18px;flex-shrink:0;">📲</span>
+  <span class="ib-text">Add to your home screen for quick access offline</span>
+  <button class="ib-btn" onclick="handleInstall(event)">Add</button>
+  <button class="ib-dismiss" onclick="dismissInstallBanner()" title="Dismiss">✕</button>
+</div>
 
 <!-- ============ PHASE INDICATOR ============ -->
 <div class="phase-indicator" id="phase-indicator" style="display:none">
@@ -3936,8 +3971,20 @@
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredInstallPrompt = e;
+    showInstallBanner();
   });
 
+  function showInstallBanner() {
+    if (sessionStorage.getItem('install-dismissed')) return;
+    if (window.matchMedia('(display-mode: standalone)').matches) return;
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.classList.add('visible');
+  }
+  function dismissInstallBanner() {
+    sessionStorage.setItem('install-dismissed', '1');
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.classList.remove('visible');
+  }
   async function handleInstall(e) {
     if (e && e.preventDefault) e.preventDefault();
     if (deferredInstallPrompt) {
@@ -3946,6 +3993,7 @@
         const choice = await deferredInstallPrompt.userChoice;
         deferredInstallPrompt = null;
         if (choice && choice.outcome === 'accepted') {
+          dismissInstallBanner();
           const cta = document.getElementById('install-cta');
           if (cta) cta.style.display = 'none';
         }
@@ -3955,6 +4003,11 @@
     const modal = document.getElementById('install-modal');
     if (modal) modal.classList.add('open');
   }
+  window.addEventListener('appinstalled', () => {
+    dismissInstallBanner();
+    const cta = document.getElementById('install-cta');
+    if (cta) cta.style.display = 'none';
+  });
   (function() {
     const modal = document.getElementById('install-modal');
     if (modal) {
