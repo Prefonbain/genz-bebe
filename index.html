@@ -2257,10 +2257,21 @@
     border: 1px solid rgba(251, 191, 36, 0.4);
     border-radius: 10px;
     font-size: 12px;
-    line-height: 1.7;
+    line-height: 1.6;
     color: var(--ink);
   }
-  .drive-warning p { margin: 2px 0; }
+  .drive-warning p {
+    margin: 3px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .drive-warning p .dw-icon {
+    flex-shrink: 0;
+    width: 18px;
+    text-align: center;
+    font-style: normal;
+  }
 
   /* ============ FLIGHTS SECTION ============ */
   .flights-section {
@@ -3043,8 +3054,8 @@
 </div>
 <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
   <div class="drive-warning">
-    <p>⛽ <strong>Last reliable fuel:</strong> Twizel or Omarama. Limited options between Omarama and Cromwell (~80 km). Fill up before Lindis Pass.</p>
-    <p>📵 Cell coverage patchy through the Lindis Pass corridor.</p>
+    <p><i class="dw-icon">⛽</i><span><strong>Last reliable fuel:</strong> Twizel or Omarama. Limited options between Omarama and Cromwell (~80 km). Fill up before Lindis Pass.</span></p>
+    <p><i class="dw-icon">📵</i><span>Cell coverage patchy through the Lindis Pass corridor.</span></p>
   </div>
 </div>
 
@@ -3203,7 +3214,7 @@
 </div>
 <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
   <div class="drive-warning">
-    <p>⛽ <strong>Fill up in Queenstown or Kingston.</strong> No stations between Kingston and Te Anau (~80 km).</p>
+    <p><i class="dw-icon">⛽</i><span><strong>Fill up in Queenstown or Kingston.</strong> No stations between Kingston and Te Anau (~80 km).</span></p>
   </div>
 </div>
 
@@ -3271,8 +3282,8 @@
       </summary>
       <div class="day-body">
         <div class="drive-warning" style="margin-top:10px;">
-          <p>⛽ <strong>No fuel at Milford Sound.</strong> Fill up in Te Anau before leaving.</p>
-          <p>📵 <strong>No cell service</strong> past Te Anau Downs (~30 km out of Te Anau). No coverage on Milford Road, at Milford Sound, or inside Homer Tunnel. Download offline maps before departure.</p>
+          <p><i class="dw-icon">⛽</i><span><strong>No fuel at Milford Sound.</strong> Fill up in Te Anau before leaving.</span></p>
+          <p><i class="dw-icon">📵</i><span><strong>No cell service</strong> past Te Anau Downs (~30 km out of Te Anau). No coverage on Milford Road, at Milford Sound, or inside Homer Tunnel. Download offline maps before departure.</span></p>
         </div>
         <div class="tracks">
           <div class="track all">
@@ -3321,7 +3332,7 @@
 </div>
 <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
   <div class="drive-warning">
-    <p>⛽ <strong>Fill up in Te Anau or Queenstown.</strong> Long stretch if going direct.</p>
+    <p><i class="dw-icon">⛽</i><span><strong>Fill up in Te Anau or Queenstown.</strong> Long stretch if going direct.</span></p>
   </div>
 </div>
 
