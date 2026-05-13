@@ -2249,6 +2249,141 @@
   .nav-print-btn:hover { opacity: 1; }
   @media print { .nav-print-btn { display: none !important; } }
 
+  /* ============ DRIVE WARNINGS ============ */
+  .drive-warning {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .drive-warning p { margin: 2px 0; }
+
+  /* ============ FLIGHTS SECTION ============ */
+  .flights-section {
+    padding: 4px 24px 36px;
+  }
+  .flights-section-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .flights-heading {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(120deg, var(--alpine), var(--lake));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 16px;
+  }
+  .flights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 820px) { .flights-grid { grid-template-columns: 1fr; } }
+  .flights-card {
+    background: var(--glass-strong);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 18px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  body.dark .flights-card { background: rgba(26,42,60,0.72); border-color: rgba(255,255,255,0.08); }
+  .flights-card-head {
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    list-style: none;
+  }
+  .flights-card-head::-webkit-details-marker { display: none; }
+  .flights-card-head::marker { display: none; }
+  .flights-card-who {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+    color: white;
+    flex-shrink: 0;
+  }
+  .flights-card-who.sl { background: linear-gradient(135deg, #3BC0AE, #1E7D6F); }
+  .flights-card-who.ja { background: linear-gradient(135deg, #F27AAB, #C13A74); }
+  .flights-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    flex: 1;
+  }
+  .flights-card-chev {
+    width: 14px; height: 14px;
+    color: var(--ink-faint);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .flights-card[open] .flights-card-chev { transform: rotate(180deg); }
+  .flights-card-body {
+    padding: 14px 18px 16px;
+  }
+  .flight-leg {
+    display: grid;
+    grid-template-columns: 68px 1fr auto;
+    gap: 6px 12px;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+  }
+  .flight-leg:last-child { border-bottom: none; }
+  .flight-num {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--alpine);
+    white-space: nowrap;
+  }
+  .flight-route {
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+  .flight-times {
+    text-align: right;
+    white-space: nowrap;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-soft);
+  }
+  .flight-times strong { color: var(--ink); }
+  .flight-note {
+    grid-column: 1 / -1;
+    font-size: 10px;
+    color: var(--ink-faint);
+    font-style: italic;
+    padding-top: 2px;
+  }
+  .flight-date-row {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--alpine);
+    padding: 8px 0 4px;
+    border-bottom: 1px solid var(--line);
+    grid-column: 1 / -1;
+  }
+
 </style>
 </head>
 <body>
@@ -2257,6 +2392,7 @@
   <div class="nav-inner">
     <a href="#top" class="nav-brand">genz bebe</a>
     <div class="nav-links">
+      <a href="#flights">Flights</a>
       <a href="#calendar">Calendar</a>
       <a href="#itinerary">Itinerary</a>
       <a href="#planning">Planning</a>
@@ -2335,6 +2471,144 @@
 </header>
 
 
+
+<!-- ============ FLIGHTS ============ -->
+<section class="flights-section" id="flights">
+  <div class="flights-section-inner">
+    <h2 class="flights-heading">✈ Flights</h2>
+    <div class="flights-grid">
+
+      <!-- S&L Outbound -->
+      <details class="flights-card">
+        <summary class="flights-card-head">
+          <span class="flights-card-who sl">S&amp;L</span>
+          <span class="flights-card-title">Outbound — May 14–16</span>
+          <svg class="flights-card-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="flights-card-body">
+          <div class="flight-leg">
+            <div class="flight-num">DL 5122</div>
+            <div class="flight-route">MSN → MSP</div>
+            <div class="flight-times"><strong>11:48am</strong> → <strong>12:53pm</strong> CDT</div>
+            <div class="flight-note">May 14</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">DL 2114</div>
+            <div class="flight-route">MSP → LAX</div>
+            <div class="flight-times"><strong>3:37pm CDT</strong> → <strong>5:23pm PDT</strong></div>
+            <div class="flight-note">May 14</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">DL 0065</div>
+            <div class="flight-route">LAX → AKL</div>
+            <div class="flight-times"><strong>10:25pm PDT</strong> → <strong>6:50am NZT</strong></div>
+            <div class="flight-note">Departs May 14 · Arrives May 16 · crosses dateline</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">JQ 0231</div>
+            <div class="flight-route">AKL → CHC</div>
+            <div class="flight-times"><strong>11:40am</strong> → <strong>1:00pm NZT</strong></div>
+            <div class="flight-note">May 16 · Jetstar domestic</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- J&A Outbound -->
+      <details class="flights-card">
+        <summary class="flights-card-head">
+          <span class="flights-card-who ja">J&amp;A</span>
+          <span class="flights-card-title">Outbound — May 17–19</span>
+          <svg class="flights-card-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="flights-card-body">
+          <div class="flight-leg">
+            <div class="flight-num">UA 576</div>
+            <div class="flight-route">ORD → LAX</div>
+            <div class="flight-times"><strong>4:00pm CDT</strong> → <strong>6:39pm PDT</strong></div>
+            <div class="flight-note">May 17</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">NZ 0005</div>
+            <div class="flight-route">LAX → AKL</div>
+            <div class="flight-times"><strong>10:10pm PDT</strong> → <strong>6:00am NZT</strong></div>
+            <div class="flight-note">Departs May 17 · Arrives May 19 · crosses dateline</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">NZ 0635</div>
+            <div class="flight-route">AKL → ZQN</div>
+            <div class="flight-times"><strong>9:30am</strong> → <strong>11:25am NZT</strong></div>
+            <div class="flight-note">May 19 · Air New Zealand domestic</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- J&A Return -->
+      <details class="flights-card">
+        <summary class="flights-card-head">
+          <span class="flights-card-who ja">J&amp;A</span>
+          <span class="flights-card-title">Return — May 30</span>
+          <svg class="flights-card-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="flights-card-body">
+          <div class="flight-leg">
+            <div class="flight-num">NZ 0634</div>
+            <div class="flight-route">ZQN → AKL</div>
+            <div class="flight-times"><strong>3:05pm</strong> → <strong>4:55pm NZT</strong></div>
+            <div class="flight-note">May 30</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">NZ 0006</div>
+            <div class="flight-route">AKL → LAX</div>
+            <div class="flight-times"><strong>8:15pm NZT</strong> → <strong>1:20pm PDT</strong></div>
+            <div class="flight-note">Departs May 30 · Arrives May 30 PDT · crosses dateline back</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">UA 212</div>
+            <div class="flight-route">LAX → ORD</div>
+            <div class="flight-times"><strong>4:40pm PDT</strong> → <strong>10:42pm CDT</strong></div>
+            <div class="flight-note">May 30</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- S&L Return -->
+      <details class="flights-card">
+        <summary class="flights-card-head">
+          <span class="flights-card-who sl">S&amp;L</span>
+          <span class="flights-card-title">Return — May 30–31</span>
+          <svg class="flights-card-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="flights-card-body">
+          <div class="flight-leg">
+            <div class="flight-num">QF 0178</div>
+            <div class="flight-route">ZQN → MEL</div>
+            <div class="flight-times"><strong>1:30pm</strong> → <strong>3:00pm NZT</strong></div>
+            <div class="flight-note">May 30 · Qantas</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">DL 0012</div>
+            <div class="flight-route">MEL → LAX</div>
+            <div class="flight-times"><strong>10:00am NZT</strong> → <strong>7:34am PDT</strong></div>
+            <div class="flight-note">Departs May 31 · Arrives May 31 PDT · crosses dateline back</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">DL 0494</div>
+            <div class="flight-route">LAX → DTW</div>
+            <div class="flight-times"><strong>9:35am PDT</strong> → <strong>4:56pm EDT</strong></div>
+            <div class="flight-note">May 31</div>
+          </div>
+          <div class="flight-leg">
+            <div class="flight-num">DL 5099</div>
+            <div class="flight-route">DTW → MSN</div>
+            <div class="flight-times"><strong>8:31pm EDT</strong> → <strong>8:49pm CDT</strong></div>
+            <div class="flight-note">May 31</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
 
 <!-- ============ TIMELINE ============ -->
 <section class="tl-section" id="calendar">
@@ -2562,7 +2836,7 @@
             <span class="section-label">Activities</span>
             <div class="activity booked">
               <div class="activity-title">Akaroa Dolphin Cruise <span class="activity-cost">$148.20</span></div>
-              <div class="activity-body">Plus caldera vineyard estates · ~90 min SE.</div>
+              <div class="activity-body">Plus caldera vineyard estates · ~90 min SE.<br>📍 65 Beach Road, Akaroa 7520 · 📞 <a href="tel:+6433047866" style="color:var(--alpine);">+64 3 304 7866</a></div>
               <div class="activity-meta"><span class="booking">Booked · RD01XRM</span></div>
             </div>
             <div class="activity idea"><div class="activity-title">Food &amp; drink circuit</div><div class="activity-body">Ducking Stool · Lyttelton Coffee · Riverside butcher's pie · Belle Cafe · The Last Word.</div></div>
@@ -2641,6 +2915,7 @@
             <span class="section-label">Lodging</span>
             <div class="activity booked">
               <div class="activity-title">Peppers Bluewater Resort <a href="https://maps.google.com/?q=Peppers+Bluewater+Resort+Lake+Tekapo" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$244.33/n</span></div>
+              <div class="activity-body">📍 State Highway 8, Lake Tekapo 7945 · 📞 <a href="tel:+6436806700" style="color:var(--alpine);">+64 3 680 6700</a></div>
               <div class="activity-meta"><span class="booking">Booked · #364075017998</span></div>
             </div>
             <span class="section-label">Drive day · ~5 hr total with stops (~3 hr direct)</span>
@@ -2676,9 +2951,11 @@
             </div>
             <div class="activity idea"><div class="activity-title">Morning · Lake Alexandrina walk</div><div class="activity-body">Drive out at 9am.</div></div>
             <div class="activity idea"><div class="activity-title">Afternoon · Mt John Summit</div><div class="activity-body">Cafe Astro at top (10am – 3pm).</div></div>
+            <div class="activity idea"><div class="activity-title">Church of the Good Shepherd — golden hour (~4:30–5:15pm)</div><div class="activity-body">Iconic NZ photo spot · 2 min walk from Peppers · Sunset ~5:15pm in late May — time it for golden hour · Free · no booking needed · Bring the wide angle lens</div></div>
+            <div class="activity idea"><div class="activity-title">Tekapo Springs hot pools (~3:00–5:00pm)</div><div class="activity-body">Hot pools with lake and mountain views · Pre-stargazing warmup · ~NZ$30–50/person · 📞 <a href="tel:+6436806550" style="color:var(--alpine);">+64 3 680 6550</a> · 📍 6 Lakeside Drive, Lake Tekapo</div></div>
             <div class="activity booked">
               <div class="activity-title">Dark Sky · Stargazing <span class="activity-cost">$254.65</span></div>
-              <div class="activity-body">Cleanest southern sky · 8:30pm start.</div>
+              <div class="activity-body">Cleanest southern sky · 8:30pm start.<br>📍 1 Motuariki Lane, Lake Tekapo 7945 · 📞 <a href="tel:+6436806960" style="color:var(--alpine);">+64 3 680 6960</a></div>
               <div class="activity-meta"><span class="booking">Booked · 678860</span></div>
             </div>
           </div>
@@ -2687,7 +2964,7 @@
             <span class="section-label">Lodging</span>
             <div class="activity booked">
               <div class="activity-title">Queenstown AirBnb <a href="https://maps.google.com/?q=30+Wynyard+Crescent+Queenstown" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$512.13/n</span></div>
-              <div class="activity-body">30 Wynyard Crescent, Queenstown.</div>
+              <div class="activity-body">📍 30 Wynyard Crescent, Queenstown 9300 · Contact host via Airbnb app</div>
               <div class="activity-meta"><span class="booking">Reserved · HMR8T8DPCQ</span></div>
             </div>
             <span class="section-label">Settle in</span>
@@ -2762,6 +3039,12 @@
     <span class="drive-to">Queenstown</span>
     <span class="drive-meta">🚗 260 km · ~3 hrs · SH8 via Omarama &amp; Lindis Pass</span>
     <a class="drive-map-link" href="https://maps.google.com/maps/dir/Lake+Tekapo+New+Zealand/Queenstown+New+Zealand" target="_blank" rel="noopener">Open in Maps ↗</a>
+  </div>
+</div>
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+  <div class="drive-warning">
+    <p>⛽ <strong>Last reliable fuel:</strong> Twizel or Omarama. Limited options between Omarama and Cromwell (~80 km). Fill up before Lindis Pass.</p>
+    <p>📵 Cell coverage patchy through the Lindis Pass corridor.</p>
   </div>
 </div>
 
@@ -2845,10 +3128,13 @@
             <span class="section-label">Activities</span>
             <div class="activity idea">
               <div class="activity-title">Skyline Gondola + Luge <span class="activity-cost">$240</span></div>
-              <div class="activity-body">Classic Queenstown · best views of Lake Wakatipu.</div>
+              <div class="activity-body">Classic Queenstown · best views of Lake Wakatipu.<br>📍 Brecon Street, Queenstown 9300 · 📞 <a href="tel:+6434410101" style="color:var(--alpine);">+64 3 441 0101</a></div>
             </div>
             <div class="activity idea"><div class="activity-title">Canyon Brewing</div></div>
             <div class="activity idea"><div class="activity-title">Oxenbridge Tunnel Track</div><div class="activity-body">20-min walk to lookout · near Canyon Brewing.</div></div>
+            <div class="activity idea"><div class="activity-title">Queenstown Gardens disc golf (~1–1.5 hrs)</div><div class="activity-body">Free · right in town · great autumn colors · No booking needed</div></div>
+            <div class="activity idea"><div class="activity-title">Queenstown Hill / Tiki Trail (~2 hrs)</div><div class="activity-body">Panoramic views of lake, Remarkables, Cecil Peak · 500m elevation gain · solid morning workout · Free · trailhead at Belfast Terrace</div></div>
+            <div class="activity idea"><div class="activity-title">Jack's Point Golf (morning, ~4.5 hrs)</div><div class="activity-body">#1 South Island course · lake and Remarkables backdrop · ~NZ$195 incl. cart · 20 min from downtown · golf@jackspoint.co.nz · Note: only works if non-golfers have own plan</div></div>
           </div>
         </div>
       </div>
@@ -2869,6 +3155,10 @@
           <div class="track all">
             <span class="section-label">Lodging</span>
             <div class="activity booked"><div class="activity-title">Shared AirBnb <span class="activity-cost">$512.13</span></div></div>
+            <span class="section-label">Morning ideas</span>
+            <div class="activity idea"><div class="activity-title">Arrowtown village walk + brunch (~2–3 hrs)</div><div class="activity-body">Stunning autumn gold along the Arrow River · historic miners' cottages · Brunch at Provisions or The Fork &amp; Tap · 25 min from QT · on the way to Gibbston — perfect routing · Free to explore</div></div>
+            <div class="activity idea"><div class="activity-title">Arrowtown Golf Club (full morning)</div><div class="activity-body">18-hole course through hills with historic stone ruins · ~NZ$100–150 green fee · 📍 166 Centennial Ave, Arrow Junction · 📞 <a href="tel:+6434421719" style="color:var(--alpine);">+64 3 442 1719</a></div></div>
+            <div class="activity idea"><div class="activity-title">Shotover Canyon walk (free)</div><div class="activity-body">Walking track along canyon rim near Arthurs Point · Dramatic views · easy · 15 min from QT</div></div>
             <span class="section-label">Wineries · Gibbston River Trail</span>
             <div class="activity idea"><div class="activity-title">Kinross</div><div class="activity-body">~30 min from QT · kinross.nz</div></div>
             <div class="activity idea"><div class="activity-title">Mt Rosa</div><div class="activity-body">mtrosa.co.nz</div></div>
@@ -2911,6 +3201,11 @@
     <a class="drive-map-link" href="https://maps.google.com/maps/dir/Queenstown+New+Zealand/Te+Anau+New+Zealand" target="_blank" rel="noopener">Open in Maps ↗</a>
   </div>
 </div>
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+  <div class="drive-warning">
+    <p>⛽ <strong>Fill up in Queenstown or Kingston.</strong> No stations between Kingston and Te Anau (~80 km).</p>
+  </div>
+</div>
 
 <!-- ============ PHASE 4: FIORDLAND ============ -->
 <section class="phase">
@@ -2949,13 +3244,16 @@
             <span class="section-label">Lodging</span>
             <div class="activity booked">
               <div class="activity-title">Te Anau AirBnb <a href="https://maps.google.com/?q=12+Worsley+Street+Te+Anau" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">$217.70/n</span></div>
-              <div class="activity-body">12 Worsley St, Te Anau.</div>
+              <div class="activity-body">📍 12 Worsley Street, Te Anau 9600 · Contact host via Airbnb app</div>
               <div class="activity-meta"><span class="booking">Reserved · HMKECPN95F</span></div>
             </div>
             <span class="section-label">Drive · Queenstown → Te Anau</span>
             <div class="activity idea"><div class="activity-title">~2 hr 15 min via SH6 / SH94</div><div class="activity-body">170 km · straightforward · no major stops needed.</div></div>
             <span class="section-label">Activities</span>
             <div class="activity idea"><div class="activity-title">Glow-worm cave?</div><div class="activity-body">Evening option if not wiped from the drive.</div></div>
+            <div class="activity idea"><div class="activity-title">Kepler Track day walk to Brod Bay (~2.5 hrs return)</div><div class="activity-body">Opening stretch of one of NZ's Great Walks · Beech forest along the lake · flat and easy · Free · no booking needed for day walks · Trailhead 5 min drive from town</div></div>
+            <div class="activity idea"><div class="activity-title">Te Anau Bird Sanctuary / Wildlife Centre</div><div class="activity-body">Free DOC-run center by the lake · Home to the takahē (thought extinct until 1948) · Quick visit, 20–30 min</div></div>
+            <div class="activity idea"><div class="activity-title">Te Anau Lakeshore Track (~30–45 min)</div><div class="activity-body">Easy waterfront walk from town center · Good leg-stretch after the drive · Free</div></div>
           </div>
         </div>
       </div>
@@ -2972,6 +3270,10 @@
         <div class="who-group"><span class="pill all">All</span><svg class="chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </summary>
       <div class="day-body">
+        <div class="drive-warning" style="margin-top:10px;">
+          <p>⛽ <strong>No fuel at Milford Sound.</strong> Fill up in Te Anau before leaving.</p>
+          <p>📵 <strong>No cell service</strong> past Te Anau Downs (~30 km out of Te Anau). No coverage on Milford Road, at Milford Sound, or inside Homer Tunnel. Download offline maps before departure.</p>
+        </div>
         <div class="tracks">
           <div class="track all">
             <span class="section-label">Lodging</span>
@@ -3017,6 +3319,11 @@
     <a class="drive-map-link" href="https://maps.google.com/maps/dir/Te+Anau+New+Zealand/Wanaka+New+Zealand" target="_blank" rel="noopener">Open in Maps ↗</a>
   </div>
 </div>
+<div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+  <div class="drive-warning">
+    <p>⛽ <strong>Fill up in Te Anau or Queenstown.</strong> Long stretch if going direct.</p>
+  </div>
+</div>
 
 <!-- ============ PHASE 5: WANAKA ============ -->
 <section class="phase">
@@ -3055,13 +3362,15 @@
             <span class="section-label">Lodging</span>
             <div class="activity booked">
               <div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40451683-wanaka-the-lookout-lake-views" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">The Lookout · Lake Views ↗</a><a href="https://maps.google.com/?q=The+Lookout+Wanaka+Marriott+Homes+Villas" target="_blank" rel="noopener" class="map-link">📍 Map</a> <span class="activity-cost">NZD $3,606 total · ~$514/night</span></div>
-              <div class="activity-body">Wanaka lake views · Marriott Homes &amp; Villas · 4 nights · shared 50/50.</div>
+              <div class="activity-body">Wanaka lake views · Marriott Homes &amp; Villas · 4 nights · shared 50/50.<br>📍 Address TBD — Stephen to pull from booking M1771211356591 · Contact host via Airbnb app</div>
               <div class="activity-meta"><span class="booking">Booked · M1771211356591</span></div>
             </div>
             <span class="section-label">Drive · Te Anau → Wanaka</span>
             <div class="activity idea"><div class="activity-title">~3 hr 45 min via Kingston / SH6</div><div class="activity-body">270 km · goes through Queenstown area · consider a Kingston or Cromwell stop.</div></div>
             <span class="section-label">Day plan</span>
             <div class="activity idea"><div class="activity-title">Open day</div><div class="activity-body">Stretch, eat well, walk the lakefront.</div></div>
+            <div class="activity idea"><div class="activity-title">Cinema Paradiso (evening)</div><div class="activity-body">Boutique cinema with couches, old cars as seats, intermission-baked cookies · 📍 72 Brownston Street, Wanaka 9305 · Check showtimes: cinematheque.co.nz</div></div>
+            <div class="activity idea"><div class="activity-title">Wanaka Beerworks (evening)</div><div class="activity-body">Local craft brewery · good food · walkable from lakefront · 📍 19 Brownston Street, Wanaka 9305</div></div>
           </div>
         </div>
       </div>
@@ -3091,6 +3400,8 @@
               <div class="activity-title">Alt · Roy's Peak</div>
               <div class="activity-body">16 km · one of NZ's most famous views.</div>
             </div>
+            <div class="activity idea"><div class="activity-title">Wanaka Beerworks / Rhyme &amp; Reason Brewery</div><div class="activity-body">Post-hike beers · Rhyme &amp; Reason: 📍 39 Brownston Street, Wanaka 9305</div></div>
+            <div class="activity idea"><div class="activity-title">Lake outlet walk to Albert Town (~1 hr)</div><div class="activity-body">Flat, lakeside, peaceful · Good for active recovery after the morning hike</div></div>
           </div>
         </div>
       </div>
@@ -3111,8 +3422,11 @@
           <div class="track all">
             <span class="section-label">Lodging</span>
             <div class="activity booked"><div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40451683-wanaka-the-lookout-lake-views" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">The Lookout · Lake Views ↗</a> <span class="activity-cost">$514</span></div></div>
-            <span class="section-label">Activities</span>
-            <div class="activity idea"><div class="activity-title">Rippon Vineyard</div><div class="activity-body">Potentially the best view of any winery on the trip.</div></div>
+            <span class="section-label">Morning (before Rippon opens at 11am)</span>
+            <div class="activity idea"><div class="activity-title">Mt Iron Track (~1.5 hrs loop)</div><div class="activity-body">Short loop at the edge of Wanaka · 360° views of lake, mountains, and town from the top · Done by 9:30am with time to clean up for wine · Free · trailhead on Wanaka–Mt Aspiring Road</div></div>
+            <div class="activity idea"><div class="activity-title">Wanaka Golf Club (9 holes, ~2 hrs)</div><div class="activity-body">Lake and mountain views · ~NZ$50 green fee · club hire NZ$30 · 📍 12 Ballantyne Road, Wanaka 9305 · 📞 <a href="tel:+6434437888" style="color:var(--alpine);">+64 3 443 7888</a></div></div>
+            <span class="section-label">Afternoon</span>
+            <div class="activity idea"><div class="activity-title">Rippon Vineyard</div><div class="activity-body">Potentially the best view of any winery on the trip. Opens 11am.</div></div>
           </div>
         </div>
       </div>
@@ -3133,8 +3447,11 @@
           <div class="track all">
             <span class="section-label">Lodging</span>
             <div class="activity booked"><div class="activity-title"><a href="https://homes-and-villas.marriott.com/en/properties/40451683-wanaka-the-lookout-lake-views" target="_blank" rel="noopener" style="color:var(--alpine);text-decoration:none;">The Lookout · Lake Views ↗</a> <span class="activity-cost">$514</span></div></div>
-            <span class="section-label">Open slot</span>
+            <span class="section-label">Open slot · contenders</span>
             <div class="activity idea"><div class="activity-title">TBD</div><div class="activity-body">Contenders · <em>#thatwanakatree</em>, Puzzling World, or a second hike.</div></div>
+            <div class="activity idea"><div class="activity-title">Diamond Lake / Rocky Mountain track (~2.5–3 hrs)</div><div class="activity-body">Panoramic views rivaling Roy's Peak at a fraction of the effort · Less crowded · trailhead 25 min toward Glenorchy · Free</div></div>
+            <div class="activity idea"><div class="activity-title">Cardrona Valley drive + historic hotel</div><div class="activity-body">Beautiful autumn drive · Cardrona Hotel is NZ's most-photographed pub · Previews Crown Range route for May 30 · Good rainy-morning alternative</div></div>
+            <div class="activity idea"><div class="activity-title">Kika (farewell dinner)</div><div class="activity-body">Wanaka's best restaurant · shared plates · creative NZ ingredients · 📍 2 Dunmore Street, Wanaka 9305 · Book well ahead</div></div>
           </div>
         </div>
       </div>
@@ -3158,6 +3475,8 @@
               <div class="activity-title">Depart Wanaka → ZQN</div>
               <div class="activity-body">Crown Range pass if weather clear · SH6 if not · ~1:15 either way.</div>
             </div>
+            <div class="activity idea"><div class="activity-title">Crown Range summit lookout</div><div class="activity-body">Best panoramic view of the trip · 10 min stop · Only if road is open (can close for ice in late May) · SH6 via Kawarau Gorge is backup route</div></div>
+            <div class="activity idea"><div class="activity-title">Cardrona Hotel photo stop</div><div class="activity-body">NZ's most-photographed historic pub · 2 min stop on Crown Range route · 📍 2310 Cardrona Valley Road, Cardrona 9305</div></div>
           </div>
         </div>
       </div>
@@ -3408,6 +3727,32 @@
       <a href="tel:+6444626000" class="em-item">
         <div class="em-num">+64 4 462 6000</div>
         <div class="em-label">US Embassy Wellington</div>
+      </a>
+    </div>
+  </div>
+  <!-- Nearest Medical -->
+  <div class="em-card" style="margin-top:12px;background:linear-gradient(135deg,rgba(11,163,179,0.07),rgba(11,163,179,0.02));border-color:rgba(11,163,179,0.28);">
+    <div class="em-head" style="color:#0A5C7E;">🏥 Nearest Medical</div>
+    <div class="em-items" style="grid-template-columns:repeat(5,1fr);">
+      <a href="tel:+6433640640" class="em-item" style="border-color:rgba(11,163,179,0.2);">
+        <div class="em-num" style="color:#0A5C7E;font-size:13px;">+64 3 364 0640</div>
+        <div class="em-label" style="font-size:9px;line-height:1.4;"><strong>Christchurch Hospital ED</strong><br>2 Riccarton Ave, CHC 8011</div>
+      </a>
+      <a href="tel:+6436858211" class="em-item" style="border-color:rgba(11,163,179,0.2);">
+        <div class="em-num" style="color:#0A5C7E;font-size:13px;">+64 3 685 8211</div>
+        <div class="em-label" style="font-size:9px;line-height:1.4;"><strong>Mackenzie Medical (Tekapo)</strong><br>Main St, Fairlie (~35 min drive)</div>
+      </a>
+      <a href="tel:+6434410015" class="em-item" style="border-color:rgba(11,163,179,0.2);">
+        <div class="em-num" style="color:#0A5C7E;font-size:13px;">+64 3 441 0015</div>
+        <div class="em-label" style="font-size:9px;line-height:1.4;"><strong>Lakes District Hospital (QT)</strong><br>20 Douglas St, Frankton QT 9300</div>
+      </a>
+      <a href="tel:+6432497007" class="em-item" style="border-color:rgba(11,163,179,0.2);">
+        <div class="em-num" style="color:#0A5C7E;font-size:13px;">+64 3 249 7007</div>
+        <div class="em-label" style="font-size:9px;line-height:1.4;"><strong>Fiordland Medical (Te Anau)</strong><br>46 Luxmore Drive, Te Anau 9600</div>
+      </a>
+      <a href="tel:+6434437811" class="em-item" style="border-color:rgba(11,163,179,0.2);">
+        <div class="em-num" style="color:#0A5C7E;font-size:13px;">+64 3 443 7811</div>
+        <div class="em-label" style="font-size:9px;line-height:1.4;"><strong>Wanaka Medical Centre</strong><br>21 Russell St, Wanaka 9305</div>
       </a>
     </div>
   </div>

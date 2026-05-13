@@ -343,6 +343,55 @@
   .split-even { color: #999; font-style: italic; }
   .amount { font-family: "Courier New", monospace; text-align: right; }
 
+  /* ── Flights table ───────────────────────────────────── */
+  .flights-section {
+    margin-bottom: 24pt;
+    page-break-inside: avoid;
+  }
+  .flights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14pt;
+  }
+  .flights-group {
+    border: 1pt solid #c8dde6;
+    border-radius: 3pt;
+    overflow: hidden;
+  }
+  .flights-group-head {
+    background: #0A5C7E;
+    color: #fff;
+    padding: 5pt 8pt;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 7.5pt;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+  }
+  table.flights {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 7.5pt;
+  }
+  table.flights th {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 6.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555;
+    text-align: left;
+    padding: 3pt 5pt;
+    border-bottom: 1pt solid #ddd;
+    background: #f0f7f9;
+  }
+  table.flights td {
+    padding: 4pt 5pt;
+    border-bottom: 0.5pt solid #eee;
+    vertical-align: top;
+  }
+  table.flights tr:last-child td { border-bottom: none; }
+  table.flights .fn { font-family: "Courier New", monospace; font-size: 7pt; color: #0A5C7E; }
+  table.flights .note { font-size: 6.5pt; color: #888; font-style: italic; }
+
   /* ── Emergency contacts strip ─────────────────────────── */
   .contacts {
     margin-top: 20pt;
@@ -558,6 +607,69 @@
   </div>
 
 
+  <!-- ════ FLIGHTS ════════════════════════════════════════════ -->
+  <div class="flights-section">
+    <div class="section-title">Flight Schedule</div>
+    <div class="flights-grid">
+
+      <!-- S&L Outbound -->
+      <div class="flights-group">
+        <div class="flights-group-head"><span class="tag sl">S&L</span> &nbsp; Outbound — May 14–16</div>
+        <table class="flights">
+          <thead><tr><th>Flight</th><th>Route</th><th>Departs</th><th>Arrives</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">DL 5122</td><td>MSN → MSP</td><td>May 14 11:48am CDT</td><td>12:53pm CDT</td></tr>
+            <tr><td class="fn">DL 2114</td><td>MSP → LAX</td><td>May 14 3:37pm CDT</td><td>5:23pm PDT</td></tr>
+            <tr><td class="fn">DL 0065</td><td>LAX → AKL</td><td>May 14 10:25pm PDT</td><td>May 16 6:50am NZT <span class="note">(crosses dateline)</span></td></tr>
+            <tr><td class="fn">JQ 0231</td><td>AKL → CHC</td><td>May 16 11:40am NZT</td><td>1:00pm NZT <span class="note">Jetstar</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- J&A Outbound -->
+      <div class="flights-group">
+        <div class="flights-group-head"><span class="tag ja">J&amp;A</span> &nbsp; Outbound — May 17–19</div>
+        <table class="flights">
+          <thead><tr><th>Flight</th><th>Route</th><th>Departs</th><th>Arrives</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">UA 576</td><td>ORD → LAX</td><td>May 17 4:00pm CDT</td><td>6:39pm PDT</td></tr>
+            <tr><td class="fn">NZ 0005</td><td>LAX → AKL</td><td>May 17 10:10pm PDT</td><td>May 19 6:00am NZT <span class="note">(crosses dateline)</span></td></tr>
+            <tr><td class="fn">NZ 0635</td><td>AKL → ZQN</td><td>May 19 9:30am NZT</td><td>11:25am NZT</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- J&A Return -->
+      <div class="flights-group">
+        <div class="flights-group-head"><span class="tag ja">J&amp;A</span> &nbsp; Return — May 30</div>
+        <table class="flights">
+          <thead><tr><th>Flight</th><th>Route</th><th>Departs</th><th>Arrives</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">NZ 0634</td><td>ZQN → AKL</td><td>May 30 3:05pm NZT</td><td>4:55pm NZT</td></tr>
+            <tr><td class="fn">NZ 0006</td><td>AKL → LAX</td><td>May 30 8:15pm NZT</td><td>May 30 1:20pm PDT <span class="note">(crosses dateline)</span></td></tr>
+            <tr><td class="fn">UA 212</td><td>LAX → ORD</td><td>May 30 4:40pm PDT</td><td>10:42pm CDT</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- S&L Return -->
+      <div class="flights-group">
+        <div class="flights-group-head"><span class="tag sl">S&L</span> &nbsp; Return — May 30–31</div>
+        <table class="flights">
+          <thead><tr><th>Flight</th><th>Route</th><th>Departs</th><th>Arrives</th></tr></thead>
+          <tbody>
+            <tr><td class="fn">QF 0178</td><td>ZQN → MEL</td><td>May 30 1:30pm NZT</td><td>3:00pm NZT <span class="note">Qantas</span></td></tr>
+            <tr><td class="fn">DL 0012</td><td>MEL → LAX</td><td>May 31 10:00am NZT</td><td>May 31 7:34am PDT <span class="note">(crosses dateline)</span></td></tr>
+            <tr><td class="fn">DL 0494</td><td>LAX → DTW</td><td>May 31 9:35am PDT</td><td>4:56pm EDT</td></tr>
+            <tr><td class="fn">DL 5099</td><td>DTW → MSN</td><td>May 31 8:31pm EDT</td><td>8:49pm CDT</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+
   <!-- ════ PHASE 1: CHRISTCHURCH ══════════════════════════════ -->
   <div class="phase-header">
     <div class="phase-kicker">Phase 01 · May 16 – 17 · S&amp;L only</div>
@@ -621,7 +733,7 @@
         <div class="section-lbl">Activities</div>
         <div class="activity booked">
           <span class="activity-name">Akaroa Dolphin Cruise <span class="activity-cost">$148.20</span></span>
-          <span class="activity-body">Hector's dolphins · scenic harbour</span>
+          <span class="activity-body">Hector's dolphins · scenic harbour · 📍 65 Beach Road, Akaroa 7520 · 📞 +64 3 304 7866</span>
           <span class="booking-ref">✓ Booked · RD01XRM</span>
         </div>
         <div class="activity idea">
@@ -660,6 +772,7 @@
         <div class="activity booked">
           <span class="activity-name">Peppers Bluewater Resort <span class="activity-cost">$244.33</span></span>
           <span class="booking-ref">✓ Booked · #364075017998</span>
+          <span class="activity-body">📍 State Highway 8, Lake Tekapo 7945 · 📞 +64 3 680 6700</span>
         </div>
         <div class="section-lbl">Drive stops</div>
         <div class="activity idea">
@@ -703,7 +816,7 @@
         </div>
         <div class="activity booked">
           <span class="activity-name">Dark Sky Stargazing <span class="activity-cost">$254.65</span></span>
-          <span class="activity-body">8:30pm start · cleanest southern sky</span>
+          <span class="activity-body">8:30pm start · cleanest southern sky · 📍 1 Motuariki Lane, Lake Tekapo 7945 · 📞 +64 3 680 6960</span>
           <span class="booking-ref">✓ Booked · 678860</span>
         </div>
       </div>
@@ -714,6 +827,7 @@
         <div class="activity booked">
           <span class="activity-name">Queenstown AirBnb · 30 Wynyard Cres <span class="activity-cost">$512.13/n</span></span>
           <span class="booking-ref">✓ Reserved · HMR8T8DPCQ</span>
+          <span class="activity-body">📍 30 Wynyard Crescent, Queenstown 9300 · Contact host via Airbnb app</span>
         </div>
         <div class="section-lbl">Settle in</div>
         <div class="activity idea">
@@ -879,6 +993,7 @@
         <div class="activity booked">
           <span class="activity-name">Te Anau AirBnb · 12 Worsley St <span class="activity-cost">$217.70/n</span></span>
           <span class="booking-ref">✓ Reserved · HMKECPN95F</span>
+          <span class="activity-body">📍 12 Worsley Street, Te Anau 9600 · Contact host via Airbnb app</span>
         </div>
         <div class="section-lbl">Drive · ~2 hr 15 min via SH6/SH94</div>
         <div class="activity idea"><span class="activity-name">Straightforward · 170 km · no major stops needed</span></div>
@@ -940,6 +1055,7 @@
         <div class="activity booked">
           <span class="activity-name">The Lookout · Lake Views · 4 nights <span class="activity-cost">~$514/n · 50/50 split</span></span>
           <span class="booking-ref">✓ Booked · M1771211356591</span>
+          <span class="activity-body">📍 Address TBD — Stephen to pull from booking M1771211356591 · Contact host via Airbnb app</span>
         </div>
         <div class="section-lbl">Drive · ~3:45 via Kingston/SH6 · goes through QT area</div>
         <div class="activity idea"><span class="activity-name">Kingston or Cromwell stop · then lakefront walk on arrival</span></div>
@@ -1140,6 +1256,38 @@
       <div class="contact-item">
         <strong>NZ visitor info</strong>
         <span>newzealand.com · 0800 100 200</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nearest Medical -->
+  <div class="contacts" style="margin-top:10pt;background:#f0f7f9;border-color:#c8dde6;">
+    <div class="contacts-title" style="color:#0A5C7E;">🏥 Nearest Medical Facilities</div>
+    <div class="contacts-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="contact-item">
+        <strong>Christchurch Hospital ED</strong>
+        <span>+64 3 364 0640</span>
+        <span>2 Riccarton Avenue, CHC 8011</span>
+      </div>
+      <div class="contact-item">
+        <strong>Mackenzie Medical (near Tekapo)</strong>
+        <span>+64 3 685 8211</span>
+        <span>Main St, Fairlie 7925 (~35 min drive)</span>
+      </div>
+      <div class="contact-item">
+        <strong>Lakes District Hospital (QT)</strong>
+        <span>+64 3 441 0015</span>
+        <span>20 Douglas St, Frankton QT 9300</span>
+      </div>
+      <div class="contact-item">
+        <strong>Fiordland Medical (Te Anau)</strong>
+        <span>+64 3 249 7007</span>
+        <span>46 Luxmore Drive, Te Anau 9600</span>
+      </div>
+      <div class="contact-item">
+        <strong>Wanaka Medical Centre</strong>
+        <span>+64 3 443 7811</span>
+        <span>21 Russell Street, Wanaka 9305</span>
       </div>
     </div>
   </div>
