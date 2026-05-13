@@ -2358,11 +2358,39 @@
   .flight-leg:last-child { border-bottom: none; }
   .flight-num {
     font-family: "Courier New", Courier, monospace;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    color: var(--alpine);
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
   }
+  .flight-num a { color: inherit; text-decoration: none; }
+  .flight-num a:hover { text-decoration: underline; }
+  /* Airline brand badge */
+  .airline-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: white;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+  .ab-dl  { background: #E01933; }   /* Delta */
+  .ab-ua  { background: #0033A0; }   /* United */
+  .ab-nz  { background: #00447C; }   /* Air NZ */
+  .ab-jq  { background: #FF6600; }   /* Jetstar */
+  .ab-qf  { background: #EE0000; }   /* Qantas */
+  /* Airline-colored left accent on each leg */
+  .flight-leg { border-left: 3px solid transparent; padding-left: 8px; }
+  .flight-leg.al-dl { border-left-color: #E01933; }
+  .flight-leg.al-ua { border-left-color: #0033A0; }
+  .flight-leg.al-nz { border-left-color: #00447C; }
+  .flight-leg.al-jq { border-left-color: #FF6600; }
+  .flight-leg.al-qf { border-left-color: #EE0000; }
   .flight-route {
     font-weight: 700;
     color: var(--ink);
@@ -2490,33 +2518,33 @@
     <div class="flights-grid">
 
       <!-- S&L Outbound -->
-      <details class="flights-card">
+      <details class="flights-card" data-flight-row="0">
         <summary class="flights-card-head">
           <span class="flights-card-who sl">S&amp;L</span>
           <span class="flights-card-title">Outbound — May 14–16</span>
           <svg class="flights-card-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </summary>
         <div class="flights-card-body">
-          <div class="flight-leg">
-            <div class="flight-num">DL 5122</div>
+          <div class="flight-leg al-dl">
+            <div class="flight-num"><span class="airline-badge ab-dl">DL</span><a href="https://www.flightaware.com/live/flight/DAL5122" target="_blank" rel="noopener">5122</a></div>
             <div class="flight-route">MSN → MSP</div>
             <div class="flight-times"><strong>11:48am</strong> → <strong>12:53pm</strong> CDT</div>
-            <div class="flight-note">May 14</div>
+            <div class="flight-note">May 14 · Delta · tap flight number for live tracking</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">DL 2114</div>
+          <div class="flight-leg al-dl">
+            <div class="flight-num"><span class="airline-badge ab-dl">DL</span><a href="https://www.flightaware.com/live/flight/DAL2114" target="_blank" rel="noopener">2114</a></div>
             <div class="flight-route">MSP → LAX</div>
             <div class="flight-times"><strong>3:37pm CDT</strong> → <strong>5:23pm PDT</strong></div>
-            <div class="flight-note">May 14</div>
+            <div class="flight-note">May 14 · Delta</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">DL 0065</div>
+          <div class="flight-leg al-dl">
+            <div class="flight-num"><span class="airline-badge ab-dl">DL</span><a href="https://www.flightaware.com/live/flight/DAL65" target="_blank" rel="noopener">0065</a></div>
             <div class="flight-route">LAX → AKL</div>
             <div class="flight-times"><strong>10:25pm PDT</strong> → <strong>6:50am NZT</strong></div>
-            <div class="flight-note">Departs May 14 · Arrives May 16 · crosses dateline</div>
+            <div class="flight-note">Departs May 14 · Arrives May 16 · ✈ crosses dateline</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">JQ 0231</div>
+          <div class="flight-leg al-jq">
+            <div class="flight-num"><span class="airline-badge ab-jq">JQ</span><a href="https://www.flightaware.com/live/flight/JST231" target="_blank" rel="noopener">0231</a></div>
             <div class="flight-route">AKL → CHC</div>
             <div class="flight-times"><strong>11:40am</strong> → <strong>1:00pm NZT</strong></div>
             <div class="flight-note">May 16 · Jetstar domestic</div>
@@ -2525,27 +2553,27 @@
       </details>
 
       <!-- J&A Outbound -->
-      <details class="flights-card">
+      <details class="flights-card" data-flight-row="0">
         <summary class="flights-card-head">
           <span class="flights-card-who ja">J&amp;A</span>
           <span class="flights-card-title">Outbound — May 17–19</span>
           <svg class="flights-card-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </summary>
         <div class="flights-card-body">
-          <div class="flight-leg">
-            <div class="flight-num">UA 576</div>
+          <div class="flight-leg al-ua">
+            <div class="flight-num"><span class="airline-badge ab-ua">UA</span><a href="https://www.flightaware.com/live/flight/UAL576" target="_blank" rel="noopener">576</a></div>
             <div class="flight-route">ORD → LAX</div>
             <div class="flight-times"><strong>4:00pm CDT</strong> → <strong>6:39pm PDT</strong></div>
-            <div class="flight-note">May 17</div>
+            <div class="flight-note">May 17 · United · tap flight number for live tracking</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">NZ 0005</div>
+          <div class="flight-leg al-nz">
+            <div class="flight-num"><span class="airline-badge ab-nz">NZ</span><a href="https://www.flightaware.com/live/flight/ANZ5" target="_blank" rel="noopener">0005</a></div>
             <div class="flight-route">LAX → AKL</div>
             <div class="flight-times"><strong>10:10pm PDT</strong> → <strong>6:00am NZT</strong></div>
-            <div class="flight-note">Departs May 17 · Arrives May 19 · crosses dateline</div>
+            <div class="flight-note">Departs May 17 · Arrives May 19 · ✈ crosses dateline</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">NZ 0635</div>
+          <div class="flight-leg al-nz">
+            <div class="flight-num"><span class="airline-badge ab-nz">NZ</span><a href="https://www.flightaware.com/live/flight/ANZ635" target="_blank" rel="noopener">0635</a></div>
             <div class="flight-route">AKL → ZQN</div>
             <div class="flight-times"><strong>9:30am</strong> → <strong>11:25am NZT</strong></div>
             <div class="flight-note">May 19 · Air New Zealand domestic</div>
@@ -2554,65 +2582,65 @@
       </details>
 
       <!-- S&L Return -->
-      <details class="flights-card">
+      <details class="flights-card" data-flight-row="1">
         <summary class="flights-card-head">
           <span class="flights-card-who sl">S&amp;L</span>
           <span class="flights-card-title">Return — May 30–31</span>
           <svg class="flights-card-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </summary>
         <div class="flights-card-body">
-          <div class="flight-leg">
-            <div class="flight-num">QF 0178</div>
+          <div class="flight-leg al-qf">
+            <div class="flight-num"><span class="airline-badge ab-qf">QF</span><a href="https://www.flightaware.com/live/flight/QFA178" target="_blank" rel="noopener">0178</a></div>
             <div class="flight-route">ZQN → MEL</div>
             <div class="flight-times"><strong>1:30pm</strong> → <strong>3:00pm NZT</strong></div>
-            <div class="flight-note">May 30 · Qantas</div>
+            <div class="flight-note">May 30 · Qantas · tap flight number for live tracking</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">DL 0012</div>
+          <div class="flight-leg al-dl">
+            <div class="flight-num"><span class="airline-badge ab-dl">DL</span><a href="https://www.flightaware.com/live/flight/DAL12" target="_blank" rel="noopener">0012</a></div>
             <div class="flight-route">MEL → LAX</div>
             <div class="flight-times"><strong>10:00am NZT</strong> → <strong>7:34am PDT</strong></div>
-            <div class="flight-note">Departs May 31 · Arrives May 31 PDT · crosses dateline back</div>
+            <div class="flight-note">Departs May 31 · Arrives May 31 PDT · ✈ crosses dateline back</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">DL 0494</div>
+          <div class="flight-leg al-dl">
+            <div class="flight-num"><span class="airline-badge ab-dl">DL</span><a href="https://www.flightaware.com/live/flight/DAL494" target="_blank" rel="noopener">0494</a></div>
             <div class="flight-route">LAX → DTW</div>
             <div class="flight-times"><strong>9:35am PDT</strong> → <strong>4:56pm EDT</strong></div>
-            <div class="flight-note">May 31</div>
+            <div class="flight-note">May 31 · Delta</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">DL 5099</div>
+          <div class="flight-leg al-dl">
+            <div class="flight-num"><span class="airline-badge ab-dl">DL</span><a href="https://www.flightaware.com/live/flight/DAL5099" target="_blank" rel="noopener">5099</a></div>
             <div class="flight-route">DTW → MSN</div>
             <div class="flight-times"><strong>8:31pm EDT</strong> → <strong>8:49pm CDT</strong></div>
-            <div class="flight-note">May 31</div>
+            <div class="flight-note">May 31 · Delta</div>
           </div>
         </div>
       </details>
 
       <!-- J&A Return -->
-      <details class="flights-card">
+      <details class="flights-card" data-flight-row="1">
         <summary class="flights-card-head">
           <span class="flights-card-who ja">J&amp;A</span>
           <span class="flights-card-title">Return — May 30</span>
           <svg class="flights-card-chev" viewBox="0 0 20 20"><path d="M5 7l5 6 5-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </summary>
         <div class="flights-card-body">
-          <div class="flight-leg">
-            <div class="flight-num">NZ 0634</div>
+          <div class="flight-leg al-nz">
+            <div class="flight-num"><span class="airline-badge ab-nz">NZ</span><a href="https://www.flightaware.com/live/flight/ANZ634" target="_blank" rel="noopener">0634</a></div>
             <div class="flight-route">ZQN → AKL</div>
             <div class="flight-times"><strong>3:05pm</strong> → <strong>4:55pm NZT</strong></div>
-            <div class="flight-note">May 30</div>
+            <div class="flight-note">May 30 · Air New Zealand · tap flight number for live tracking</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">NZ 0006</div>
+          <div class="flight-leg al-nz">
+            <div class="flight-num"><span class="airline-badge ab-nz">NZ</span><a href="https://www.flightaware.com/live/flight/ANZ6" target="_blank" rel="noopener">0006</a></div>
             <div class="flight-route">AKL → LAX</div>
             <div class="flight-times"><strong>8:15pm NZT</strong> → <strong>1:20pm PDT</strong></div>
-            <div class="flight-note">Departs May 30 · Arrives May 30 PDT · crosses dateline back</div>
+            <div class="flight-note">Departs May 30 · Arrives May 30 PDT · ✈ crosses dateline back</div>
           </div>
-          <div class="flight-leg">
-            <div class="flight-num">UA 212</div>
+          <div class="flight-leg al-ua">
+            <div class="flight-num"><span class="airline-badge ab-ua">UA</span><a href="https://www.flightaware.com/live/flight/UAL212" target="_blank" rel="noopener">212</a></div>
             <div class="flight-route">LAX → ORD</div>
             <div class="flight-times"><strong>4:40pm PDT</strong> → <strong>10:42pm CDT</strong></div>
-            <div class="flight-note">May 30</div>
+            <div class="flight-note">May 30 · United</div>
           </div>
         </div>
       </details>
@@ -4304,6 +4332,17 @@
     });
     usd.value = (parseFloat(nzd.value || 0) * rate).toFixed(2);
   })();
+
+  // ============ FLIGHTS — sync open/close by row ============
+  document.querySelectorAll('.flights-card').forEach(card => {
+    card.addEventListener('toggle', () => {
+      const row = card.dataset.flightRow;
+      if (!row) return;
+      document.querySelectorAll(`.flights-card[data-flight-row="${row}"]`).forEach(peer => {
+        if (peer !== card) peer.open = card.open;
+      });
+    });
+  });
 
   // ============ PWA registration + install (global, inline onclick) ============
   let deferredInstallPrompt = null;
